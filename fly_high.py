@@ -1,5 +1,8 @@
 from pico2d import *
 
+Window_width = 800
+Window_height = 600
+
 
 def handle_events():
     global running
@@ -7,6 +10,8 @@ def handle_events():
     global MY_y
     global dir_x
     global dir_y
+    global background_y, background_y1
+    global a, b
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -36,24 +41,40 @@ def handle_events():
 
 open_canvas()
 background = load_image('resource/Aft_resource/background.png')
+background_1 = load_image('resource/Aft_resource/background.png')
 MyJet = load_image('resource/Aft_resource/jet21.png')
 character1 = load_image('resource/Aft_resource/jet2.png')
-Enemy1 =load_image('resource/Aft_resource/EnemyJet1.png')
-
+Enemy1 = load_image('resource/Aft_resource/EnemyJet1.png')
 
 running = True
 My_x = 800 // 2
-My_y= 600//2
+My_y = 600 // 2
 frame = 0
 dir_x = 0
 dir_y = 0
+background_y, background_y1 = 0, 0
+a, b = 900, 300
 
 while running:
     clear_canvas()
-    background.draw(400, 300)
-    Enemy1.clip_draw(0, 0, 40, 80, My_x+100, My_y+100)
+    #    background.draw(400, 300)
+    background.clip_draw(0, 0, 800, 600, Window_width // 2, a + background_y)
+    background_1.clip_draw(0, 0, 800, 600, Window_width // 2, b + background_y1)
+    Enemy1.clip_draw(0, 0, 40, 80, My_x + 100, My_y + 100)
     MyJet.clip_draw(frame * 40, 0, 40, 80, My_x, My_y)
     update_canvas()
+
+    background_y -= 10
+    background_y1 -= 10
+
+    if a + background_y == -300:
+        a = 900
+        background_y = 0
+
+    if b + background_y1 == -300:
+        b = 900
+        background_y1 = 0
+
 
     handle_events()
     frame = (frame + 1) % 6
