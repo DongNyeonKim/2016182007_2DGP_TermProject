@@ -4,6 +4,9 @@ import random
 Window_width = 800
 Window_height = 600
 
+bullet_xy = []
+
+
 def Fire_Myjet():
     My_Fire.clip_draw(0, 0, 10, 12, 500, 500)
 
@@ -17,6 +20,9 @@ def handle_events():
     global background_y, background_y1
     #배경움직임에 사용되는 값
     global a, b
+
+
+
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -30,8 +36,10 @@ def handle_events():
                 dir_y += 1
             elif event.key == SDLK_DOWN:
                 dir_y -= 1
-            elif event.key == SDLK_f:
-                Fire_Myjet()
+            elif event.key == SDLK_z:
+                bullet_y = My_x
+                bullet_x = My_y +30
+                bullet_xy.append([bullet_x,bullet_y])
             elif event.key == SDLK_ESCAPE:
                 running = False
         elif event.type == SDL_KEYUP:
@@ -64,7 +72,6 @@ dir_x = 0
 dir_y = 0
 background_y, background_y1 = 0, 0
 a, b = 900, 300
-
 while running:
     clear_canvas()
     handle_events()
@@ -73,6 +80,13 @@ while running:
     Enemy1.clip_draw(0, 0, 40, 80, 700, 300)
     MyJet.clip_draw(frame * 40, 0, 40, 80, My_x, My_y)
 #    My_Fire.clip_draw(0, 0, 10, 12, 500, 500)
+    if len(bullet_xy) != 0:
+        for i, bxy in enumerate(bullet_xy):
+            bxy[0] += 20
+            bullet_xy[i][0] = bxy[0]
+            My_Fire.clip_draw(0, 0, 10, 12, bxy[1], bxy[0])
+            if bxy[0] >= Window_height:
+                bullet_xy.remove(bxy)
     update_canvas()
 
 
