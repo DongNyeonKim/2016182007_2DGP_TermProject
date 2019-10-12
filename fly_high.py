@@ -51,8 +51,11 @@ def handle_events():
                 dir_y -= 1
             elif event.key == SDLK_DOWN:
                 dir_y += 1
-            elif event.key == SDLK_f:
+            elif event.key == SDLK_z:
                 Fire_Myjet()
+                bullet_y = My_x
+                bullet_x = My_y +30
+                bullet_xy.append([bullet_x,bullet_y])
     pass
 
 
