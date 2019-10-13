@@ -63,6 +63,8 @@ open_canvas()
 background = load_image('resource/Aft_resource/background.png')
 background_1 = load_image('resource/Aft_resource/background.png')
 MyJet = load_image('resource/Aft_resource/jet21.png')
+My_Friend = load_image('resource/Aft_resource/My_Friend.png')
+My_Friend1 = load_image('resource/Aft_resource/My_Friend.png')
 character1 = load_image('resource/Aft_resource/jet2.png')
 Enemy1 = load_image('resource/Aft_resource/EnemyJet1.png')
 My_Fire = load_image('resource/Aft_resource/Fire_Myjet.png')
@@ -78,10 +80,17 @@ a, b = 900, 300
 while running:
     clear_canvas()
     handle_events()
+    #배경
     background.clip_draw(0, 0, 800, 600, Window_width // 2, a + background_y)
     background_1.clip_draw(0, 0, 800, 600, Window_width // 2, b + background_y1)
+    #적
     Enemy1.clip_draw(0, 0, 40, 80, 700, 300)
+    #아군
+    My_Friend.clip_draw(0, 0, 140, 120, My_x+150, My_y-50)
+    My_Friend1.clip_draw(0, 0, 140, 120, My_x-150, My_y-50)
+    #내 전투기
     MyJet.clip_draw(frame * 40, 0, 40, 80, My_x, My_y)
+
 #    My_Fire.clip_draw(0, 0, 10, 12, 500, 500)
     if len(bullet_xy) != 0:
         for i, bxy in enumerate(bullet_xy):
@@ -113,16 +122,7 @@ while running:
     My_y += dir_y * 20
     delay(0.1)
 
-# while x < 800:
-#     clear_canvas()
-#     background.draw(800,600)
-#     character.clip_draw(frame * 40, 0, 40, 80, x, 90)
-#     character1.clip_draw(frame * 30, 0, 30, 60, x, 200)
-#     update_canvas()
-#     frame =(frame+1) % 6
-#     x += 5
-#     delay(0.1)
-#     get_events()
+
 
 
 close_canvas()
