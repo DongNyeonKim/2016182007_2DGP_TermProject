@@ -6,7 +6,6 @@ Window_height = 600
 
 bullet_xy = []
 
-
 def Fire_Myjet():
     My_Fire.clip_draw(0, 0, 10, 12, 500, 500)
 
@@ -114,7 +113,6 @@ while running:
     if b + background_y1 == -300:
         b = 900
         background_y1 = 0
-
 
 
     frame = (frame + 1) % 6
