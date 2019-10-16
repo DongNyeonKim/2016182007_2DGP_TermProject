@@ -50,7 +50,6 @@ def handle_events():
             elif event.key == SDLK_DOWN:
                 dir_y += 1
             elif event.key == SDLK_z:
-                Fire_Myjet()
                 bullet_y = My_x
                 bullet_x = My_y +30
                 bullet_xy.append([bullet_x,bullet_y])
@@ -92,7 +91,7 @@ while running:
 #    My_Fire.clip_draw(0, 0, 10, 12, 500, 500)
     if len(bullet_xy) != 0:
         for i, bxy in enumerate(bullet_xy):
-            bxy[0] += 20
+            bxy[0] += 50
             bullet_xy[i][0] = bxy[0]
             My_Fire.clip_draw(0, 0, 10, 12, bxy[1], bxy[0])
             if bxy[0] >= Window_height:
