@@ -4,6 +4,8 @@ import random
 Window_width = 800
 Window_height = 600
 
+
+#내전투기 공격
 bullet_xy = []
 
 def Fire_Myjet():
@@ -117,8 +119,6 @@ while running:
     My_x += dir_x * 20
     My_y += dir_y * 20
     delay(0.1)
-
-
 
 
 close_canvas()
