@@ -118,7 +118,7 @@ while running:
     frame = (frame + 1) % 6
     My_x += dir_x * 20
     My_y += dir_y * 20
-    delay(0.1)
+    delay(0.01)
 
 
 close_canvas()
