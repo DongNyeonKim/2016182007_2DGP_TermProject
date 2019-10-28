@@ -9,8 +9,7 @@ name = "Main_state"
 background = None
 my_jet = None
 my_bullet = None
-
-
+my_friend = None
 
 
 class BACKGROUND:
@@ -89,38 +88,69 @@ class MY_BULLET:
         self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
         pass
 
-class MY_FRIEND:
 
+class MY_FRIEND:
+    sign = 0
 
     def __init__(self):
         self.image = load_image('resource/Aft_resource/My_Friend.png')
         self.image1 = load_image('resource/Aft_resource/My_Friend.png')
+        self.A_x = -100
+        self.A_y = -100
+        self.B_x = +900
+        self.B_y = -100
         pass
 
     def update(self):
-        self.x += self.move_x
-        self.y += self.move_y
-        self.x = clamp(25, self.x, 800 - 25)
-        self.y = clamp(25, self.y, 600 - 45)
-        print(self.x, self.y)
-        pass
+        if self.sign % 2 == 1:
+            if self.A_x >= my_jet.x-80:
+                self.A_x -= 0.5
+            elif self.A_x < my_jet.x-80:
+                self.A_x += 0.5
+            if self.A_y >= my_jet.y+70:
+                self.A_y -= 0.5
+            elif self.A_y < my_jet.y+70:
+                self.A_y += 0.5
+            if self.B_x >= my_jet.x+80:
+                self.B_x -= 0.5
+            elif self.B_x < my_jet.x+80:
+                self.B_x += 0.5
+            if self.B_y >= my_jet.y+70:
+                self.B_y -= 0.5
+            elif self.B_y < my_jet.y+70:
+                self.B_y += 0.5
+            pass
+        elif self.sign % 2 == 0:
+            if self.A_x != -100:
+                self.A_x -= 1
+            if self.A_y != -100:
+                self.A_y -= 1
+            if self.B_x != +900:
+                self.B_x += 1
+            if self.B_y != -100:
+                self.B_y -= 1
+            pass
 
     def draw(self):
-        self.image.clip_draw(self.frame * 40, 0, 40, 80, self.x, self.y)
+        self.image.clip_draw(0, 0, 140, 120, self.A_x, self.A_y)
+        self.image1.clip_draw(0, 0, 140, 120, self.B_x, self.B_y)
         pass
 
+
 def enter():
-    global my_jet, background, my_bullets
+    global my_jet, background, my_bullets, my_friend
     my_jet = MY_JET()
     background = BACKGROUND()
     my_bullets = []
+    my_friend = MY_FRIEND()
 
 
 def exit():
-    global my_jet, background, my_bullets
+    global my_jet, background, my_bullets, my_friend
     del (my_jet)
     del (background)
     del (my_bullets)
+    del (my_friend)
 
 
 def pause():
@@ -132,7 +162,7 @@ def resume():
 
 
 def handle_events():
-    global my_jet, my_bullets
+    global my_jet, my_bullets, my_friend
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -153,7 +183,8 @@ def handle_events():
                 bullet = MY_BULLET()
                 my_bullets.append(bullet)
             elif event.key == SDLK_a:
-                pass
+                MY_FRIEND.sign += 1
+
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_UP:
                 MY_JET.move_y -= 1
@@ -174,6 +205,7 @@ def update():
     my_jet.update()
     for bullet in my_bullets:
         bullet.update()
+    my_friend.update()
     pass
 
 
@@ -183,4 +215,5 @@ def draw():
     my_jet.draw()
     for bullet in my_bullets:
         bullet.draw()
+    my_friend.draw()
     update_canvas()
