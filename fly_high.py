@@ -10,7 +10,7 @@ background = None
 my_jet = None
 my_bullet = None
 my_friend = None
-
+enemy_jet = None
 
 class BACKGROUND:
     def __init__(self):
@@ -136,21 +136,72 @@ class MY_FRIEND:
         self.image1.clip_draw(0, 0, 140, 120, self.B_x, self.B_y)
         pass
 
+class ENEMY_JET:
+
+    def __init__(self):
+        self.image1 = load_image('resource/Aft_resource/EnemyJet1.png')
+        self.image2 = load_image('resource/Aft_resource/EnemyJet2.png')
+        self.image3 = load_image('resource/Aft_resource/EnemyJet3.png')
+
+        self.image4 = load_image('resource/Aft_resource/EnemyJet1.png')
+        self.image5 = load_image('resource/Aft_resource/EnemyJet2.png')
+        self.image6 = load_image('resource/Aft_resource/EnemyJet3.png')
+
+        self.x1, self.y1 = random.randint(100, 700), random.randint(600, 800)
+        self.x2, self.y2 = random.randint(100, 700), random.randint(600, 800)
+        self.x3, self.y3 = random.randint(100, 700), random.randint(600, 800)
+
+        self.x4, self.y4 = random.randint(100, 700), random.randint(900, 1000)
+        self.x5, self.y5 = random.randint(100, 700), random.randint(900, 1000)
+        self.x6, self.y6 = random.randint(100, 700), random.randint(900, 1000)
+        pass
+
+    def update(self):
+        self.y1 -= 0.5
+        self.y2 -= 0.5
+        self.y3 -= 0.5
+        self.y4 -= 0.5
+        self.y5 -= 0.5
+        self.y6 -= 0.5
+
+        if self.y1 ==-100:
+            self.x1, self.y1 = random.randint(100, 700), random.randint(600, 700)
+        if self.y2 ==-100:
+            self.x2, self.y2 = random.randint(100, 700), random.randint(600, 700)
+        if self.y3 == -100:
+            self.x3, self.y3 = random.randint(100, 700), random.randint(600, 700)
+        if self.y4 == -100:
+            self.x4, self.y4 = random.randint(100, 700), random.randint(900, 1000)
+        if self.y5 == -100:
+            self.x5, self.y5 = random.randint(100, 700), random.randint(900, 1000)
+        if self.y6 == -100:
+            self.x6, self.y6 = random.randint(100, 700), random.randint(900, 1000)
+        pass
+
+    def draw(self):
+        self.image1.clip_draw(0, 0, 40, 80, self.x1, self.y1)
+        self.image2.clip_draw(0, 0, 40, 50, self.x2, self.y2)
+        self.image3.clip_draw(0, 0, 50, 50, self.x3, self.y3)
+        self.image4.clip_draw(0, 0, 40, 80, self.x4, self.y4)
+        self.image5.clip_draw(0, 0, 40, 50, self.x5, self.y5)
+        self.image6.clip_draw(0, 0, 50, 50, self.x6, self.y6)
+        pass
 
 def enter():
-    global my_jet, background, my_bullets, my_friend
+    global my_jet, background, my_bullets, my_friend, enemy_jet
     my_jet = MY_JET()
     background = BACKGROUND()
     my_bullets = []
     my_friend = MY_FRIEND()
-
+    enemy_jet = ENEMY_JET()
 
 def exit():
-    global my_jet, background, my_bullets, my_friend
+    global my_jet, background, my_bullets, my_friend, enemy_jet
     del (my_jet)
     del (background)
     del (my_bullets)
     del (my_friend)
+    del (enemy_jet)
 
 
 def pause():
@@ -206,6 +257,7 @@ def update():
     for bullet in my_bullets:
         bullet.update()
     my_friend.update()
+    enemy_jet.update()
     pass
 
 
@@ -216,4 +268,5 @@ def draw():
     for bullet in my_bullets:
         bullet.draw()
     my_friend.draw()
+    enemy_jet.draw()
     update_canvas()
