@@ -82,11 +82,11 @@ def quit():
     running = False
 
 
-def run(start_state):
+def run(Start_state):
     global running, stack
     running = True
-    stack = [start_state]
-    start_state.enter()
+    stack = [Start_state]
+    Start_state.enter()
     while (running):
         stack[-1].handle_events()
         stack[-1].update()
@@ -98,8 +98,8 @@ def run(start_state):
 
 
 def test_game_framework():
-    start_state = TestGameState('StartState')
-    run(start_state)
+    Start_state = TestGameState('StartState')
+    run(Start_state)
 
 
 
