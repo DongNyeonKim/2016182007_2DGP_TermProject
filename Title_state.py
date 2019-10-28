@@ -1,5 +1,6 @@
 import Game_Framework
 import Start_state
+import fly_high
 from pico2d import *
 
 
@@ -26,13 +27,12 @@ def handle_events():
             if(event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
                 Game_Framework.change_state(Start_state)
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
-                pass
-                #Game_Framework.change_state(fly_high)
+                Game_Framework.change_state(fly_high)
 
 
 def draw():
     clear_canvas()
-    image.draw(800 , 600)
+    image.draw(400 , 300)
     update_canvas()
 
 
