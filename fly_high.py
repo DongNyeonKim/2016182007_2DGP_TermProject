@@ -10,7 +10,9 @@ background = None
 my_jet = None
 my_bullet = None
 my_friend = None
+friend_bullets = None
 enemy_jet = None
+Timer = 0
 
 class BACKGROUND:
     def __init__(self):
@@ -92,14 +94,17 @@ class MY_BULLET:
 
 class MY_FRIEND:
     sign = 0
-
+    A_x = -100
+    A_y = -100
+    B_x = 900
+    B_y = 0
     def __init__(self):
         self.image = load_image('resource/Aft_resource/My_Friend.png')
         self.image1 = load_image('resource/Aft_resource/My_Friend.png')
-        self.A_x = -100
-        self.A_y = -100
-        self.B_x = +900
-        self.B_y = -100
+        # self.A_x = -100
+        # self.A_y = -100
+        # self.B_x = +900
+        # self.B_y = -100
         pass
 
     def update(self):
@@ -135,6 +140,41 @@ class MY_FRIEND:
     def draw(self):
         self.image.clip_draw(0, 0, 140, 120, self.A_x, self.A_y)
         self.image1.clip_draw(0, 0, 140, 120, self.B_x, self.B_y)
+        pass
+
+class FRIEND_BULLET:
+    image = None
+    timer = 0
+    def __init__(self):
+        if FRIEND_BULLET.image == None:
+            FRIEND_BULLET.image = load_image('resource/Aft_resource/Fire_MyFriend.png')
+        self.a_x = my_friend.A_x
+        self.a_y = my_friend.A_y
+        self.b_x = my_friend.B_x
+        self.b_y = my_friend.B_y
+        self.sign=0
+        pass
+
+    def update(self):
+        if self.sign == 0:
+            self.a_x = my_friend.A_x
+            self.a_y = my_friend.A_y+60
+            self.b_x = my_friend.B_x
+            self.b_y = my_friend.B_y+60
+            self.sign = 1
+
+        if self.a_y != 650:
+            self.a_y += 1
+
+        if self.b_y != 650:
+            self.b_y += 1
+
+        self.timer += 0.5
+        pass
+
+    def draw(self):
+        self.image.clip_draw(0, 0, 20, 30, self.a_x, self.a_y)
+        self.image.clip_draw(0, 0, 20, 30, self.b_x, self.b_y)
         pass
 
 class ENEMY_JET:
@@ -189,20 +229,24 @@ class ENEMY_JET:
         pass
 
 def enter():
-    global my_jet, background, my_bullets, my_friend, enemy_jet
+    global my_jet, background, my_bullets, my_friend, friend_bullets, enemy_jet, Timer
     my_jet = MY_JET()
     background = BACKGROUND()
     my_bullets = []
+
     my_friend = MY_FRIEND()
+    friend_bullets =[]
+    Timer = 0
     enemy_jet = ENEMY_JET()
 
 def exit():
-    global my_jet, background, my_bullets, my_friend, enemy_jet
+    global my_jet, background, my_bullets, my_friend, enemy_jet, friend_bullets
     del (my_jet)
     del (background)
     del (my_bullets)
     del (my_friend)
     del (enemy_jet)
+    del (friend_bullets)
 
 
 def pause():
@@ -253,11 +297,24 @@ def handle_events():
 
 
 def update():
+    global Timer
     background.update()
     my_jet.update()
     for bullet in my_bullets:
         bullet.update()
+        if bullet.y > 600:
+            my_bullets.remove(bullet)
     my_friend.update()
+
+    Timer += 1
+    if Timer % 100 == 0:
+        sbullet = FRIEND_BULLET()
+        friend_bullets.append(sbullet)
+
+    for sbullet in friend_bullets:
+        sbullet.update()
+        if sbullet.a_y > 640:
+            friend_bullets.remove(sbullet)
     enemy_jet.update()
     pass
 
@@ -269,5 +326,7 @@ def draw():
     for bullet in my_bullets:
         bullet.draw()
     my_friend.draw()
+    for sbullet in friend_bullets:
+        sbullet.draw()
     enemy_jet.draw()
     update_canvas()
