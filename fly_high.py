@@ -65,9 +65,10 @@ class MY_JET:
 
 
 class MY_BULLET:
-
+    image = None
     def __init__(self):
-        self.image = load_image('resource/Aft_resource/Fire_Myjet.png')
+        if MY_BULLET.image == None:
+            MY_BULLET.image = load_image('resource/Aft_resource/Fire_Myjet.png')
         self.x = my_jet.x
         self.y = my_jet.y
         self.sign = 0
