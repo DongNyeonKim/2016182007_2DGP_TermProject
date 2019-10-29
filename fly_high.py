@@ -68,11 +68,21 @@ class MY_JET:
 
 class MY_BULLET:
     image = None
+    image_left =None
+    image_right =None
     def __init__(self):
         if MY_BULLET.image == None:
             MY_BULLET.image = load_image('resource/Aft_resource/Fire_Myjet.png')
+        if MY_BULLET.image_left == None:
+            MY_BULLET.image_left = load_image('resource/Aft_resource/my_bullet_left.png')
+        if MY_BULLET.image_right == None:
+            MY_BULLET.image_right = load_image('resource/Aft_resource/my_bullet_right.png')
         self.x = my_jet.x
         self.y = my_jet.y
+        self.L_x = my_jet.x
+        self.L_y = my_jet.y
+        self.R_x = my_jet.x
+        self.R_y = my_jet.y
         self.sign = 0
         pass
 
@@ -80,15 +90,27 @@ class MY_BULLET:
         if self.sign == 0:
             self.x = my_jet.x
             self.y = my_jet.y + 35
+            self.L_x = my_jet.x
+            self.L_y = my_jet.y+30
+            self.R_x = my_jet.x
+            self.R_y = my_jet.y+30
             self.sign = 1
 
         if self.y != 610:
             self.y += 0.5
+        if self.L_y != 610:
+            self.L_x -= 0.5
+            self.L_y += 0.5
+        if self.R_y != 610:
+            self.R_x += 0.5
+            self.R_y += 0.5
 
         pass
 
     def draw(self):
         self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
+        self.image_left.clip_draw(0, 0, 14, 12, self.L_x, self.L_y)
+        self.image_right.clip_draw(0, 0, 14, 12, self.R_x, self.R_y)
         pass
 
 
@@ -188,6 +210,9 @@ class ENEMY_JET:
         self.image5 = load_image('resource/Aft_resource/EnemyJet2.png')
         self.image6 = load_image('resource/Aft_resource/EnemyJet3.png')
 
+        self.image7 = load_image('resource/Aft_resource/EnemyJet4.png')
+        self.image8 = load_image('resource/Aft_resource/EnemyJet4.png')
+
         self.x1, self.y1 = random.randint(100, 700), random.randint(600, 800)
         self.x2, self.y2 = random.randint(100, 700), random.randint(600, 800)
         self.x3, self.y3 = random.randint(100, 700), random.randint(600, 800)
@@ -195,6 +220,8 @@ class ENEMY_JET:
         self.x4, self.y4 = random.randint(100, 700), random.randint(900, 1000)
         self.x5, self.y5 = random.randint(100, 700), random.randint(900, 1000)
         self.x6, self.y6 = random.randint(100, 700), random.randint(900, 1000)
+        self.x7, self.y7 = random.randint(-100,0), random.randint(300,600)
+        self.x8, self.y8 = random.randint(800, 900), random.randint(300, 600)
         pass
 
     def update(self):
@@ -204,6 +231,9 @@ class ENEMY_JET:
         self.y4 -= 0.5
         self.y5 -= 0.5
         self.y6 -= 0.5
+
+        self.x7 += 0.5
+        self.x8 -= 0.5
 
         if self.y1 ==-100:
             self.x1, self.y1 = random.randint(100, 700), random.randint(600, 700)
@@ -217,6 +247,10 @@ class ENEMY_JET:
             self.x5, self.y5 = random.randint(100, 700), random.randint(900, 1000)
         if self.y6 == -100:
             self.x6, self.y6 = random.randint(100, 700), random.randint(900, 1000)
+        if self.x7 == 900:
+            self.x7, self.y7 = random.randint(-100, 0), random.randint(300, 600)
+        if self.x8 == -100:
+            self.x8, self.y8 = random.randint(800, 900), random.randint(300, 600)
         pass
 
     def draw(self):
@@ -226,6 +260,8 @@ class ENEMY_JET:
         self.image4.clip_draw(0, 0, 40, 80, self.x4, self.y4)
         self.image5.clip_draw(0, 0, 40, 50, self.x5, self.y5)
         self.image6.clip_draw(0, 0, 50, 50, self.x6, self.y6)
+        self.image7.clip_draw(0, 0, 40, 30, self.x7, self.y7)
+        self.image8.clip_draw(0, 0, 40, 30, self.x8, self.y8)
         pass
 
 def enter():
