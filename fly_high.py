@@ -1,7 +1,7 @@
 from pico2d import *
 import Game_Framework
 import Title_state
-
+from pygame import mixer
 import random
 
 name = "Main_state"
@@ -46,7 +46,8 @@ class MY_JET:
     move_y = 0
     x = 400
     y = 300
-
+    mixer.init()
+    mixer.music.load('resource/Sound/Track50.mp3')
     def __init__(self):
         self.image = load_image('resource/Aft_resource/jet21.png')
         self.frame = 0
@@ -314,6 +315,8 @@ def handle_events():
             elif event.key == SDLK_z:
                 bullet = MY_BULLET()
                 my_bullets.append(bullet)
+
+                mixer.music.play()
             elif event.key == SDLK_a:
                 MY_FRIEND.sign += 1
 

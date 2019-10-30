@@ -2,11 +2,15 @@ import Game_Framework
 import Start_state
 import fly_high
 from pico2d import *
+from pygame import mixer
 
 
 name = "TitleState"
 image = None
 
+mixer.init()
+mixer.music.load('resource/Sound/TitleSound.mp3')
+mixer.music.play()
 
 def enter():
     global image
@@ -25,8 +29,10 @@ def handle_events():
             Game_Framework.quit()
         else:
             if(event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
+                mixer.music.stop()
                 Game_Framework.change_state(Start_state)
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
+                mixer.music.stop()
                 Game_Framework.change_state(fly_high)
 
 
@@ -42,6 +48,7 @@ def draw():
 
 
 def update():
+
     pass
 
 
