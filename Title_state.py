@@ -10,12 +10,11 @@ image = None
 
 mixer.init()
 mixer.music.load('resource/Sound/TitleSound.mp3')
-mixer.music.play()
 
 def enter():
     global image
     image = load_image('resource/Aft_resource/Title_state.png')
-
+    mixer.music.play()
 
 def exit():
     global image
@@ -34,6 +33,7 @@ def handle_events():
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
                 mixer.music.stop()
                 Game_Framework.change_state(fly_high)
+
 
 
 def draw():

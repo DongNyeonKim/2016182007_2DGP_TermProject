@@ -7,22 +7,24 @@ name = "StartState"
 image = None
 logo_time = 0.0
 
-# mixer.init()
-# mixer.music.load('resource/Sound/TitleSound.mp3')
-# mixer.music.play()
+mixer.init()
+mixer.music.load('resource/Sound/TitleSound.mp3')
+
 def enter():
     global image
     image = load_image('resource/Aft_resource/kpu_credit.png')
+    mixer.music.play()
 
 def exit():
     global image
+    mixer.music.stop()
     del(image)
 
 
 def update():
     global logo_time
 
-    if(logo_time>10.0):
+    if(logo_time>3.0):
         logo_time = 0
         #game_framework.quit()
         Game_Framework.change_state(Title_state)
