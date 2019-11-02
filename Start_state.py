@@ -5,14 +5,16 @@ from pygame import mixer
 
 name = "StartState"
 image = None
+Name = None
 logo_time = 0.0
 
 mixer.init()
 mixer.music.load('resource/Sound/TitleSound.mp3')
 
 def enter():
-    global image
-    image = load_image('resource/Aft_resource/kpu_credit.png')
+    global image, Name
+    image = load_image('resource/Aft_resource/Title_state.png')
+    Name = load_image('resource/Aft_resource/TitleName1.png')
     mixer.music.play()
 
 def exit():
@@ -24,7 +26,7 @@ def exit():
 def update():
     global logo_time
 
-    if(logo_time>1.0):
+    if(logo_time>5.0):
         logo_time = 0
         #game_framework.quit()
         Game_Framework.change_state(Title_state)
@@ -36,6 +38,7 @@ def draw():
     global image
     clear_canvas()
     image.draw(400,300)
+    Name.draw(660,100)
     update_canvas()
 
 

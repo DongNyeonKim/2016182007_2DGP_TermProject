@@ -7,15 +7,16 @@ from pygame import mixer
 
 name = "TitleState"
 image = None
-image1= None
 Frame = 4
+
 mixer.init()
 mixer.music.load('resource/Sound/TitleSound.mp3')
 
 def enter():
-    global image, image1, Frame
-    image = load_image('resource/Aft_resource/Title_state.png')
-    image1 = load_image('resource/Aft_resource/Titlestate_ani.png')
+    global image, Frame
+    Frame =4
+
+    image = load_image('resource/Aft_resource/Titlestate_ani.png')
     mixer.music.play()
 
 def exit():
@@ -40,9 +41,7 @@ def handle_events():
 
 def draw():
     clear_canvas()
-    image.draw(400 , 300)
-    #image1.clip_draw(0, 600*Frame, 800, 600*(Frame+1), 400, 300)
-    image1.clip_draw(0,600*Frame,800,600,400,300)
+    image.clip_draw(0,600*Frame,800,600,400,300)
     update_canvas()
 
 
