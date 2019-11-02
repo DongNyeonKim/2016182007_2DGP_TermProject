@@ -1,6 +1,7 @@
 from pico2d import *
 import Game_Framework
 import Title_state
+import Gameover_state
 from pygame import mixer
 import random
 
@@ -319,6 +320,8 @@ def handle_events():
                 #mixer.music.play()
             elif event.key == SDLK_a:
                 MY_FRIEND.sign += 1
+            elif event.key == SDLK_s:
+                Game_Framework.change_state(Gameover_state)
 
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_UP:
@@ -332,6 +335,8 @@ def handle_events():
             elif event.key == SDLK_z:
                 pass
             elif event.key == SDLK_a:
+                pass
+            elif event.key == SDLK_s:
                 pass
 
 
