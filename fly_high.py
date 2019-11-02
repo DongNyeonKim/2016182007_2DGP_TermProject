@@ -99,13 +99,13 @@ class MY_BULLET:
             self.sign = 1
 
         if self.y != 610:
-            self.y += 0.5
+            self.y += 1
         if self.L_y != 610:
-            self.L_x -= 0.5
-            self.L_y += 0.5
+            self.L_x -= 1
+            self.L_y += 1
         if self.R_y != 610:
-            self.R_x += 0.5
-            self.R_y += 0.5
+            self.R_x += 1
+            self.R_y += 1
 
         pass
 
@@ -202,68 +202,69 @@ class FRIEND_BULLET:
         pass
 
 class ENEMY_JET:
+    x1, y1 = random.randint(100, 700), random.randint(600, 800)
 
     def __init__(self):
         self.image1 = load_image('resource/Aft_resource/EnemyJet1.png')
-        self.image2 = load_image('resource/Aft_resource/EnemyJet2.png')
-        self.image3 = load_image('resource/Aft_resource/EnemyJet3.png')
+        # self.image2 = load_image('resource/Aft_resource/EnemyJet2.png')
+        # self.image3 = load_image('resource/Aft_resource/EnemyJet3.png')
+        #
+        # self.image4 = load_image('resource/Aft_resource/EnemyJet1.png')
+        # self.image5 = load_image('resource/Aft_resource/EnemyJet2.png')
+        # self.image6 = load_image('resource/Aft_resource/EnemyJet3.png')
+        #
+        # self.image7 = load_image('resource/Aft_resource/EnemyJet4.png')
+        # self.image8 = load_image('resource/Aft_resource/EnemyJet4.png')
 
-        self.image4 = load_image('resource/Aft_resource/EnemyJet1.png')
-        self.image5 = load_image('resource/Aft_resource/EnemyJet2.png')
-        self.image6 = load_image('resource/Aft_resource/EnemyJet3.png')
-
-        self.image7 = load_image('resource/Aft_resource/EnemyJet4.png')
-        self.image8 = load_image('resource/Aft_resource/EnemyJet4.png')
-
-        self.x1, self.y1 = random.randint(100, 700), random.randint(600, 800)
-        self.x2, self.y2 = random.randint(100, 700), random.randint(600, 800)
-        self.x3, self.y3 = random.randint(100, 700), random.randint(600, 800)
-
-        self.x4, self.y4 = random.randint(100, 700), random.randint(900, 1000)
-        self.x5, self.y5 = random.randint(100, 700), random.randint(900, 1000)
-        self.x6, self.y6 = random.randint(100, 700), random.randint(900, 1000)
-        self.x7, self.y7 = random.randint(-100,0), random.randint(300,600)
-        self.x8, self.y8 = random.randint(800, 900), random.randint(300, 600)
+        #self.x1, self.y1 = random.randint(100, 700), random.randint(600, 800)
+        # self.x2, self.y2 = random.randint(100, 700), random.randint(600, 800)
+        # self.x3, self.y3 = random.randint(100, 700), random.randint(600, 800)
+        #
+        # self.x4, self.y4 = random.randint(100, 700), random.randint(900, 1000)
+        # self.x5, self.y5 = random.randint(100, 700), random.randint(900, 1000)
+        # self.x6, self.y6 = random.randint(100, 700), random.randint(900, 1000)
+        # self.x7, self.y7 = random.randint(-100,0), random.randint(300,600)
+        # self.x8, self.y8 = random.randint(800, 900), random.randint(300, 600)
         pass
 
     def update(self):
         self.y1 -= 0.5
-        self.y2 -= 0.5
-        self.y3 -= 0.5
-        self.y4 -= 0.5
-        self.y5 -= 0.5
-        self.y6 -= 0.5
-
-        self.x7 += 0.5
-        self.x8 -= 0.5
+        # self.y2 -= 0.5
+        # self.y3 -= 0.5
+        # self.y4 -= 0.5
+        # self.y5 -= 0.5
+        # self.y6 -= 0.5
+        #
+        # self.x7 += 0.5
+        # self.x8 -= 0.5
 
         if self.y1 ==-100:
             self.x1, self.y1 = random.randint(100, 700), random.randint(600, 700)
-        if self.y2 ==-100:
-            self.x2, self.y2 = random.randint(100, 700), random.randint(600, 700)
-        if self.y3 == -100:
-            self.x3, self.y3 = random.randint(100, 700), random.randint(600, 700)
-        if self.y4 == -100:
-            self.x4, self.y4 = random.randint(100, 700), random.randint(900, 1000)
-        if self.y5 == -100:
-            self.x5, self.y5 = random.randint(100, 700), random.randint(900, 1000)
-        if self.y6 == -100:
-            self.x6, self.y6 = random.randint(100, 700), random.randint(900, 1000)
-        if self.x7 == 900:
-            self.x7, self.y7 = random.randint(-100, 0), random.randint(300, 600)
-        if self.x8 == -100:
-            self.x8, self.y8 = random.randint(800, 900), random.randint(300, 600)
+        # if self.y2 ==-100:
+        #     self.x2, self.y2 = random.randint(100, 700), random.randint(600, 700)
+        # if self.y3 == -100:
+        #     self.x3, self.y3 = random.randint(100, 700), random.randint(600, 700)
+        # if self.y4 == -100:
+        #     self.x4, self.y4 = random.randint(100, 700), random.randint(900, 1000)
+        # if self.y5 == -100:
+        #     self.x5, self.y5 = random.randint(100, 700), random.randint(900, 1000)
+        # if self.y6 == -100:
+        #     self.x6, self.y6 = random.randint(100, 700), random.randint(900, 1000)
+        # if self.x7 == 900:
+        #     self.x7, self.y7 = random.randint(-100, 0), random.randint(300, 600)
+        # if self.x8 == -100:
+        #     self.x8, self.y8 = random.randint(800, 900), random.randint(300, 600)
         pass
 
     def draw(self):
         self.image1.clip_draw(0, 0, 40, 80, self.x1, self.y1)
-        self.image2.clip_draw(0, 0, 40, 50, self.x2, self.y2)
-        self.image3.clip_draw(0, 0, 50, 50, self.x3, self.y3)
-        self.image4.clip_draw(0, 0, 40, 80, self.x4, self.y4)
-        self.image5.clip_draw(0, 0, 40, 50, self.x5, self.y5)
-        self.image6.clip_draw(0, 0, 50, 50, self.x6, self.y6)
-        self.image7.clip_draw(0, 0, 40, 30, self.x7, self.y7)
-        self.image8.clip_draw(0, 0, 40, 30, self.x8, self.y8)
+        # self.image2.clip_draw(0, 0, 40, 50, self.x2, self.y2)
+        # self.image3.clip_draw(0, 0, 50, 50, self.x3, self.y3)
+        # self.image4.clip_draw(0, 0, 40, 80, self.x4, self.y4)
+        # self.image5.clip_draw(0, 0, 40, 50, self.x5, self.y5)
+        # self.image6.clip_draw(0, 0, 50, 50, self.x6, self.y6)
+        # self.image7.clip_draw(0, 0, 40, 30, self.x7, self.y7)
+        # self.image8.clip_draw(0, 0, 40, 30, self.x8, self.y8)
         pass
 
 def enter():
@@ -341,13 +342,16 @@ def handle_events():
 
 
 def update():
-    global Timer
+    global Timer, enemy_jet
     background.update()
     my_jet.update()
     for bullet in my_bullets:
         bullet.update()
         if bullet.y > 600:
             my_bullets.remove(bullet)
+        if bullet.y == enemy_jet.y1:
+            enemy_jet.x1 = 400
+            enemy_jet.y1 = 300
     my_friend.update()
 
     Timer += 1
