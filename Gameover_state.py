@@ -7,14 +7,16 @@ from pygame import mixer
 
 name = "GameOverState"
 image = None
+text = None
 Frame = 4
 
 mixer.init()
 mixer.music.load('resource/Sound/TitleSound.mp3')
 
 def enter():
-    global image
+    global image, text
     image = load_image('resource/Aft_resource/GameoverState.png')
+    text = load_image('resource/Aft_resource/gameover.png')
     mixer.music.play()
 
 def exit():
@@ -36,6 +38,7 @@ def handle_events():
 def draw():
     clear_canvas()
     image.draw(400,300)
+    text.draw(400,500)
     update_canvas()
 
 
@@ -45,10 +48,6 @@ def draw():
 
 
 def update():
-    global Frame
-    if Frame != 0:
-        Frame = Frame-1
-        delay(0.5)
     pass
 
 
