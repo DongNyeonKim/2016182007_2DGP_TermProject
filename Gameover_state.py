@@ -8,20 +8,24 @@ from pygame import mixer
 name = "GameOverState"
 image = None
 text = None
-Frame = 4
+ani =  None
+Frame = 0
 
 mixer.init()
 mixer.music.load('resource/Sound/TitleSound.mp3')
 
 def enter():
-    global image, text
+    global image, text, ani
     image = load_image('resource/Aft_resource/GameoverState.png')
     text = load_image('resource/Aft_resource/gameover.png')
+    ani = load_image('resource/Aft_resource/Gameout_ani.png')
     mixer.music.play()
 
 def exit():
-    global image
+    global image, text, ani
     del(image)
+    del(text)
+    del(ani)
 
 
 def handle_events():
@@ -39,6 +43,8 @@ def draw():
     clear_canvas()
     image.draw(400,300)
     text.draw(400,500)
+    if Frame !=3:
+        ani.clip_draw(0, 600 * Frame, 800, 600, 400, 300)
     update_canvas()
 
 
@@ -48,6 +54,11 @@ def draw():
 
 
 def update():
+    global Frame
+    if Frame != 3:
+        Frame = Frame+1
+        delay(0.5)
+
     pass
 
 
