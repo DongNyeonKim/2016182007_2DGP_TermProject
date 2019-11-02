@@ -316,7 +316,7 @@ def handle_events():
                 bullet = MY_BULLET()
                 my_bullets.append(bullet)
 
-                mixer.music.play()
+                #mixer.music.play()
             elif event.key == SDLK_a:
                 MY_FRIEND.sign += 1
 

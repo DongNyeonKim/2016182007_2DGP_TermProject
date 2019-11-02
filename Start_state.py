@@ -24,7 +24,7 @@ def exit():
 def update():
     global logo_time
 
-    if(logo_time>3.0):
+    if(logo_time>1.0):
         logo_time = 0
         #game_framework.quit()
         Game_Framework.change_state(Title_state)
