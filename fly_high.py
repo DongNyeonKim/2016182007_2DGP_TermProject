@@ -70,21 +70,21 @@ class MY_JET:
 
 class MY_BULLET:
     image = None
-    image_left =None
-    image_right =None
+    # image_left =None
+    # image_right =None
     def __init__(self):
         if MY_BULLET.image == None:
             MY_BULLET.image = load_image('resource/Aft_resource/Fire_Myjet.png')
-        if MY_BULLET.image_left == None:
-            MY_BULLET.image_left = load_image('resource/Aft_resource/my_bullet_left.png')
-        if MY_BULLET.image_right == None:
-            MY_BULLET.image_right = load_image('resource/Aft_resource/my_bullet_right.png')
+        # if MY_BULLET.image_left == None:
+        #     MY_BULLET.image_left = load_image('resource/Aft_resource/my_bullet_left.png')
+        # if MY_BULLET.image_right == None:
+        #     MY_BULLET.image_right = load_image('resource/Aft_resource/my_bullet_right.png')
         self.x = my_jet.x
         self.y = my_jet.y
-        self.L_x = my_jet.x
-        self.L_y = my_jet.y
-        self.R_x = my_jet.x
-        self.R_y = my_jet.y
+        # self.L_x = my_jet.x
+        # self.L_y = my_jet.y
+        # self.R_x = my_jet.x
+        # self.R_y = my_jet.y
         self.sign = 0
         pass
 
@@ -92,27 +92,27 @@ class MY_BULLET:
         if self.sign == 0:
             self.x = my_jet.x
             self.y = my_jet.y + 35
-            self.L_x = my_jet.x
-            self.L_y = my_jet.y+30
-            self.R_x = my_jet.x
-            self.R_y = my_jet.y+30
+            # self.L_x = my_jet.x
+            # self.L_y = my_jet.y+30
+            # self.R_x = my_jet.x
+            # self.R_y = my_jet.y+30
             self.sign = 1
 
         if self.y != 610:
             self.y += 1
-        if self.L_y != 610:
-            self.L_x -= 1
-            self.L_y += 1
-        if self.R_y != 610:
-            self.R_x += 1
-            self.R_y += 1
+        # if self.L_y != 610:
+        #     self.L_x -= 1
+        #     self.L_y += 1
+        # if self.R_y != 610:
+        #     self.R_x += 1
+        #     self.R_y += 1
 
         pass
 
     def draw(self):
         self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
-        self.image_left.clip_draw(0, 0, 14, 12, self.L_x, self.L_y)
-        self.image_right.clip_draw(0, 0, 14, 12, self.R_x, self.R_y)
+        # self.image_left.clip_draw(0, 0, 14, 12, self.L_x, self.L_y)
+        # self.image_right.clip_draw(0, 0, 14, 12, self.R_x, self.R_y)
         pass
 
 
@@ -349,9 +349,10 @@ def update():
         bullet.update()
         if bullet.y > 600:
             my_bullets.remove(bullet)
-        if bullet.y == enemy_jet.y1:
+        if enemy_jet.y1 + 10 >= bullet.y >= enemy_jet.y1 - 10 and enemy_jet.x1 + 10 >= bullet.x >= enemy_jet.x1 - 10:
             enemy_jet.x1 = 400
             enemy_jet.y1 = 300
+            my_bullets.remove(bullet)
     my_friend.update()
 
     Timer += 1
