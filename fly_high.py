@@ -7,7 +7,8 @@ import random
 
 name = "Main_state"
 
-background = None
+#없어도 되나? ㅅㅂ
+#background = None
 my_jet = None
 my_bullet = None
 my_friend = None
@@ -15,30 +16,32 @@ friend_bullets = None
 enemy_jet = None
 Timer = 0
 
+#배경화면
+    #background1, background2 가 y축으로 움직이면서 배경을 이어 보이게 만듦
 class BACKGROUND:
     def __init__(self):
-        self.image = load_image('resource/Aft_resource/background.png')
-        self.image1 = load_image('resource/Aft_resource/background.png')
+        self.background1 = load_image('resource/Aft_resource/background.png')
+        self.background2 = load_image('resource/Aft_resource/background.png')
         self.background_x, self.background_y = 0, 0
-        self.move_y, self.move_y1 = 0, 0
+        self.background1_move_y, self.background2_move_y = 0, 0
         self.a, self.b = 900, 300
 
     def update(self):
-        self.move_y -= 1
-        self.move_y1 -= 1
+        self.background1_move_y -= 1
+        self.background2_move_y -= 1
 
-        if self.a + self.move_y == -300:
+        if self.a + self.background1_move_y == -300:
             self.a = 900
-            self.move_y = 0
+            self.background1_move_y = 0
 
-        if self.b + self.move_y1 == -300:
+        if self.b + self.background2_move_y == -300:
             self.b = 900
-            self.move_y1 = 0
+            self.background2_move_y = 0
         pass
 
     def draw(self):
-        self.image.clip_draw(0, 0, 800, 600, 800 // 2, self.a + self.move_y)
-        self.image1.clip_draw(0, 0, 800, 600, 800 // 2, self.b + self.move_y1)
+        self.background1.clip_draw(0, 0, 800, 600, 800 // 2, self.a + self.background1_move_y)
+        self.background2.clip_draw(0, 0, 800, 600, 800 // 2, self.b + self.background2_move_y)
         pass
 
 
