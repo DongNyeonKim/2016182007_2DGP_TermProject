@@ -7,17 +7,18 @@ import random
 
 name = "Main_state"
 
-#없어도 되나? ㅅㅂ
-#background = None
+# 없어도 되나? ㅅㅂ
+background = None
 my_jet = None
-my_bullet = None
+my_bullets = None
 my_friend = None
 friend_bullets = None
 enemy_jet = None
 Timer = 0
 
-#배경화면
-    #background1, background2 가 y축으로 움직이면서 배경을 이어 보이게 만듦
+
+# 배경화면
+# background1, background2 가 y축으로 움직이면서 배경을 이어 보이게 만듦
 class BACKGROUND:
     def __init__(self):
         self.background1 = load_image('resource/Aft_resource/background.png')
@@ -50,8 +51,7 @@ class MY_JET:
     move_y = 0
     x = 400
     y = 300
-    mixer.init()
-    mixer.music.load('resource/Sound/Track50.mp3')
+
     def __init__(self):
         self.image = load_image('resource/Aft_resource/jet21.png')
         self.frame = 0
@@ -73,6 +73,7 @@ class MY_JET:
 
 class MY_BULLET:
     image = None
+
     # image_left =None
     # image_right =None
     def __init__(self):
@@ -125,6 +126,7 @@ class MY_FRIEND:
     A_y = -100
     B_x = 900
     B_y = 0
+
     def __init__(self):
         self.image = load_image('resource/Aft_resource/My_Friend.png')
         self.image1 = load_image('resource/Aft_resource/My_Friend.png')
@@ -136,21 +138,21 @@ class MY_FRIEND:
 
     def update(self):
         if self.sign % 2 == 1:
-            if self.A_x >= my_jet.x-80:
+            if self.A_x >= my_jet.x - 80:
                 self.A_x -= 0.5
-            elif self.A_x < my_jet.x-80:
+            elif self.A_x < my_jet.x - 80:
                 self.A_x += 0.5
-            if self.A_y >= my_jet.y+70:
+            if self.A_y >= my_jet.y + 70:
                 self.A_y -= 0.5
-            elif self.A_y < my_jet.y+70:
+            elif self.A_y < my_jet.y + 70:
                 self.A_y += 0.5
-            if self.B_x >= my_jet.x+80:
+            if self.B_x >= my_jet.x + 80:
                 self.B_x -= 0.5
-            elif self.B_x < my_jet.x+80:
+            elif self.B_x < my_jet.x + 80:
                 self.B_x += 0.5
-            if self.B_y >= my_jet.y+70:
+            if self.B_y >= my_jet.y + 70:
                 self.B_y -= 0.5
-            elif self.B_y < my_jet.y+70:
+            elif self.B_y < my_jet.y + 70:
                 self.B_y += 0.5
             pass
         elif self.sign % 2 == 0:
@@ -169,9 +171,11 @@ class MY_FRIEND:
         self.image1.clip_draw(0, 0, 140, 120, self.B_x, self.B_y)
         pass
 
+
 class FRIEND_BULLET:
     image = None
     timer = 0
+
     def __init__(self):
         if FRIEND_BULLET.image == None:
             FRIEND_BULLET.image = load_image('resource/Aft_resource/Fire_MyFriend.png')
@@ -179,15 +183,15 @@ class FRIEND_BULLET:
         self.a_y = my_friend.A_y
         self.b_x = my_friend.B_x
         self.b_y = my_friend.B_y
-        self.sign=0
+        self.sign = 0
         pass
 
     def update(self):
         if self.sign == 0:
             self.a_x = my_friend.A_x
-            self.a_y = my_friend.A_y+60
+            self.a_y = my_friend.A_y + 60
             self.b_x = my_friend.B_x
-            self.b_y = my_friend.B_y+60
+            self.b_y = my_friend.B_y + 60
             self.sign = 1
 
         if self.a_y != 650:
@@ -204,6 +208,7 @@ class FRIEND_BULLET:
         self.image.clip_draw(0, 0, 20, 30, self.b_x, self.b_y)
         pass
 
+
 class ENEMY_JET:
     x1, y1 = random.randint(100, 700), random.randint(600, 800)
 
@@ -219,7 +224,7 @@ class ENEMY_JET:
         # self.image7 = load_image('resource/Aft_resource/EnemyJet4.png')
         # self.image8 = load_image('resource/Aft_resource/EnemyJet4.png')
 
-        #self.x1, self.y1 = random.randint(100, 700), random.randint(600, 800)
+        # self.x1, self.y1 = random.randint(100, 700), random.randint(600, 800)
         # self.x2, self.y2 = random.randint(100, 700), random.randint(600, 800)
         # self.x3, self.y3 = random.randint(100, 700), random.randint(600, 800)
         #
@@ -241,7 +246,7 @@ class ENEMY_JET:
         # self.x7 += 0.5
         # self.x8 -= 0.5
 
-        if self.y1 ==-100:
+        if self.y1 == -100:
             self.x1, self.y1 = random.randint(100, 700), random.randint(600, 700)
         # if self.y2 ==-100:
         #     self.x2, self.y2 = random.randint(100, 700), random.randint(600, 700)
@@ -270,6 +275,7 @@ class ENEMY_JET:
         # self.image8.clip_draw(0, 0, 40, 30, self.x8, self.y8)
         pass
 
+
 def enter():
     global my_jet, background, my_bullets, my_friend, friend_bullets, enemy_jet, Timer
     my_jet = MY_JET()
@@ -277,18 +283,19 @@ def enter():
     my_bullets = []
 
     my_friend = MY_FRIEND()
-    friend_bullets =[]
+    friend_bullets = []
     Timer = 0
     enemy_jet = ENEMY_JET()
 
+
 def exit():
     global my_jet, background, my_bullets, my_friend, enemy_jet, friend_bullets
-    del (my_jet)
-    del (background)
-    del (my_bullets)
-    del (my_friend)
-    del (enemy_jet)
-    del (friend_bullets)
+    del my_jet
+    del background
+    del my_bullets
+    del my_friend
+    del enemy_jet
+    del friend_bullets
 
 
 def pause():
@@ -321,7 +328,7 @@ def handle_events():
                 bullet = MY_BULLET()
                 my_bullets.append(bullet)
 
-                #mixer.music.play()
+                # mixer.music.play()
             elif event.key == SDLK_a:
                 MY_FRIEND.sign += 1
             elif event.key == SDLK_s:
@@ -345,7 +352,8 @@ def handle_events():
 
 
 def update():
-    global Timer, enemy_jet
+    # global Timer, enemy_jet
+    global Timer
     background.update()
     my_jet.update()
     for bullet in my_bullets:
@@ -366,6 +374,10 @@ def update():
     for sbullet in friend_bullets:
         sbullet.update()
         if sbullet.a_y > 640:
+            friend_bullets.remove(sbullet)
+        if enemy_jet.y1 + 10 >= sbullet.a_y >= enemy_jet.y1 - 10 and enemy_jet.x1 + 10 >= sbullet.a_x >= enemy_jet.x1 - 10 or enemy_jet.y1 + 10 >= sbullet.b_y >= enemy_jet.y1 - 10 and enemy_jet.x1 + 10 >= sbullet.b_x >= enemy_jet.x1 - 10:
+            enemy_jet.x1 = 400
+            enemy_jet.y1 = 300
             friend_bullets.remove(sbullet)
     enemy_jet.update()
     pass
