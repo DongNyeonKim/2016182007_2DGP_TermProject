@@ -12,8 +12,9 @@ background = None
 my_jet = None
 my_bullets = None
 my_friend = None
-friend_bullets = None
+my_friend_bullets = None
 enemy_jet = None
+enemy_jets = None
 Timer = 0
 
 
@@ -46,38 +47,38 @@ class BACKGROUND:
         pass
 
 
+# 내 전투기(케릭터)
 class MY_JET:
-    move_x = 0
-    move_y = 0
-    x = 400
-    y = 300
-
     def __init__(self):
         self.image = load_image('resource/Aft_resource/jet21.png')
         self.frame = 0
+        self.x, self.y = 400, 300
+        self.move_x, self.move_y = 0, 0
         pass
 
     def update(self):
         self.frame = (self.frame + 1) % 6
+        # 이동
         self.x += self.move_x
         self.y += self.move_y
+        # 화면 충돌처리
         self.x = clamp(25, self.x, 800 - 25)
         self.y = clamp(25, self.y, 600 - 45)
-        print(self.x, self.y)
+        #print(self.x, self.y)
         pass
 
     def draw(self):
         self.image.clip_draw(self.frame * 40, 0, 40, 80, self.x, self.y)
         pass
 
-
+#내 전투기 총알
 class MY_BULLET:
     image = None
 
     # image_left =None
     # image_right =None
     def __init__(self):
-        if MY_BULLET.image == None:
+        if MY_BULLET.image is None:
             MY_BULLET.image = load_image('resource/Aft_resource/Fire_Myjet.png')
         # if MY_BULLET.image_left == None:
         #     MY_BULLET.image_left = load_image('resource/Aft_resource/my_bullet_left.png')
@@ -120,23 +121,20 @@ class MY_BULLET:
         pass
 
 
+# 내 아군 전투기 A(왼쪽) B(오른쪽)
 class MY_FRIEND:
-    sign = 0
-    A_x = -100
-    A_y = -100
-    B_x = 900
-    B_y = 0
-
     def __init__(self):
         self.image = load_image('resource/Aft_resource/My_Friend.png')
         self.image1 = load_image('resource/Aft_resource/My_Friend.png')
-        # self.A_x = -100
-        # self.A_y = -100
-        # self.B_x = +900
-        # self.B_y = -100
+        self.A_x = -100
+        self.A_y = -100
+        self.B_x = +900
+        self.B_y = -100
+        self.sign = 0
         pass
 
     def update(self):
+        #sign은 아군 호출 여부
         if self.sign % 2 == 1:
             if self.A_x >= my_jet.x - 80:
                 self.A_x -= 0.5
@@ -171,14 +169,12 @@ class MY_FRIEND:
         self.image1.clip_draw(0, 0, 140, 120, self.B_x, self.B_y)
         pass
 
-
-class FRIEND_BULLET:
+#아군 전투기 총알
+class MY_FRIEND_BULLET:
     image = None
-    timer = 0
-
     def __init__(self):
-        if FRIEND_BULLET.image == None:
-            FRIEND_BULLET.image = load_image('resource/Aft_resource/Fire_MyFriend.png')
+        if MY_FRIEND_BULLET.image is None:
+            MY_FRIEND_BULLET.image = load_image('resource/Aft_resource/Fire_MyFriend.png')
         self.a_x = my_friend.A_x
         self.a_y = my_friend.A_y
         self.b_x = my_friend.B_x
@@ -200,7 +196,6 @@ class FRIEND_BULLET:
         if self.b_y != 650:
             self.b_y += 1
 
-        self.timer += 0.5
         pass
 
     def draw(self):
@@ -210,7 +205,7 @@ class FRIEND_BULLET:
 
 
 class ENEMY_JET:
-    x1, y1 = random.randint(100, 700), random.randint(600, 800)
+    #x1, y1 = random.randint(100, 700), random.randint(600, 800)
 
     def __init__(self):
         self.image1 = load_image('resource/Aft_resource/EnemyJet1.png')
@@ -224,7 +219,7 @@ class ENEMY_JET:
         # self.image7 = load_image('resource/Aft_resource/EnemyJet4.png')
         # self.image8 = load_image('resource/Aft_resource/EnemyJet4.png')
 
-        # self.x1, self.y1 = random.randint(100, 700), random.randint(600, 800)
+        self.x1, self.y1 = random.randint(100, 700), random.randint(600, 800)
         # self.x2, self.y2 = random.randint(100, 700), random.randint(600, 800)
         # self.x3, self.y3 = random.randint(100, 700), random.randint(600, 800)
         #
@@ -277,25 +272,26 @@ class ENEMY_JET:
 
 
 def enter():
-    global my_jet, background, my_bullets, my_friend, friend_bullets, enemy_jet, Timer
-    my_jet = MY_JET()
+    global  background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jet, enemy_jets, Timer
     background = BACKGROUND()
+
+    my_jet = MY_JET()
     my_bullets = []
 
     my_friend = MY_FRIEND()
-    friend_bullets = []
-    Timer = 0
-    enemy_jet = ENEMY_JET()
+    my_friend_bullets = []
 
+    enemy_jet = ENEMY_JET()
+    enemy_jets = [ENEMY_JET() for i in range(3)]
 
 def exit():
-    global my_jet, background, my_bullets, my_friend, enemy_jet, friend_bullets
+    global my_jet, background, my_bullets, my_friend, enemy_jet, my_friend_bullets
     del my_jet
     del background
     del my_bullets
     del my_friend
     del enemy_jet
-    del friend_bullets
+    del my_friend_bullets
 
 
 def pause():
@@ -317,32 +313,32 @@ def handle_events():
             if event.key == SDLK_ESCAPE:
                 Game_Framework.change_state(Title_state)
             elif event.key == SDLK_UP:
-                MY_JET.move_y += 1
+                my_jet.move_y += 1
             elif event.key == SDLK_DOWN:
-                MY_JET.move_y -= 1
+                my_jet.move_y -= 1
             elif event.key == SDLK_RIGHT:
-                MY_JET.move_x += 1
+                my_jet.move_x += 1
             elif event.key == SDLK_LEFT:
-                MY_JET.move_x -= 1
+                my_jet.move_x -= 1
             elif event.key == SDLK_z:
                 bullet = MY_BULLET()
                 my_bullets.append(bullet)
 
                 # mixer.music.play()
             elif event.key == SDLK_a:
-                MY_FRIEND.sign += 1
+                my_friend.sign += 1
             elif event.key == SDLK_s:
                 Game_Framework.change_state(Gameover_state)
 
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_UP:
-                MY_JET.move_y -= 1
+                my_jet.move_y -= 1
             elif event.key == SDLK_DOWN:
-                MY_JET.move_y += 1
+                my_jet.move_y += 1
             elif event.key == SDLK_RIGHT:
-                MY_JET.move_x -= 1
+                my_jet.move_x -= 1
             elif event.key == SDLK_LEFT:
-                MY_JET.move_x += 1
+                my_jet.move_x += 1
             elif event.key == SDLK_z:
                 pass
             elif event.key == SDLK_a:
@@ -356,6 +352,7 @@ def update():
     global Timer
     background.update()
     my_jet.update()
+
     for bullet in my_bullets:
         bullet.update()
         if bullet.y > 600:
@@ -368,18 +365,20 @@ def update():
 
     Timer += 1
     if Timer % 100 == 0:
-        sbullet = FRIEND_BULLET()
-        friend_bullets.append(sbullet)
+        sbullet = MY_FRIEND_BULLET()
+        my_friend_bullets.append(sbullet)
 
-    for sbullet in friend_bullets:
+    for sbullet in my_friend_bullets:
         sbullet.update()
         if sbullet.a_y > 640:
-            friend_bullets.remove(sbullet)
+            my_friend_bullets.remove(sbullet)
         if enemy_jet.y1 + 10 >= sbullet.a_y >= enemy_jet.y1 - 10 and enemy_jet.x1 + 10 >= sbullet.a_x >= enemy_jet.x1 - 10 or enemy_jet.y1 + 10 >= sbullet.b_y >= enemy_jet.y1 - 10 and enemy_jet.x1 + 10 >= sbullet.b_x >= enemy_jet.x1 - 10:
             enemy_jet.x1 = 400
             enemy_jet.y1 = 300
-            friend_bullets.remove(sbullet)
-    enemy_jet.update()
+            my_friend_bullets.remove(sbullet)
+
+    for enemy in enemy_jets:
+        enemy.update()
     pass
 
 
@@ -390,7 +389,10 @@ def draw():
     for bullet in my_bullets:
         bullet.draw()
     my_friend.draw()
-    for sbullet in friend_bullets:
+    for sbullet in my_friend_bullets:
         sbullet.draw()
-    enemy_jet.draw()
+
+
+    for enemy in enemy_jets:
+        enemy.draw()
     update_canvas()
