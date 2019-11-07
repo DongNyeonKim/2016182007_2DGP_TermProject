@@ -281,7 +281,7 @@ def enter():
     my_friend = MY_FRIEND()
     my_friend_bullets = []
 
-    enemy_jet = ENEMY_JET()
+    #enemy_jet = ENEMY_JET()
     enemy_jets = [ENEMY_JET() for i in range(3)]
 
 def exit():
@@ -353,14 +353,26 @@ def update():
     background.update()
     my_jet.update()
 
+    # for bullet in my_bullets:
+    #     bullet.update()
+    #     if bullet.y > 600:
+    #         my_bullets.remove(bullet)
+    #     if enemy_jet.y1 + 10 >= bullet.y >= enemy_jet.y1 - 10 and enemy_jet.x1 + 10 >= bullet.x >= enemy_jet.x1 - 10:
+    #         enemy_jet.x1 = 400
+    #         enemy_jet.y1 = 300
+    #         my_bullets.remove(bullet)
+    # my_friend.update()
+
     for bullet in my_bullets:
         bullet.update()
         if bullet.y > 600:
             my_bullets.remove(bullet)
-        if enemy_jet.y1 + 10 >= bullet.y >= enemy_jet.y1 - 10 and enemy_jet.x1 + 10 >= bullet.x >= enemy_jet.x1 - 10:
-            enemy_jet.x1 = 400
-            enemy_jet.y1 = 300
-            my_bullets.remove(bullet)
+        for enemy in enemy_jets:
+            # enemy.update()
+            if enemy.y1 + 10 >= bullet.y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.x >= enemy.x1 - 10:
+                enemy.x1 = 400
+                enemy.y1 = 300
+                my_bullets.remove(bullet)
     my_friend.update()
 
     Timer += 1
@@ -368,14 +380,24 @@ def update():
         sbullet = MY_FRIEND_BULLET()
         my_friend_bullets.append(sbullet)
 
+    # for sbullet in my_friend_bullets:
+    #     sbullet.update()
+    #     if sbullet.a_y > 640:
+    #         my_friend_bullets.remove(sbullet)
+    #     if enemy_jet.y1 + 10 >= sbullet.a_y >= enemy_jet.y1 - 10 and enemy_jet.x1 + 10 >= sbullet.a_x >= enemy_jet.x1 - 10 or enemy_jet.y1 + 10 >= sbullet.b_y >= enemy_jet.y1 - 10 and enemy_jet.x1 + 10 >= sbullet.b_x >= enemy_jet.x1 - 10:
+    #         enemy_jet.x1 = 400
+    #         enemy_jet.y1 = 300
+    #         my_friend_bullets.remove(sbullet)
+
     for sbullet in my_friend_bullets:
         sbullet.update()
         if sbullet.a_y > 640:
             my_friend_bullets.remove(sbullet)
-        if enemy_jet.y1 + 10 >= sbullet.a_y >= enemy_jet.y1 - 10 and enemy_jet.x1 + 10 >= sbullet.a_x >= enemy_jet.x1 - 10 or enemy_jet.y1 + 10 >= sbullet.b_y >= enemy_jet.y1 - 10 and enemy_jet.x1 + 10 >= sbullet.b_x >= enemy_jet.x1 - 10:
-            enemy_jet.x1 = 400
-            enemy_jet.y1 = 300
-            my_friend_bullets.remove(sbullet)
+        for enemy in enemy_jets:
+            if enemy.y1 + 10 >= sbullet.a_y >= enemy.y1 - 10 and enemy.x1 + 10 >= sbullet.a_x >= enemy.x1 - 10 or enemy.y1 + 10 >= sbullet.b_y >= enemy.y1 - 10 and enemy.x1 + 10 >= sbullet.b_x >= enemy.x1 - 10:
+                enemy.x1 = 400
+                enemy.y1 = 300
+                my_friend_bullets.remove(sbullet)
 
     for enemy in enemy_jets:
         enemy.update()
