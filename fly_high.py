@@ -407,14 +407,15 @@ def update():
     for bullet in my_bullets:
         bullet.update()
         print(bullet.x, bullet.y)
+        # 적군과 충돌처리
+        for enemy in enemy_jets:
+            if enemy.y1 + 10 >= bullet.y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.x >= enemy.x1 - 10 or enemy.y1 + 10 >= bullet.L_y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.L_x >= enemy.x1 - 10 or enemy.y1 + 10 >= bullet.R_y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.R_x >= enemy.x1 - 10 :
+                enemy.explode_check = 1
+                my_bullets.remove(bullet)
         # 화면을 넘어갈 경우 삭제
         if bullet.y > 600 or bullet.L_y >600 or bullet.R_y > 600:
             my_bullets.remove(bullet)
-        # 적군과 충돌처리
-        for enemy in enemy_jets:
-            if enemy.y1 + 10 >= bullet.y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.x >= enemy.x1 - 10:
-                enemy.explode_check = 1
-                my_bullets.remove(bullet)
+
     my_friend.update()
 
     # 일정 시간마다 아군 총알 발사
