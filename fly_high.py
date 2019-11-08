@@ -301,7 +301,7 @@ def enter():
     my_friend_bullets = []
 
     #enemy_jet = ENEMY_JET()
-    enemy_jets = [ENEMY_JET() for i in range(3)]
+    enemy_jets = [ENEMY_JET() for i in range(10)]
 
 def exit():
     global my_jet, background, my_bullets, my_friend, enemy_jet, my_friend_bullets
@@ -375,14 +375,13 @@ def update():
 #내 총알의 충돌처리
     for bullet in my_bullets:
         bullet.update()
+        #화면을 넘어갈 경우 삭제
         if bullet.y > 600:
             my_bullets.remove(bullet)
+        #적군과 충돌처리
         for enemy in enemy_jets:
-            # enemy.update()
             if enemy.y1 + 10 >= bullet.y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.x >= enemy.x1 - 10:
                 enemy.explode_check = 1
-                # enemy.x1 = 400
-                # enemy.y1 = 300
                 my_bullets.remove(bullet)
     my_friend.update()
 
@@ -399,8 +398,7 @@ def update():
             my_friend_bullets.remove(sbullet)
         for enemy in enemy_jets:
             if enemy.y1 + 10 >= sbullet.a_y >= enemy.y1 - 10 and enemy.x1 + 10 >= sbullet.a_x >= enemy.x1 - 10 or enemy.y1 + 10 >= sbullet.b_y >= enemy.y1 - 10 and enemy.x1 + 10 >= sbullet.b_x >= enemy.x1 - 10:
-                enemy.x1 = 400
-                enemy.y1 = 300
+                enemy.explode_check = 1
                 my_friend_bullets.remove(sbullet)
 
 #적군 업데이트
