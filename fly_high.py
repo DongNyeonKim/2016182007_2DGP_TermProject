@@ -64,47 +64,66 @@ class MY_JET:
         # 화면 충돌처리
         self.x = clamp(25, self.x, 800 - 25)
         self.y = clamp(25, self.y, 600 - 45)
-        #print(self.x, self.y)
+        # print(self.x, self.y)
         pass
 
     def draw(self):
         self.image.clip_draw(self.frame * 40, 0, 40, 80, self.x, self.y)
         pass
 
-#내 전투기 총알
+
+# 내 전투기 총알
 class MY_BULLET:
     image = None
+    image_left = None
+    image_right = None
 
-    # image_left =None
-    # image_right =None
     def __init__(self):
         if MY_BULLET.image is None:
             MY_BULLET.image = load_image('resource/Aft_resource/Fire_Myjet.png')
-        # if MY_BULLET.image_left == None:
-        #     MY_BULLET.image_left = load_image('resource/Aft_resource/my_bullet_left.png')
-        # if MY_BULLET.image_right == None:
-        #     MY_BULLET.image_right = load_image('resource/Aft_resource/my_bullet_right.png')
+        if MY_BULLET.image_left is None:
+            MY_BULLET.image_left = load_image('resource/Aft_resource/my_bullet_left.png')
+        if MY_BULLET.image_right is None:
+            MY_BULLET.image_right = load_image('resource/Aft_resource/my_bullet_right.png')
+        self.bullet_dir = 0
+
         self.x = my_jet.x
         self.y = my_jet.y
-        # self.L_x = my_jet.x
-        # self.L_y = my_jet.y
-        # self.R_x = my_jet.x
-        # self.R_y = my_jet.y
+
+        self.L_x = my_jet.x
+        self.L_y = my_jet.y
+        self.R_x = my_jet.x
+        self.R_y = my_jet.y
         self.sign = 0
+
         pass
 
     def update(self):
         if self.sign == 0:
-            self.x = my_jet.x
-            self.y = my_jet.y + 35
-            # self.L_x = my_jet.x
-            # self.L_y = my_jet.y+30
-            # self.R_x = my_jet.x
-            # self.R_y = my_jet.y+30
+            if self.bullet_dir == 1:
+                self.L_x = my_jet.x
+                self.L_y = my_jet.y + 30
+                self.R_x = my_jet.x
+                self.R_y = my_jet.y + 30
+                self.x, self.y = -10,-10
+            elif self.bullet_dir == 0:
+                self.x = my_jet.x
+                self.y = my_jet.y + 35
+
             self.sign = 1
 
-        if self.y != 610:
+        if self.bullet_dir == 1:
+            if self.L_y != 610:
+                self.L_x -= 1
+                self.L_y += 1
+            if self.R_y != 610:
+                self.R_x += 1
+                self.R_y += 1
+        elif self.bullet_dir == 0 and self.y != 610:
             self.y += 1
+
+        # if self.bullet_dir == 1:
+        #     self.bullet_dir = 0
         # if self.L_y != 610:
         #     self.L_x -= 1
         #     self.L_y += 1
@@ -115,9 +134,12 @@ class MY_BULLET:
         pass
 
     def draw(self):
+        if self.bullet_dir == 1:
+            self.image_left.clip_draw(0, 0, 14, 12, self.L_x, self.L_y)
+            self.image_right.clip_draw(0, 0, 14, 12, self.R_x, self.R_y)
+        else:
+            self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
         self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
-        # self.image_left.clip_draw(0, 0, 14, 12, self.L_x, self.L_y)
-        # self.image_right.clip_draw(0, 0, 14, 12, self.R_x, self.R_y)
         pass
 
 
@@ -134,7 +156,7 @@ class MY_FRIEND:
         pass
 
     def update(self):
-        #sign은 아군 호출 여부
+        # sign은 아군 호출 여부
         if self.sign % 2 == 1:
             if self.A_x >= my_jet.x - 80:
                 self.A_x -= 0.5
@@ -169,9 +191,11 @@ class MY_FRIEND:
         self.image1.clip_draw(0, 0, 140, 120, self.B_x, self.B_y)
         pass
 
-#아군 전투기 총알
+
+# 아군 전투기 총알
 class MY_FRIEND_BULLET:
     image = None
+
     def __init__(self):
         if MY_FRIEND_BULLET.image is None:
             MY_FRIEND_BULLET.image = load_image('resource/Aft_resource/Fire_MyFriend.png')
@@ -235,7 +259,7 @@ class ENEMY_JET:
         pass
 
     def update(self):
-        #적이 죽으면 explode_check=1 이 되고 폭발 애니메이션 실행 후 초기화 한 뒤 다시 생성
+        # 적이 죽으면 explode_check=1 이 되고 폭발 애니메이션 실행 후 초기화 한 뒤 다시 생성
         if self.explode_check == 1:
             if Timer % 100 == 0:
                 self.explode_frame += 1
@@ -243,7 +267,7 @@ class ENEMY_JET:
                 self.explode_check = 0
                 self.explode_frame = 0
                 self.x1, self.y1 = random.randint(100, 700), random.randint(600, 800)
-        #살아 있는 경우 계속 앞으로 전진
+        # 살아 있는 경우 계속 앞으로 전진
         else:
             self.y1 -= 0.5
         # self.y2 -= 0.5
@@ -255,7 +279,7 @@ class ENEMY_JET:
         # self.x7 += 0.5
         # self.x8 -= 0.5
 
-#맵 끝까지 오면 다시 위로 초기화
+        # 맵 끝까지 오면 다시 위로 초기화
         if self.y1 == -100:
             self.x1, self.y1 = random.randint(100, 700), random.randint(600, 700)
         # if self.y2 ==-100:
@@ -291,7 +315,7 @@ class ENEMY_JET:
 
 
 def enter():
-    global  background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jet, enemy_jets, Timer
+    global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, Timer
     background = BACKGROUND()
 
     my_jet = MY_JET()
@@ -300,16 +324,16 @@ def enter():
     my_friend = MY_FRIEND()
     my_friend_bullets = []
 
-    #enemy_jet = ENEMY_JET()
     enemy_jets = [ENEMY_JET() for i in range(10)]
 
+
 def exit():
-    global my_jet, background, my_bullets, my_friend, enemy_jet, my_friend_bullets
+    global my_jet, background, my_bullets, my_friend, my_friend_bullets, enemy_jets
     del my_jet
     del background
     del my_bullets
     del my_friend
-    del enemy_jet
+    del enemy_jets
     del my_friend_bullets
 
 
@@ -322,7 +346,7 @@ def resume():
 
 
 def handle_events():
-    global my_jet, my_bullets, my_friend
+    # global my_jet, my_bullets, my_friend
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -342,6 +366,11 @@ def handle_events():
             elif event.key == SDLK_z:
                 bullet = MY_BULLET()
                 my_bullets.append(bullet)
+            elif event.key == SDLK_x:
+                bullet = MY_BULLET()
+                bullet.bullet_dir = 1
+                my_bullets.append(bullet)
+                pass
 
                 # mixer.music.play()
             elif event.key == SDLK_a:
@@ -360,6 +389,8 @@ def handle_events():
                 my_jet.move_x += 1
             elif event.key == SDLK_z:
                 pass
+            elif event.key == SDLK_x:
+                pass
             elif event.key == SDLK_a:
                 pass
             elif event.key == SDLK_s:
@@ -372,26 +403,27 @@ def update():
     background.update()
     my_jet.update()
 
-#내 총알의 충돌처리
+    # 내 총알의 충돌처리
     for bullet in my_bullets:
         bullet.update()
-        #화면을 넘어갈 경우 삭제
-        if bullet.y > 600:
+        print(bullet.x, bullet.y)
+        # 화면을 넘어갈 경우 삭제
+        if bullet.y > 600 or bullet.L_y >600 or bullet.R_y > 600:
             my_bullets.remove(bullet)
-        #적군과 충돌처리
+        # 적군과 충돌처리
         for enemy in enemy_jets:
             if enemy.y1 + 10 >= bullet.y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.x >= enemy.x1 - 10:
                 enemy.explode_check = 1
                 my_bullets.remove(bullet)
     my_friend.update()
 
-#일정 시간마다 아군 총알 발사
+    # 일정 시간마다 아군 총알 발사
     Timer += 1
     if Timer % 100 == 0:
         sbullet = MY_FRIEND_BULLET()
         my_friend_bullets.append(sbullet)
 
-#아군 총알의 충돌처리
+    # 아군 총알의 충돌처리
     for sbullet in my_friend_bullets:
         sbullet.update()
         if sbullet.a_y > 640:
@@ -401,7 +433,7 @@ def update():
                 enemy.explode_check = 1
                 my_friend_bullets.remove(sbullet)
 
-#적군 업데이트
+    # 적군 업데이트
     for enemy in enemy_jets:
         enemy.update()
     pass
@@ -416,7 +448,6 @@ def draw():
     my_friend.draw()
     for sbullet in my_friend_bullets:
         sbullet.draw()
-
 
     for enemy in enemy_jets:
         enemy.draw()

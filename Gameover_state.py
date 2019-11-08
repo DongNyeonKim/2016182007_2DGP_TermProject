@@ -9,23 +9,24 @@ name = "GameOverState"
 image = None
 text = None
 ani =  None
-Frame = 0
+
 
 mixer.init()
 mixer.music.load('resource/Sound/TitleSound.mp3')
 
 def enter():
-    global image, text, ani
+    global image, text, ani, Frame
     image = load_image('resource/Aft_resource/GameoverState.png')
     text = load_image('resource/Aft_resource/gameover.png')
     ani = load_image('resource/Aft_resource/Gameout_ani.png')
+    Frame = 0
     mixer.music.play()
 
 def exit():
     global image, text, ani
-    del(image)
-    del(text)
-    del(ani)
+    del image
+    del text
+    del ani
 
 
 def handle_events():
@@ -43,7 +44,7 @@ def draw():
     clear_canvas()
     image.draw(400,300)
     text.draw(400,500)
-    if Frame !=3:
+    if Frame !=5:
         ani.clip_draw(0, 600 * Frame, 800, 600, 400, 300)
     update_canvas()
 
@@ -55,7 +56,7 @@ def draw():
 
 def update():
     global Frame
-    if Frame != 3:
+    if Frame != 5:
         Frame = Frame+1
         delay(0.5)
 
