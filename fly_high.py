@@ -103,9 +103,11 @@ class MY_BULLET:
             if self.bullet_dir == 1:
                 self.L_x = my_jet.x
                 self.L_y = my_jet.y + 30
+                self.x, self.y = -10, -10
+            elif self.bullet_dir == 2:
                 self.R_x = my_jet.x
                 self.R_y = my_jet.y + 30
-                self.x, self.y = -10,-10
+                self.x, self.y = -10, -10
             elif self.bullet_dir == 0:
                 self.x = my_jet.x
                 self.y = my_jet.y + 35
@@ -116,6 +118,7 @@ class MY_BULLET:
             if self.L_y != 610:
                 self.L_x -= 1
                 self.L_y += 1
+        elif self.bullet_dir == 2:
             if self.R_y != 610:
                 self.R_x += 1
                 self.R_y += 1
@@ -136,6 +139,7 @@ class MY_BULLET:
     def draw(self):
         if self.bullet_dir == 1:
             self.image_left.clip_draw(0, 0, 14, 12, self.L_x, self.L_y)
+        elif self.bullet_dir == 2:
             self.image_right.clip_draw(0, 0, 14, 12, self.R_x, self.R_y)
         else:
             self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
@@ -203,28 +207,33 @@ class MY_FRIEND_BULLET:
         self.a_y = my_friend.A_y
         self.b_x = my_friend.B_x
         self.b_y = my_friend.B_y
+        self.bullet_dir = 0
         self.sign = 0
         pass
 
     def update(self):
         if self.sign == 0:
-            self.a_x = my_friend.A_x
-            self.a_y = my_friend.A_y + 60
-            self.b_x = my_friend.B_x
-            self.b_y = my_friend.B_y + 60
+            if self.bullet_dir == 1:
+                self.a_x = my_friend.A_x
+                self.a_y = my_friend.A_y + 60
+            if self.bullet_dir == 2:
+                self.b_x = my_friend.B_x
+                self.b_y = my_friend.B_y + 60
             self.sign = 1
 
-        if self.a_y != 650:
+        if self.bullet_dir ==1 and self.a_y != 650:
             self.a_y += 1
 
-        if self.b_y != 650:
+        if self.bullet_dir ==2 and self.b_y != 650:
             self.b_y += 1
 
         pass
 
     def draw(self):
-        self.image.clip_draw(0, 0, 20, 30, self.a_x, self.a_y)
-        self.image.clip_draw(0, 0, 20, 30, self.b_x, self.b_y)
+        if self.bullet_dir==1:
+            self.image.clip_draw(0, 0, 20, 30, self.a_x, self.a_y)
+        if self.bullet_dir == 2:
+            self.image.clip_draw(0, 0, 20, 30, self.b_x, self.b_y)
         pass
 
 
@@ -324,7 +333,7 @@ def enter():
     my_friend = MY_FRIEND()
     my_friend_bullets = []
 
-    enemy_jets = [ENEMY_JET() for i in range(10)]
+    enemy_jets = [ENEMY_JET() for i in range(20)]
 
 
 def exit():
@@ -370,6 +379,9 @@ def handle_events():
                 bullet = MY_BULLET()
                 bullet.bullet_dir = 1
                 my_bullets.append(bullet)
+                bullet = MY_BULLET()
+                bullet.bullet_dir = 2
+                my_bullets.append(bullet)
                 pass
 
                 # mixer.music.play()
@@ -409,12 +421,14 @@ def update():
         print(bullet.x, bullet.y)
         # 적군과 충돌처리
         for enemy in enemy_jets:
-            if enemy.y1 + 10 >= bullet.y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.x >= enemy.x1 - 10 or enemy.y1 + 10 >= bullet.L_y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.L_x >= enemy.x1 - 10 or enemy.y1 + 10 >= bullet.R_y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.R_x >= enemy.x1 - 10 :
+            if enemy.y1 + 10 >= bullet.y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.x >= enemy.x1 - 10 or enemy.y1 + 10 >= bullet.L_y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.L_x >= enemy.x1 - 10 or enemy.y1 + 10 >= bullet.R_y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.R_x >= enemy.x1 - 10:
                 enemy.explode_check = 1
+            if bullet is True:
                 my_bullets.remove(bullet)
         # 화면을 넘어갈 경우 삭제
-        if bullet.y > 600 or bullet.L_y >600 or bullet.R_y > 600:
-            my_bullets.remove(bullet)
+        if bullet.y > 600 or bullet.L_y > 600 or bullet.R_y > 600:
+            if bullet is True:
+                my_bullets.remove(bullet)
 
     my_friend.update()
 
@@ -422,17 +436,23 @@ def update():
     Timer += 1
     if Timer % 100 == 0:
         sbullet = MY_FRIEND_BULLET()
+        sbullet.bullet_dir = 1
+        my_friend_bullets.append(sbullet)
+        sbullet = MY_FRIEND_BULLET()
+        sbullet.bullet_dir = 2
         my_friend_bullets.append(sbullet)
 
     # 아군 총알의 충돌처리
     for sbullet in my_friend_bullets:
         sbullet.update()
         if sbullet.a_y > 640:
-            my_friend_bullets.remove(sbullet)
+            if sbullet is True:
+                my_friend_bullets.remove(sbullet)
         for enemy in enemy_jets:
             if enemy.y1 + 10 >= sbullet.a_y >= enemy.y1 - 10 and enemy.x1 + 10 >= sbullet.a_x >= enemy.x1 - 10 or enemy.y1 + 10 >= sbullet.b_y >= enemy.y1 - 10 and enemy.x1 + 10 >= sbullet.b_x >= enemy.x1 - 10:
                 enemy.explode_check = 1
-                my_friend_bullets.remove(sbullet)
+                if sbullet is True:
+                    my_friend_bullets.remove(sbullet)
 
     # 적군 업데이트
     for enemy in enemy_jets:
