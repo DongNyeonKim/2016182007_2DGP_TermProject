@@ -418,16 +418,18 @@ def update():
     # 내 총알의 충돌처리
     for bullet in my_bullets:
         bullet.update()
+
         print(bullet.x, bullet.y)
+
         # 적군과 충돌처리
         for enemy in enemy_jets:
             if enemy.y1 + 10 >= bullet.y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.x >= enemy.x1 - 10 or enemy.y1 + 10 >= bullet.L_y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.L_x >= enemy.x1 - 10 or enemy.y1 + 10 >= bullet.R_y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.R_x >= enemy.x1 - 10:
                 enemy.explode_check = 1
-            if bullet is True:
-                my_bullets.remove(bullet)
+                if bullet in my_bullets:
+                    my_bullets.remove(bullet)
         # 화면을 넘어갈 경우 삭제
-        if bullet.y > 600 or bullet.L_y > 600 or bullet.R_y > 600:
-            if bullet is True:
+        if bullet.y > 500 or bullet.L_y > 500 or bullet.R_y > 500:
+            if bullet in my_bullets:
                 my_bullets.remove(bullet)
 
     my_friend.update()
@@ -445,13 +447,13 @@ def update():
     # 아군 총알의 충돌처리
     for sbullet in my_friend_bullets:
         sbullet.update()
-        if sbullet.a_y > 640:
-            if sbullet is True:
+        if sbullet.a_y > 500 or sbullet.b_y > 500:
+            if sbullet in my_friend_bullets:
                 my_friend_bullets.remove(sbullet)
         for enemy in enemy_jets:
             if enemy.y1 + 10 >= sbullet.a_y >= enemy.y1 - 10 and enemy.x1 + 10 >= sbullet.a_x >= enemy.x1 - 10 or enemy.y1 + 10 >= sbullet.b_y >= enemy.y1 - 10 and enemy.x1 + 10 >= sbullet.b_x >= enemy.x1 - 10:
                 enemy.explode_check = 1
-                if sbullet is True:
+                if sbullet in my_friend_bullets:
                     my_friend_bullets.remove(sbullet)
 
     # 적군 업데이트
