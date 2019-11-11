@@ -2,7 +2,7 @@ import pico2d
 import Game_Framework
 import Start_state
 
-pico2d.open_canvas()
+pico2d.open_canvas(sync=True)
 Game_Framework.run(Start_state)
 pico2d.close_canvas()
 

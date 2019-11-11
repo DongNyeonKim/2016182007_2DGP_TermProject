@@ -342,7 +342,7 @@ def enter():
     my_friend = MY_FRIEND()
     my_friend_bullets = []
 
-    enemy_jets = [ENEMY_JET() for i in range(5)]
+    enemy_jets = [ENEMY_JET() for i in range(10)]
     enemy_bullets = []
 
 
