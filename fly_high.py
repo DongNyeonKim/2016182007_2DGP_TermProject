@@ -18,7 +18,6 @@ name = "Main_state"
 Timer = 0
 
 
-
 # 배경화면
 # background1, background2 가 y축으로 움직이면서 배경을 이어 보이게 만듦
 class BACKGROUND:
@@ -47,16 +46,18 @@ class BACKGROUND:
         self.background2.clip_draw(0, 0, 800, 600, 800 // 2, self.b + self.background2_move_y)
         pass
 
-#JET Speed
-PIXEL_PER_METER = (10.0/0.1)    # 10pixel 10cm
-RUN_SPEED_KMPH = 10.0  # km/hour
-RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0/60.0)
-RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
-RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
-#JET Action Speed
-TIME_PER_ACTION = 0.5
-ACTION_PER_TIME = 1.0/ TIME_PER_ACTION
-FRAMES_PER_ACTION = 6
+
+# JET Speed
+PIXEL_PER_METER = (10.0 / 0.1)  # 10pixel 10cm
+RUN_SPEED_KMPH_JET = 10.0  # km/hour
+RUN_SPEED_MPM_JET = (RUN_SPEED_KMPH_JET * 1000.0 / 60.0)
+RUN_SPEED_MPS_JET = (RUN_SPEED_MPM_JET / 60.0)
+RUN_SPEED_PPS_JET = (RUN_SPEED_MPS_JET * PIXEL_PER_METER)
+# JET Action Speed
+TIME_PER_ACTION_JET = 0.5
+ACTION_PER_TIME_JET = 1.0 / TIME_PER_ACTION_JET
+FRAMES_PER_ACTION_JET = 6
+
 
 # 내 전투기(케릭터)
 class MY_JET:
@@ -68,7 +69,7 @@ class MY_JET:
         pass
 
     def update(self):
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * Game_Framework.frame_time) % 6
+        self.frame = (self.frame + FRAMES_PER_ACTION_JET * ACTION_PER_TIME_JET * Game_Framework.frame_time) % 6
         # 이동
         self.x += self.move_x * Game_Framework.frame_time
         self.y += self.move_y * Game_Framework.frame_time
@@ -148,6 +149,7 @@ class MY_BULLET:
         pass
 
 
+
 # 내 아군 전투기 A(왼쪽) B(오른쪽)
 class MY_FRIEND:
     def __init__(self):
@@ -164,31 +166,32 @@ class MY_FRIEND:
         # sign은 아군 호출 여부
         if self.sign % 2 == 1:
             if self.A_x >= my_jet.x - 80:
-                self.A_x -= 0.5
+                self.A_x -= 1
             elif self.A_x < my_jet.x - 80:
-                self.A_x += 0.5
+                self.A_x += 1
             if self.A_y >= my_jet.y + 70:
-                self.A_y -= 0.5
+                self.A_y -= 1
             elif self.A_y < my_jet.y + 70:
-                self.A_y += 0.5
+                self.A_y += 1
             if self.B_x >= my_jet.x + 80:
-                self.B_x -= 0.5
+                self.B_x -= 1
             elif self.B_x < my_jet.x + 80:
-                self.B_x += 0.5
+                self.B_x += 1
             if self.B_y >= my_jet.y + 70:
-                self.B_y -= 0.5
+                self.B_y -= 1
             elif self.B_y < my_jet.y + 70:
-                self.B_y += 0.5
+                self.B_y += 1
             pass
+
         elif self.sign % 2 == 0:
             if self.A_x != -100:
-                self.A_x -= 1
+                self.A_x -= 2
             if self.A_y != -100:
-                self.A_y -= 1
+                self.A_y -= 2
             if self.B_x != +900:
-                self.B_x += 1
+                self.B_x += 2
             if self.B_y != -100:
-                self.B_y -= 1
+                self.B_y -= 2
             pass
 
     def draw(self):
@@ -326,6 +329,7 @@ class ENEMY_JET:
 
 class ENEMY_BULLET():
     image = None
+
     def __init__(self):
         if ENEMY_BULLET.image is None:
             ENEMY_BULLET.image = load_image('resource/Aft_resource/Fire_Enemy.png')
@@ -333,9 +337,11 @@ class ENEMY_BULLET():
         self.x = 0
         self.y = 0
         pass
+
     def update(self):
         self.y -= 1
         pass
+
     def draw(self):
         self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
         pass
@@ -386,13 +392,13 @@ def handle_events():
             if event.key == SDLK_ESCAPE:
                 Game_Framework.change_state(Title_state)
             elif event.key == SDLK_UP:
-                my_jet.move_y += RUN_SPEED_PPS
+                my_jet.move_y += RUN_SPEED_PPS_JET
             elif event.key == SDLK_DOWN:
-                my_jet.move_y -= RUN_SPEED_PPS
+                my_jet.move_y -= RUN_SPEED_PPS_JET
             elif event.key == SDLK_RIGHT:
-                my_jet.move_x += RUN_SPEED_PPS
+                my_jet.move_x += RUN_SPEED_PPS_JET
             elif event.key == SDLK_LEFT:
-                my_jet.move_x -= RUN_SPEED_PPS
+                my_jet.move_x -= RUN_SPEED_PPS_JET
             elif event.key == SDLK_z:
                 bullet = MY_BULLET()
                 my_bullets.append(bullet)
@@ -413,13 +419,13 @@ def handle_events():
 
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_UP:
-                my_jet.move_y -= RUN_SPEED_PPS
+                my_jet.move_y -= RUN_SPEED_PPS_JET
             elif event.key == SDLK_DOWN:
-                my_jet.move_y += RUN_SPEED_PPS
+                my_jet.move_y += RUN_SPEED_PPS_JET
             elif event.key == SDLK_RIGHT:
-                my_jet.move_x -= RUN_SPEED_PPS
+                my_jet.move_x -= RUN_SPEED_PPS_JET
             elif event.key == SDLK_LEFT:
-                my_jet.move_x += RUN_SPEED_PPS
+                my_jet.move_x += RUN_SPEED_PPS_JET
             elif event.key == SDLK_z:
                 pass
             elif event.key == SDLK_x:
@@ -484,12 +490,10 @@ def update():
             enemy_bullet.y = enemy.y1
             enemy_bullets.append(enemy_bullet)
 
-
     for enemy_bullet in enemy_bullets:
         enemy_bullet.update()
         if enemy_bullet.y < 100:
             enemy_bullets.remove(enemy_bullet)
-
 
     pass
 
