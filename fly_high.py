@@ -17,12 +17,6 @@ name = "Main_state"
 # enemy_jets = None
 Timer = 0
 
-#JET Speed
-PIXEL_PER_METER = (10.0/0.1)    # 10pixel 10cm
-RUN_SPEED_KMPH = 10.0  # km/hour
-RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0/60.0)
-RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
-RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 
 # 배경화면
@@ -53,6 +47,16 @@ class BACKGROUND:
         self.background2.clip_draw(0, 0, 800, 600, 800 // 2, self.b + self.background2_move_y)
         pass
 
+#JET Speed
+PIXEL_PER_METER = (10.0/0.1)    # 10pixel 10cm
+RUN_SPEED_KMPH = 10.0  # km/hour
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0/60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+#JET Action Speed
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0/ TIME_PER_ACTION
+FRAMES_PER_ACTION = 6
 
 # 내 전투기(케릭터)
 class MY_JET:
@@ -64,7 +68,7 @@ class MY_JET:
         pass
 
     def update(self):
-        self.frame = (self.frame + 1) % 6
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * Game_Framework.frame_time) % 6
         # 이동
         self.x += self.move_x * Game_Framework.frame_time
         self.y += self.move_y * Game_Framework.frame_time
@@ -75,7 +79,7 @@ class MY_JET:
         pass
 
     def draw(self):
-        self.image.clip_draw(self.frame * 40, 0, 40, 80, self.x, self.y)
+        self.image.clip_draw(int(self.frame) * 40, 0, 40, 80, self.x, self.y)
         pass
 
 
