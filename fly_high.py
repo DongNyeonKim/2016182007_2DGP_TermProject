@@ -373,14 +373,14 @@ def enter():
     First_Time=0.0
 
 def exit():
-    global my_jet, background, my_bullets, my_friend, my_friend_bullets, enemy_jets, First_Time
+    global my_jet, background, my_bullets, my_friend, my_friend_bullets, enemy_jets
     del my_jet
     del background
     del my_bullets
     del my_friend
     del enemy_jets
     del my_friend_bullets
-    del First_Time
+
 
 def pause():
     pass
