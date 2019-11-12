@@ -8,14 +8,21 @@ import random
 name = "Main_state"
 
 # 없어도 되나? ㅅㅂ
-background = None
-my_jet = None
-my_bullets = None
-my_friend = None
-my_friend_bullets = None
-enemy_jet = None
-enemy_jets = None
+# background = None
+# my_jet = None
+# my_bullets = None
+# my_friend = None
+# my_friend_bullets = None
+# enemy_jet = None
+# enemy_jets = None
 Timer = 0
+
+#JET Speed
+PIXEL_PER_METER = (10.0/0.1)    # 10pixel 10cm
+RUN_SPEED_KMPH = 10.0  # km/hour
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0/60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 
 # 배경화면
@@ -29,8 +36,8 @@ class BACKGROUND:
         self.a, self.b = 900, 300
 
     def update(self):
-        self.background1_move_y -= 1
-        self.background2_move_y -= 1
+        self.background1_move_y -= 2
+        self.background2_move_y -= 2
 
         if self.a + self.background1_move_y == -300:
             self.a = 900
@@ -59,8 +66,8 @@ class MY_JET:
     def update(self):
         self.frame = (self.frame + 1) % 6
         # 이동
-        self.x += self.move_x
-        self.y += self.move_y
+        self.x += self.move_x * Game_Framework.frame_time
+        self.y += self.move_y * Game_Framework.frame_time
         # 화면 충돌처리
         self.x = clamp(25, self.x, 800 - 25)
         self.y = clamp(25, self.y, 600 - 45)
@@ -375,13 +382,13 @@ def handle_events():
             if event.key == SDLK_ESCAPE:
                 Game_Framework.change_state(Title_state)
             elif event.key == SDLK_UP:
-                my_jet.move_y += 1
+                my_jet.move_y += RUN_SPEED_PPS
             elif event.key == SDLK_DOWN:
-                my_jet.move_y -= 1
+                my_jet.move_y -= RUN_SPEED_PPS
             elif event.key == SDLK_RIGHT:
-                my_jet.move_x += 1
+                my_jet.move_x += RUN_SPEED_PPS
             elif event.key == SDLK_LEFT:
-                my_jet.move_x -= 1
+                my_jet.move_x -= RUN_SPEED_PPS
             elif event.key == SDLK_z:
                 bullet = MY_BULLET()
                 my_bullets.append(bullet)
@@ -402,13 +409,13 @@ def handle_events():
 
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_UP:
-                my_jet.move_y -= 1
+                my_jet.move_y -= RUN_SPEED_PPS
             elif event.key == SDLK_DOWN:
-                my_jet.move_y += 1
+                my_jet.move_y += RUN_SPEED_PPS
             elif event.key == SDLK_RIGHT:
-                my_jet.move_x -= 1
+                my_jet.move_x -= RUN_SPEED_PPS
             elif event.key == SDLK_LEFT:
-                my_jet.move_x += 1
+                my_jet.move_x += RUN_SPEED_PPS
             elif event.key == SDLK_z:
                 pass
             elif event.key == SDLK_x:
