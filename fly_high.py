@@ -4,6 +4,7 @@ import Title_state
 import Gameover_state
 from pygame import mixer
 import random
+import time
 
 name = "Main_state"
 
@@ -61,11 +62,15 @@ FRAMES_PER_ACTION_JET = 6
 
 # 내 전투기(케릭터)
 class MY_JET:
+
     def __init__(self):
         self.image = load_image('resource/Aft_resource/jet21.png')
+        self.font = load_font('resource/ENCR10B.TTF', 16)
         self.frame = 0
         self.x, self.y = 400, 300
         self.move_x, self.move_y = 0, 0
+        self.NowTime = 0
+        self.Fuck = 0
         pass
 
     def update(self):
@@ -80,7 +85,11 @@ class MY_JET:
         pass
 
     def draw(self):
+        self.NowTime = time.time() - First_Time
+        print(self.NowTime)
         self.image.clip_draw(int(self.frame) * 40, 0, 40, 80, self.x, self.y)
+        self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % self.NowTime, (255, 255, 0))
+        # self.font.draw(self.x-60, self.y+60, '(Time: %3.2f)' %FirstTime, (255,255,0))
         pass
 
 
@@ -149,7 +158,6 @@ class MY_BULLET:
         pass
 
 
-
 # 내 아군 전투기 A(왼쪽) B(오른쪽)
 class MY_FRIEND:
     def __init__(self):
@@ -166,21 +174,21 @@ class MY_FRIEND:
         # sign은 아군 호출 여부
         if self.sign % 2 == 1:
             if self.A_x >= my_jet.x - 80:
-                self.A_x -= 1
+                self.A_x -= 2
             elif self.A_x < my_jet.x - 80:
-                self.A_x += 1
+                self.A_x += 2
             if self.A_y >= my_jet.y + 70:
-                self.A_y -= 1
+                self.A_y -= 2
             elif self.A_y < my_jet.y + 70:
-                self.A_y += 1
+                self.A_y += 2
             if self.B_x >= my_jet.x + 80:
-                self.B_x -= 1
+                self.B_x -= 2
             elif self.B_x < my_jet.x + 80:
-                self.B_x += 1
+                self.B_x += 2
             if self.B_y >= my_jet.y + 70:
-                self.B_y -= 1
+                self.B_y -= 2
             elif self.B_y < my_jet.y + 70:
-                self.B_y += 1
+                self.B_y += 2
             pass
 
         elif self.sign % 2 == 0:
@@ -350,7 +358,7 @@ class ENEMY_BULLET():
 
 
 def enter():
-    global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, Timer, enemy_bullets
+    global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, Timer, enemy_bullets, First_Time
     background = BACKGROUND()
 
     my_jet = MY_JET()
@@ -362,16 +370,17 @@ def enter():
     enemy_jets = [ENEMY_JET() for i in range(10)]
     enemy_bullets = []
 
+    First_Time=0.0
 
 def exit():
-    global my_jet, background, my_bullets, my_friend, my_friend_bullets, enemy_jets
+    global my_jet, background, my_bullets, my_friend, my_friend_bullets, enemy_jets, First_Time
     del my_jet
     del background
     del my_bullets
     del my_friend
     del enemy_jets
     del my_friend_bullets
-
+    del First_Time
 
 def pause():
     pass
@@ -415,6 +424,7 @@ def handle_events():
             elif event.key == SDLK_a:
                 my_friend.sign += 1
             elif event.key == SDLK_s:
+                Gameover_state.Time = my_jet.NowTime
                 Game_Framework.change_state(Gameover_state)
 
         elif event.type == SDL_KEYUP:
@@ -438,10 +448,11 @@ def handle_events():
 
 def update():
     # global Timer, enemy_jet
-    global Timer, enemy_bullet
+    global Timer, enemy_bullet, First_Time
     background.update()
     my_jet.update()
-
+    if First_Time ==0:
+        First_Time = time.time()
     # 내 총알의 충돌처리
     for bullet in my_bullets:
         bullet.update()
@@ -484,7 +495,7 @@ def update():
     # 적군 업데이트
     for enemy in enemy_jets:
         enemy.update()
-        if Timer % random.randint(100, 200) == 0:
+        if Timer % random.randint(100, 200) == 0 and enemy.explode_check == 0:
             enemy_bullet = ENEMY_BULLET()
             enemy_bullet.x = enemy.x1
             enemy_bullet.y = enemy.y1
