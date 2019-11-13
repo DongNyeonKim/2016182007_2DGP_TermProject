@@ -82,6 +82,7 @@ class MY_JET:
             if Timer % 100 == 0:
                 self.explode_frame += 1
             if self.explode_frame == 5:
+                #폭발 프레임이 끝나면 게임 오버스테이트로 이동
                 self.game_over_sign = 1
 
         else:
@@ -108,8 +109,6 @@ class MY_JET:
         else:
             self.image.clip_draw(int(self.frame) * 40, 0, 40, 80, self.x, self.y)
             draw_rectangle(*self.get_bb())
-
-        # self.font.draw(self.x-60, self.y+60, '(Time: %3.2f)' %FirstTime, (255,255,0))
         pass
 
 
@@ -389,7 +388,7 @@ class ENEMY_BULLET():
         pass
 
     def update(self):
-        self.y -= 1
+        self.y -= 3
         pass
 
     def get_bb(self):
@@ -425,7 +424,7 @@ def enter():
     my_friend = MY_FRIEND()
     my_friend_bullets = []
 
-    enemy_jets = [ENEMY_JET() for i in range(10)]
+    enemy_jets = [ENEMY_JET() for i in range(20)]
     enemy_bullets = []
 
     First_Time = 0.0
@@ -531,7 +530,7 @@ def update():
 
     # 일정 시간마다 아군 총알 발사
     Timer += 1
-    if Timer % 100 == 0:
+    if Timer % 50 == 0:
         sbullet = MY_FRIEND_BULLET()
         sbullet.bullet_dir = 1
         my_friend_bullets.append(sbullet)
@@ -555,10 +554,10 @@ def update():
     # 적군 업데이트
     for enemy in enemy_jets:
         enemy.update()
-        if Timer % random.randint(100, 200) == 0 and enemy.explode_check == 0:
+        if Timer % random.randint(50, 100) == 0 and enemy.explode_check == 0:
             enemy_bullet = ENEMY_BULLET()
             enemy_bullet.x = enemy.x1
-            enemy_bullet.y = enemy.y1
+            enemy_bullet.y = enemy.y1-25
             enemy_bullets.append(enemy_bullet)
 
     for enemy_bullet in enemy_bullets:
