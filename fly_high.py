@@ -84,11 +84,15 @@ class MY_JET:
         # print(self.x, self.y)
         pass
 
+    def get_bb(self):
+        return self.x - 20, self.y , self.x+20, self.y+40
+
     def draw(self):
         self.NowTime = time.time() - First_Time
         print(self.NowTime)
         self.image.clip_draw(int(self.frame) * 40, 0, 40, 80, self.x, self.y)
         self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % self.NowTime, (255, 255, 0))
+        draw_rectangle(*self.get_bb())
         # self.font.draw(self.x-60, self.y+60, '(Time: %3.2f)' %FirstTime, (255,255,0))
         pass
 
@@ -148,13 +152,23 @@ class MY_BULLET:
 
         pass
 
+    def get_bb(self):
+        if self.bullet_dir ==1:
+            return self.L_x - 7, self.L_y -6, self.L_x+7, self.L_y+6
+        elif self.bullet_dir==2:
+            return self.R_x - 7, self.R_y - 6, self.R_x + 7, self.R_y + 6
+        else:
+            return self.x - 7, self.y - 6, self.x + 7, self.y + 6
     def draw(self):
         if self.bullet_dir == 1:
             self.image_left.clip_draw(0, 0, 14, 12, self.L_x, self.L_y)
+            draw_rectangle(*self.get_bb())
         elif self.bullet_dir == 2:
             self.image_right.clip_draw(0, 0, 14, 12, self.R_x, self.R_y)
+            draw_rectangle(*self.get_bb())
         else:
             self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
+            draw_rectangle(*self.get_bb())
         pass
 
 
