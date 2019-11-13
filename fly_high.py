@@ -85,7 +85,7 @@ class MY_JET:
         pass
 
     def get_bb(self):
-        return self.x - 20, self.y , self.x+20, self.y+40
+        return self.x - 20, self.y, self.x + 20, self.y + 40
 
     def draw(self):
         self.NowTime = time.time() - First_Time
@@ -153,12 +153,13 @@ class MY_BULLET:
         pass
 
     def get_bb(self):
-        if self.bullet_dir ==1:
-            return self.L_x - 7, self.L_y -6, self.L_x+7, self.L_y+6
-        elif self.bullet_dir==2:
+        if self.bullet_dir == 1:
+            return self.L_x - 7, self.L_y - 6, self.L_x + 7, self.L_y + 6
+        elif self.bullet_dir == 2:
             return self.R_x - 7, self.R_y - 6, self.R_x + 7, self.R_y + 6
         else:
             return self.x - 7, self.y - 6, self.x + 7, self.y + 6
+
     def draw(self):
         if self.bullet_dir == 1:
             self.image_left.clip_draw(0, 0, 14, 12, self.L_x, self.L_y)
@@ -255,11 +256,19 @@ class MY_FRIEND_BULLET:
 
         pass
 
+    def get_bb(self):
+        if self.bullet_dir == 1:
+            return self.a_x - 10, self.a_y - 15, self.a_x + 10, self.a_y + 15
+        elif self.bullet_dir == 2:
+            return self.b_x - 10, self.b_y - 15, self.b_x + 10, self.b_y + 15
+
     def draw(self):
         if self.bullet_dir == 1:
             self.image.clip_draw(0, 0, 20, 30, self.a_x, self.a_y)
+            draw_rectangle(*self.get_bb())
         if self.bullet_dir == 2:
             self.image.clip_draw(0, 0, 20, 30, self.b_x, self.b_y)
+            draw_rectangle(*self.get_bb())
         pass
 
 
@@ -333,12 +342,15 @@ class ENEMY_JET:
         #     self.x8, self.y8 = random.randint(800, 900), random.randint(300, 600)
         pass
 
+    def get_bb(self):
+        return self.x1 - 20, self.y1 - 40, self.x1 + 20, self.y1 + 40
+
     def draw(self):
         if self.explode_check == 1:
             self.explode_ani1.clip_draw(self.explode_frame * 40, 0, 40, 80, self.x1, self.y1)
         else:
             self.image1.clip_draw(0, 0, 40, 80, self.x1, self.y1)
-
+            draw_rectangle(*self.get_bb())
         # self.image2.clip_draw(0, 0, 40, 50, self.x2, self.y2)
         # self.image3.clip_draw(0, 0, 50, 50, self.x3, self.y3)
         # self.image4.clip_draw(0, 0, 40, 80, self.x4, self.y4)
@@ -363,13 +375,27 @@ class ENEMY_BULLET():
     def update(self):
         self.y -= 1
         pass
+    def get_bb(self):
+        return self.x - 5, self.y - 6, self.x + 5, self.y + 6
 
     def draw(self):
         self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
+        draw_rectangle(*self.get_bb())
         pass
 
     pass
 
+
+def collide(a,b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a >right_b: return False
+    if right_a <left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+
+    return True
 
 def enter():
     global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, Timer, enemy_bullets, First_Time
@@ -384,7 +410,8 @@ def enter():
     enemy_jets = [ENEMY_JET() for i in range(10)]
     enemy_bullets = []
 
-    First_Time=0.0
+    First_Time = 0.0
+
 
 def exit():
     global my_jet, background, my_bullets, my_friend, my_friend_bullets, enemy_jets
@@ -465,7 +492,7 @@ def update():
     global Timer, enemy_bullet, First_Time
     background.update()
     my_jet.update()
-    if First_Time ==0:
+    if First_Time == 0:
         First_Time = time.time()
     # 내 총알의 충돌처리
     for bullet in my_bullets:
@@ -473,7 +500,8 @@ def update():
         print(bullet.x, bullet.y)
         # 적군과 충돌처리
         for enemy in enemy_jets:
-            if enemy.y1 + 10 >= bullet.y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.x >= enemy.x1 - 10 or enemy.y1 + 10 >= bullet.L_y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.L_x >= enemy.x1 - 10 or enemy.y1 + 10 >= bullet.R_y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.R_x >= enemy.x1 - 10:
+            if collide(enemy, bullet)and enemy.explode_check==0:
+            #if enemy.y1 + 10 >= bullet.y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.x >= enemy.x1 - 10 or enemy.y1 + 10 >= bullet.L_y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.L_x >= enemy.x1 - 10 or enemy.y1 + 10 >= bullet.R_y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.R_x >= enemy.x1 - 10:
                 enemy.explode_check = 1
                 if bullet in my_bullets:
                     my_bullets.remove(bullet)
@@ -501,7 +529,8 @@ def update():
             if sbullet in my_friend_bullets:
                 my_friend_bullets.remove(sbullet)
         for enemy in enemy_jets:
-            if enemy.y1 + 10 >= sbullet.a_y >= enemy.y1 - 10 and enemy.x1 + 10 >= sbullet.a_x >= enemy.x1 - 10 or enemy.y1 + 10 >= sbullet.b_y >= enemy.y1 - 10 and enemy.x1 + 10 >= sbullet.b_x >= enemy.x1 - 10:
+            if collide(enemy, sbullet)and enemy.explode_check==0:
+            #if enemy.y1 + 10 >= sbullet.a_y >= enemy.y1 - 10 and enemy.x1 + 10 >= sbullet.a_x >= enemy.x1 - 10 or enemy.y1 + 10 >= sbullet.b_y >= enemy.y1 - 10 and enemy.x1 + 10 >= sbullet.b_x >= enemy.x1 - 10:
                 enemy.explode_check = 1
                 if sbullet in my_friend_bullets:
                     my_friend_bullets.remove(sbullet)
