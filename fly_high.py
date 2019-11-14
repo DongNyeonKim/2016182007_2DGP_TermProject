@@ -50,7 +50,7 @@ class BACKGROUND:
 
 # JET Speed
 PIXEL_PER_METER = (10.0 / 0.1)  # 10pixel 10cm
-RUN_SPEED_KMPH_JET = 10.0  # km/hour
+RUN_SPEED_KMPH_JET = 10  # km/hour
 RUN_SPEED_MPM_JET = (RUN_SPEED_KMPH_JET * 1000.0 / 60.0)
 RUN_SPEED_MPS_JET = (RUN_SPEED_MPM_JET / 60.0)
 RUN_SPEED_PPS_JET = (RUN_SPEED_MPS_JET * PIXEL_PER_METER)
@@ -60,7 +60,7 @@ ACTION_PER_TIME_JET = 1.0 / TIME_PER_ACTION_JET
 FRAMES_PER_ACTION_JET = 6
 
 
-# 내 전투기(케릭터)
+#내 전투기(케릭터)
 class MY_JET:
 
     def __init__(self):
@@ -112,6 +112,10 @@ class MY_JET:
         pass
 
 
+RUN_SPEED_KMPH_JET = 10  # km/hour
+RUN_SPEED_MPM_JET = (RUN_SPEED_KMPH_JET * 1000.0 / 60.0)
+RUN_SPEED_MPS_JET = (RUN_SPEED_MPM_JET / 60.0)
+RUN_SPEED_PPS_JET = (RUN_SPEED_MPS_JET * PIXEL_PER_METER)
 # 내 전투기 총알
 class MY_BULLET:
     image = None
@@ -187,7 +191,10 @@ class MY_BULLET:
             draw_rectangle(*self.get_bb())
         pass
 
-
+RUN_SPEED_KMPH_MY_FRIEND = 6  # km/hour
+RUN_SPEED_MPM_MY_FRIEND = (RUN_SPEED_KMPH_MY_FRIEND * 1000.0 / 60.0)
+RUN_SPEED_MPS_MY_FRIEND = (RUN_SPEED_MPM_MY_FRIEND / 60.0)
+RUN_SPEED_PPS_MY_FRIEND = (RUN_SPEED_MPS_MY_FRIEND * PIXEL_PER_METER)
 # 내 아군 전투기 A(왼쪽) B(오른쪽)
 class MY_FRIEND:
     def __init__(self):
@@ -195,8 +202,13 @@ class MY_FRIEND:
         self.image1 = load_image('resource/Aft_resource/My_Friend.png')
         self.A_x = -100
         self.A_y = -100
-        self.B_x = +900
+        self.B_x = 900
         self.B_y = -100
+        self.ax =0
+        self.ay =0
+        self.bx =0
+        self.by =0
+
         self.sign = 0
         pass
 
@@ -204,32 +216,32 @@ class MY_FRIEND:
         # sign은 아군 호출 여부
         if self.sign % 2 == 1:
             if self.A_x >= my_jet.x - 80:
-                self.A_x -= 2
+                self.A_x -= RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
             elif self.A_x < my_jet.x - 80:
-                self.A_x += 2
+                self.A_x += RUN_SPEED_PPS_MY_FRIEND* Game_Framework.frame_time
             if self.A_y >= my_jet.y + 70:
-                self.A_y -= 2
+                self.A_y -= RUN_SPEED_PPS_MY_FRIEND* Game_Framework.frame_time
             elif self.A_y < my_jet.y + 70:
-                self.A_y += 2
+                self.A_y += RUN_SPEED_PPS_MY_FRIEND* Game_Framework.frame_time
             if self.B_x >= my_jet.x + 80:
-                self.B_x -= 2
+                self.B_x -= RUN_SPEED_PPS_MY_FRIEND* Game_Framework.frame_time
             elif self.B_x < my_jet.x + 80:
-                self.B_x += 2
+                self.B_x += RUN_SPEED_PPS_MY_FRIEND* Game_Framework.frame_time
             if self.B_y >= my_jet.y + 70:
-                self.B_y -= 2
+                self.B_y -= RUN_SPEED_PPS_MY_FRIEND* Game_Framework.frame_time
             elif self.B_y < my_jet.y + 70:
-                self.B_y += 2
+                self.B_y += RUN_SPEED_PPS_MY_FRIEND* Game_Framework.frame_time
             pass
 
         elif self.sign % 2 == 0:
             if self.A_x != -100:
-                self.A_x -= 2
+                self.A_x -= RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
             if self.A_y != -100:
-                self.A_y -= 2
+                self.A_y -= RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
             if self.B_x != +900:
-                self.B_x += 2
+                self.B_x += RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
             if self.B_y != -100:
-                self.B_y -= 2
+                self.B_y -= RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
             pass
 
     def draw(self):
@@ -286,7 +298,7 @@ class MY_FRIEND_BULLET:
             draw_rectangle(*self.get_bb())
         pass
 
-
+#적 전투기 1 (레드)
 class ENEMY_JET:
 
     def __init__(self):
@@ -375,7 +387,7 @@ class ENEMY_JET:
         # self.image8.clip_draw(0, 0, 40, 30, self.x8, self.y8)
         pass
 
-
+#적 전투기 1 (레드) 총알
 class ENEMY_BULLET():
     image = None
 
@@ -401,7 +413,7 @@ class ENEMY_BULLET():
 
     pass
 
-
+#충돌처리
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
@@ -562,10 +574,10 @@ def update():
 
     for enemy_bullet in enemy_bullets:
         enemy_bullet.update()
-        if collide(my_jet, enemy_bullet) and my_jet.explode_check == 0:
-            my_jet.explode_check = 1
-            if enemy_bullet in enemy_bullets:
-                enemy_bullets.remove(enemy_bullet)
+        # if collide(my_jet, enemy_bullet) and my_jet.explode_check == 0:
+        #     my_jet.explode_check = 1
+        #     if enemy_bullet in enemy_bullets:
+        #         enemy_bullets.remove(enemy_bullet)
         if enemy_bullet.y < 100:
             enemy_bullets.remove(enemy_bullet)
 
