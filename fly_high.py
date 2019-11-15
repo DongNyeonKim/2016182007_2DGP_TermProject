@@ -18,6 +18,12 @@ name = "Main_state"
 # enemy_jets = None
 Timer = 0
 
+PIXEL_PER_METER = (10.0 / 0.1)  # 10pixel 10cm
+RUN_SPEED_KMPH_BACKGROUND = 30  # km/hour
+RUN_SPEED_MPM_BACKGROUND = (RUN_SPEED_KMPH_BACKGROUND * 1000.0 / 60.0)
+RUN_SPEED_MPS_BACKGROUND = (RUN_SPEED_MPM_BACKGROUND / 60.0)
+RUN_SPEED_PPS_BACKGROUND = (RUN_SPEED_MPS_BACKGROUND * PIXEL_PER_METER)
+
 
 # 배경화면
 # background1, background2 가 y축으로 움직이면서 배경을 이어 보이게 만듦
@@ -28,16 +34,18 @@ class BACKGROUND:
         self.background_x, self.background_y = 0, 0
         self.background1_move_y, self.background2_move_y = 0, 0
         self.a, self.b = 900, 300
+        self.velocity = 0
 
     def update(self):
+        self.velocity = int(RUN_SPEED_PPS_BACKGROUND * Game_Framework.frame_time)
         self.background1_move_y -= 2
         self.background2_move_y -= 2
 
-        if self.a + self.background1_move_y == -300:
+        if self.a + self.background1_move_y <= -300:
             self.a = 900
             self.background1_move_y = 0
 
-        if self.b + self.background2_move_y == -300:
+        if self.b + self.background2_move_y <= -300:
             self.b = 900
             self.background2_move_y = 0
         pass
@@ -49,7 +57,6 @@ class BACKGROUND:
 
 
 # JET Speed
-PIXEL_PER_METER = (10.0 / 0.1)  # 10pixel 10cm
 RUN_SPEED_KMPH_JET = 10  # km/hour
 RUN_SPEED_MPM_JET = (RUN_SPEED_KMPH_JET * 1000.0 / 60.0)
 RUN_SPEED_MPS_JET = (RUN_SPEED_MPM_JET / 60.0)
@@ -57,12 +64,12 @@ RUN_SPEED_PPS_JET = (RUN_SPEED_MPS_JET * PIXEL_PER_METER)
 # JET Action Speed
 TIME_PER_ACTION_JET = 0.5
 ACTION_PER_TIME_JET = 1.0 / TIME_PER_ACTION_JET
-#폭발시 애니메이션 속도
+# 폭발시 애니메이션 속도
 ACTION_PER_TIME_JET_EXPLODE = 0.1 / TIME_PER_ACTION_JET
 FRAMES_PER_ACTION_JET = 6
 
 
-#내 전투기(케릭터)
+# 내 전투기(케릭터)
 class MY_JET:
 
     def __init__(self):
@@ -81,10 +88,11 @@ class MY_JET:
 
     def update(self):
         if self.explode_check == 1:
-            #if Timer % 100 == 0:
-            self.explode_frame = (self.explode_frame + FRAMES_PER_ACTION_JET * ACTION_PER_TIME_JET_EXPLODE * Game_Framework.frame_time) % 6
+            # if Timer % 100 == 0:
+            self.explode_frame = (
+                                             self.explode_frame + FRAMES_PER_ACTION_JET * ACTION_PER_TIME_JET_EXPLODE * Game_Framework.frame_time) % 6
             if int(self.explode_frame) == 5:
-                #폭발 프레임이 끝나면 게임 오버스테이트로 이동
+                # 폭발 프레임이 끝나면 게임 오버스테이트로 이동
                 self.game_over_sign = 1
 
         else:
@@ -114,10 +122,12 @@ class MY_JET:
         pass
 
 
-RUN_SPEED_KMPH_MY_BULLET = 300  # km/hour
+RUN_SPEED_KMPH_MY_BULLET = 100  # km/hour
 RUN_SPEED_MPM_MY_BULLET = (RUN_SPEED_KMPH_MY_BULLET * 1000.0 / 60.0)
 RUN_SPEED_MPS_MY_BULLET = (RUN_SPEED_MPM_MY_BULLET / 60.0)
 RUN_SPEED_PPS_MY_BULLET = (RUN_SPEED_MPS_MY_BULLET * PIXEL_PER_METER)
+
+
 # 내 전투기 총알
 class MY_BULLET:
     image = None
@@ -162,14 +172,14 @@ class MY_BULLET:
 
         if self.bullet_dir == 1:
             if self.L_y != 610:
-                self.L_x -= RUN_SPEED_KMPH_MY_BULLET * Game_Framework.frame_time
-                self.L_y += RUN_SPEED_KMPH_MY_BULLET * Game_Framework.frame_time
+                self.L_x -= RUN_SPEED_PPS_MY_BULLET * Game_Framework.frame_time
+                self.L_y += RUN_SPEED_PPS_MY_BULLET * Game_Framework.frame_time
         elif self.bullet_dir == 2:
             if self.R_y != 610:
-                self.R_x += RUN_SPEED_KMPH_MY_BULLET * Game_Framework.frame_time
-                self.R_y += RUN_SPEED_KMPH_MY_BULLET * Game_Framework.frame_time
+                self.R_x += RUN_SPEED_PPS_MY_BULLET * Game_Framework.frame_time
+                self.R_y += RUN_SPEED_PPS_MY_BULLET * Game_Framework.frame_time
         elif self.bullet_dir == 0 and self.y != 610:
-            self.y += RUN_SPEED_KMPH_MY_BULLET * Game_Framework.frame_time
+            self.y += RUN_SPEED_PPS_MY_BULLET * Game_Framework.frame_time
 
         pass
 
@@ -193,10 +203,13 @@ class MY_BULLET:
             draw_rectangle(*self.get_bb())
         pass
 
+
 RUN_SPEED_KMPH_MY_FRIEND = 6  # km/hour
 RUN_SPEED_MPM_MY_FRIEND = (RUN_SPEED_KMPH_MY_FRIEND * 1000.0 / 60.0)
 RUN_SPEED_MPS_MY_FRIEND = (RUN_SPEED_MPM_MY_FRIEND / 60.0)
 RUN_SPEED_PPS_MY_FRIEND = (RUN_SPEED_MPS_MY_FRIEND * PIXEL_PER_METER)
+
+
 # 내 아군 전투기 A(왼쪽) B(오른쪽)
 class MY_FRIEND:
     def __init__(self):
@@ -206,10 +219,10 @@ class MY_FRIEND:
         self.A_y = -100
         self.B_x = 900
         self.B_y = -100
-        self.ax =0
-        self.ay =0
-        self.bx =0
-        self.by =0
+        self.ax = 0
+        self.ay = 0
+        self.bx = 0
+        self.by = 0
 
         self.sign = 0
         pass
@@ -220,19 +233,19 @@ class MY_FRIEND:
             if self.A_x >= my_jet.x - 80:
                 self.A_x -= RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
             elif self.A_x < my_jet.x - 80:
-                self.A_x += RUN_SPEED_PPS_MY_FRIEND* Game_Framework.frame_time
+                self.A_x += RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
             if self.A_y >= my_jet.y + 70:
-                self.A_y -= RUN_SPEED_PPS_MY_FRIEND* Game_Framework.frame_time
+                self.A_y -= RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
             elif self.A_y < my_jet.y + 70:
-                self.A_y += RUN_SPEED_PPS_MY_FRIEND* Game_Framework.frame_time
+                self.A_y += RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
             if self.B_x >= my_jet.x + 80:
-                self.B_x -= RUN_SPEED_PPS_MY_FRIEND* Game_Framework.frame_time
+                self.B_x -= RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
             elif self.B_x < my_jet.x + 80:
-                self.B_x += RUN_SPEED_PPS_MY_FRIEND* Game_Framework.frame_time
+                self.B_x += RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
             if self.B_y >= my_jet.y + 70:
-                self.B_y -= RUN_SPEED_PPS_MY_FRIEND* Game_Framework.frame_time
+                self.B_y -= RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
             elif self.B_y < my_jet.y + 70:
-                self.B_y += RUN_SPEED_PPS_MY_FRIEND* Game_Framework.frame_time
+                self.B_y += RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
             pass
 
         elif self.sign % 2 == 0:
@@ -251,10 +264,13 @@ class MY_FRIEND:
         self.image1.clip_draw(0, 0, 140, 120, self.B_x, self.B_y)
         pass
 
-RUN_SPEED_KMPH_MY_FRIEND_ = 6  # km/hour
-RUN_SPEED_MPM_MY_FRIEND = (RUN_SPEED_KMPH_MY_FRIEND * 1000.0 / 60.0)
-RUN_SPEED_MPS_MY_FRIEND = (RUN_SPEED_MPM_MY_FRIEND / 60.0)
-RUN_SPEED_PPS_MY_FRIEND = (RUN_SPEED_MPS_MY_FRIEND * PIXEL_PER_METER)
+
+RUN_SPEED_KMPH_MY_FRIEND_BULLET = 100  # km/hour
+RUN_SPEED_MPM_MY_FRIEND_BULLET = (RUN_SPEED_KMPH_MY_FRIEND_BULLET * 1000.0 / 60.0)
+RUN_SPEED_MPS_MY_FRIEND_BULLET = (RUN_SPEED_MPM_MY_FRIEND_BULLET / 60.0)
+RUN_SPEED_PPS_MY_FRIEND_BULLET = (RUN_SPEED_MPS_MY_FRIEND_BULLET * PIXEL_PER_METER)
+
+
 # 아군 전투기 총알
 class MY_FRIEND_BULLET:
     image = None
@@ -281,10 +297,10 @@ class MY_FRIEND_BULLET:
             self.sign = 1
 
         if self.bullet_dir == 1 and self.a_y != 650:
-            self.a_y += 1
+            self.a_y += RUN_SPEED_PPS_MY_FRIEND_BULLET * Game_Framework.frame_time
 
         if self.bullet_dir == 2 and self.b_y != 650:
-            self.b_y += 1
+            self.b_y += RUN_SPEED_PPS_MY_FRIEND_BULLET * Game_Framework.frame_time
 
         pass
 
@@ -303,7 +319,18 @@ class MY_FRIEND_BULLET:
             draw_rectangle(*self.get_bb())
         pass
 
-#적 전투기 1 (레드)
+
+RUN_SPEED_KMPH_ENEMY_JET = 3  # km/hour
+RUN_SPEED_MPM_ENEMY_JET = (RUN_SPEED_KMPH_ENEMY_JET * 1000.0 / 60.0)
+RUN_SPEED_MPS_ENEMY_JET = (RUN_SPEED_MPM_ENEMY_JET / 60.0)
+RUN_SPEED_PPS_ENEMY_JET = (RUN_SPEED_MPS_ENEMY_JET * PIXEL_PER_METER)
+
+TIME_PER_ACTION_ENEMY_JET = 0.1
+ACTION_PER_TIME_ENEMY_JET_EXPLODE = 0.1 / TIME_PER_ACTION_ENEMY_JET
+FRAMES_PER_ACTION_ENEMY_JET = 5
+
+
+# 적 전투기 1 (레드)
 class ENEMY_JET:
 
     def __init__(self):
@@ -337,15 +364,16 @@ class ENEMY_JET:
     def update(self):
         # 적이 죽으면 explode_check=1 이 되고 폭발 애니메이션 실행 후 초기화 한 뒤 다시 생성
         if self.explode_check == 1:
-            if Timer % 100 == 0:
-                self.explode_frame += 1
-            if self.explode_frame == 5:
+            # if Timer % 100 == 0:
+            self.explode_frame = (
+                                             self.explode_frame + FRAMES_PER_ACTION_ENEMY_JET * ACTION_PER_TIME_ENEMY_JET_EXPLODE * Game_Framework.frame_time) % 5
+            if int(self.explode_frame) == 4:
                 self.explode_check = 0
                 self.explode_frame = 0
                 self.x1, self.y1 = random.randint(100, 700), random.randint(600, 800)
         # 살아 있는 경우 계속 앞으로 전진
         else:
-            self.y1 -= 0.5
+            self.y1 -= RUN_SPEED_PPS_ENEMY_JET * Game_Framework.frame_time
         # self.y2 -= 0.5
         # self.y3 -= 0.5
         # self.y4 -= 0.5
@@ -356,7 +384,7 @@ class ENEMY_JET:
         # self.x8 -= 0.5
 
         # 맵 끝까지 오면 다시 위로 초기화
-        if self.y1 == -100:
+        if self.y1 <= -100:
             self.x1, self.y1 = random.randint(100, 700), random.randint(600, 700)
         # if self.y2 ==-100:
         #     self.x2, self.y2 = random.randint(100, 700), random.randint(600, 700)
@@ -379,7 +407,7 @@ class ENEMY_JET:
 
     def draw(self):
         if self.explode_check == 1:
-            self.explode_ani1.clip_draw(self.explode_frame * 40, 0, 40, 80, self.x1, self.y1)
+            self.explode_ani1.clip_draw(int(self.explode_frame) * 40, 0, 40, 80, self.x1, self.y1)
         else:
             self.image1.clip_draw(0, 0, 40, 80, self.x1, self.y1)
             draw_rectangle(*self.get_bb())
@@ -392,7 +420,14 @@ class ENEMY_JET:
         # self.image8.clip_draw(0, 0, 40, 30, self.x8, self.y8)
         pass
 
-#적 전투기 1 (레드) 총알
+
+RUN_SPEED_KMPH_ENEMY_BULLET = 20  # km/hour
+RUN_SPEED_MPM_ENEMY_BULLET = (RUN_SPEED_KMPH_ENEMY_BULLET * 1000.0 / 60.0)
+RUN_SPEED_MPS_ENEMY_BULLET = (RUN_SPEED_MPM_ENEMY_BULLET / 60.0)
+RUN_SPEED_PPS_ENEMY_BULLET = (RUN_SPEED_MPS_ENEMY_BULLET * PIXEL_PER_METER)
+
+
+# 적 전투기 1 (레드) 총알
 class ENEMY_BULLET():
     image = None
 
@@ -405,7 +440,7 @@ class ENEMY_BULLET():
         pass
 
     def update(self):
-        self.y -= 3
+        self.y -= RUN_SPEED_PPS_ENEMY_BULLET * Game_Framework.frame_time
         pass
 
     def get_bb(self):
@@ -418,7 +453,8 @@ class ENEMY_BULLET():
 
     pass
 
-#충돌처리
+
+# 충돌처리
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
@@ -574,17 +610,18 @@ def update():
         if Timer % random.randint(50, 100) == 0 and enemy.explode_check == 0:
             enemy_bullet = ENEMY_BULLET()
             enemy_bullet.x = enemy.x1
-            enemy_bullet.y = enemy.y1-25
+            enemy_bullet.y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
 
     for enemy_bullet in enemy_bullets:
         enemy_bullet.update()
-        if collide(my_jet, enemy_bullet) and my_jet.explode_check == 0:
-            my_jet.explode_check = 1
+        # if collide(my_jet, enemy_bullet) and my_jet.explode_check == 0:
+        #     my_jet.explode_check = 1
+        #     if enemy_bullet in enemy_bullets:
+        #         enemy_bullets.remove(enemy_bullet)
+        if enemy_bullet.y < 100:
             if enemy_bullet in enemy_bullets:
                 enemy_bullets.remove(enemy_bullet)
-        if enemy_bullet.y < 100:
-            enemy_bullets.remove(enemy_bullet)
 
     if my_jet.game_over_sign == 1:
         Gameover_state.Time = my_jet.NowTime
