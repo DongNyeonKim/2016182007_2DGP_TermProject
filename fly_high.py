@@ -57,6 +57,7 @@ RUN_SPEED_PPS_JET = (RUN_SPEED_MPS_JET * PIXEL_PER_METER)
 # JET Action Speed
 TIME_PER_ACTION_JET = 0.5
 ACTION_PER_TIME_JET = 1.0 / TIME_PER_ACTION_JET
+#폭발시 애니메이션 속도
 ACTION_PER_TIME_JET_EXPLODE = 0.1 / TIME_PER_ACTION_JET
 FRAMES_PER_ACTION_JET = 6
 
@@ -113,7 +114,7 @@ class MY_JET:
         pass
 
 
-RUN_SPEED_KMPH_MY_BULLET = 10  # km/hour
+RUN_SPEED_KMPH_MY_BULLET = 300  # km/hour
 RUN_SPEED_MPM_MY_BULLET = (RUN_SPEED_KMPH_MY_BULLET * 1000.0 / 60.0)
 RUN_SPEED_MPS_MY_BULLET = (RUN_SPEED_MPM_MY_BULLET / 60.0)
 RUN_SPEED_PPS_MY_BULLET = (RUN_SPEED_MPS_MY_BULLET * PIXEL_PER_METER)
@@ -161,14 +162,14 @@ class MY_BULLET:
 
         if self.bullet_dir == 1:
             if self.L_y != 610:
-                self.L_x -= 1
-                self.L_y += 1
+                self.L_x -= RUN_SPEED_KMPH_MY_BULLET * Game_Framework.frame_time
+                self.L_y += RUN_SPEED_KMPH_MY_BULLET * Game_Framework.frame_time
         elif self.bullet_dir == 2:
             if self.R_y != 610:
-                self.R_x += 1
-                self.R_y += 1
+                self.R_x += RUN_SPEED_KMPH_MY_BULLET * Game_Framework.frame_time
+                self.R_y += RUN_SPEED_KMPH_MY_BULLET * Game_Framework.frame_time
         elif self.bullet_dir == 0 and self.y != 610:
-            self.y += 1
+            self.y += RUN_SPEED_KMPH_MY_BULLET * Game_Framework.frame_time
 
         pass
 
@@ -250,7 +251,10 @@ class MY_FRIEND:
         self.image1.clip_draw(0, 0, 140, 120, self.B_x, self.B_y)
         pass
 
-
+RUN_SPEED_KMPH_MY_FRIEND_ = 6  # km/hour
+RUN_SPEED_MPM_MY_FRIEND = (RUN_SPEED_KMPH_MY_FRIEND * 1000.0 / 60.0)
+RUN_SPEED_MPS_MY_FRIEND = (RUN_SPEED_MPM_MY_FRIEND / 60.0)
+RUN_SPEED_PPS_MY_FRIEND = (RUN_SPEED_MPS_MY_FRIEND * PIXEL_PER_METER)
 # 아군 전투기 총알
 class MY_FRIEND_BULLET:
     image = None
