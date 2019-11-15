@@ -57,6 +57,7 @@ RUN_SPEED_PPS_JET = (RUN_SPEED_MPS_JET * PIXEL_PER_METER)
 # JET Action Speed
 TIME_PER_ACTION_JET = 0.5
 ACTION_PER_TIME_JET = 1.0 / TIME_PER_ACTION_JET
+ACTION_PER_TIME_JET_EXPLODE = 0.1 / TIME_PER_ACTION_JET
 FRAMES_PER_ACTION_JET = 6
 
 
@@ -79,9 +80,9 @@ class MY_JET:
 
     def update(self):
         if self.explode_check == 1:
-            if Timer % 100 == 0:
-                self.explode_frame += 1
-            if self.explode_frame == 5:
+            #if Timer % 100 == 0:
+            self.explode_frame = (self.explode_frame + FRAMES_PER_ACTION_JET * ACTION_PER_TIME_JET_EXPLODE * Game_Framework.frame_time) % 6
+            if int(self.explode_frame) == 5:
                 #폭발 프레임이 끝나면 게임 오버스테이트로 이동
                 self.game_over_sign = 1
 
@@ -105,17 +106,17 @@ class MY_JET:
         self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % self.NowTime, (255, 255, 0))
 
         if self.explode_check == 1:
-            self.explode_ani.clip_draw(self.explode_frame * 40, 0, 40, 80, self.x, self.y)
+            self.explode_ani.clip_draw(int(self.explode_frame) * 40, 0, 40, 80, self.x, self.y)
         else:
             self.image.clip_draw(int(self.frame) * 40, 0, 40, 80, self.x, self.y)
             draw_rectangle(*self.get_bb())
         pass
 
 
-RUN_SPEED_KMPH_JET = 10  # km/hour
-RUN_SPEED_MPM_JET = (RUN_SPEED_KMPH_JET * 1000.0 / 60.0)
-RUN_SPEED_MPS_JET = (RUN_SPEED_MPM_JET / 60.0)
-RUN_SPEED_PPS_JET = (RUN_SPEED_MPS_JET * PIXEL_PER_METER)
+RUN_SPEED_KMPH_MY_BULLET = 10  # km/hour
+RUN_SPEED_MPM_MY_BULLET = (RUN_SPEED_KMPH_MY_BULLET * 1000.0 / 60.0)
+RUN_SPEED_MPS_MY_BULLET = (RUN_SPEED_MPM_MY_BULLET / 60.0)
+RUN_SPEED_PPS_MY_BULLET = (RUN_SPEED_MPS_MY_BULLET * PIXEL_PER_METER)
 # 내 전투기 총알
 class MY_BULLET:
     image = None
@@ -574,10 +575,10 @@ def update():
 
     for enemy_bullet in enemy_bullets:
         enemy_bullet.update()
-        # if collide(my_jet, enemy_bullet) and my_jet.explode_check == 0:
-        #     my_jet.explode_check = 1
-        #     if enemy_bullet in enemy_bullets:
-        #         enemy_bullets.remove(enemy_bullet)
+        if collide(my_jet, enemy_bullet) and my_jet.explode_check == 0:
+            my_jet.explode_check = 1
+            if enemy_bullet in enemy_bullets:
+                enemy_bullets.remove(enemy_bullet)
         if enemy_bullet.y < 100:
             enemy_bullets.remove(enemy_bullet)
 
