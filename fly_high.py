@@ -521,7 +521,49 @@ RUN_SPEED_MPM_ENEMY_JET_2 = (RUN_SPEED_KMPH_ENEMY_JET_2 * 1000.0 / 60.0)
 RUN_SPEED_MPS_ENEMY_JET_2 = (RUN_SPEED_MPM_ENEMY_JET_2 / 60.0)
 RUN_SPEED_PPS_ENEMY_JET_2 = (RUN_SPEED_MPS_ENEMY_JET_2 * PIXEL_PER_METER)
 
+# 적 전투기3(라이트형제)
+class ENEMY_JET_3:
 
+    def __init__(self):
+        self.image1 = load_image('resource/Aft_resource/EnemyJet4.png')
+
+        self.explode_ani1 = load_image('resource/Aft_resource/Explode-enemy.png')
+
+        self.explode_frame = 0
+        self.explode_check = 0
+
+        self.x1, self.y1 = random.randint(-100, 0), random.randint(50, 550)
+        pass
+
+    def update(self):
+        # 적이 죽으면 explode_check=1 이 되고 폭발 애니메이션 실행 후 초기화 한 뒤 다시 생성
+        if self.explode_check == 1:
+            self.explode_frame = (self.explode_frame + FRAMES_PER_ACTION_ENEMY_JET * ACTION_PER_TIME_ENEMY_JET_EXPLODE * Game_Framework.frame_time) % 5
+            if int(self.explode_frame) == 4:
+                self.explode_check = 0
+                self.explode_frame = 0
+                self.x1, self.y1 = random.randintrandom.randint(-100, 0), random.randint(300, 550)
+        # 살아 있는 경우 계속 앞으로 전진
+        else:
+            self.x1 += RUN_SPEED_PPS_ENEMY_JET * Game_Framework.frame_time
+
+        # 맵 끝까지 오면 다시 위로 초기화
+        if self.x1 >= 900:
+            self.x1, self.y1 = random.randint(-100, 0), random.randint(300, 550)
+
+        pass
+
+    def get_bb(self):
+        return self.x1 - 20, self.y1 - 15, self.x1 + 20, self.y1 + 15
+
+    def draw(self):
+        if self.explode_check == 1:
+            self.explode_ani1.clip_draw(int(self.explode_frame) * 40, 0, 40, 80, self.x1, self.y1)
+        else:
+            self.image1.clip_draw(0, 0, 40, 30, self.x1, self.y1)
+            draw_rectangle(*self.get_bb())
+
+        pass
 # 충돌처리
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
