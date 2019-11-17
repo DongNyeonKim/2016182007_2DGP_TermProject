@@ -376,7 +376,7 @@ class ENEMY_JET:
         pass
 
 
-RUN_SPEED_KMPH_ENEMY_BULLET = 20  # km/hour
+RUN_SPEED_KMPH_ENEMY_BULLET = 5  # km/hour
 RUN_SPEED_MPM_ENEMY_BULLET = (RUN_SPEED_KMPH_ENEMY_BULLET * 1000.0 / 60.0)
 RUN_SPEED_MPS_ENEMY_BULLET = (RUN_SPEED_MPM_ENEMY_BULLET / 60.0)
 RUN_SPEED_PPS_ENEMY_BULLET = (RUN_SPEED_MPS_ENEMY_BULLET * PIXEL_PER_METER)
@@ -413,7 +413,6 @@ RUN_SPEED_KMPH_ENEMY_JET_2 = 3  # km/hour
 RUN_SPEED_MPM_ENEMY_JET_2 = (RUN_SPEED_KMPH_ENEMY_JET_2 * 1000.0 / 60.0)
 RUN_SPEED_MPS_ENEMY_JET_2 = (RUN_SPEED_MPM_ENEMY_JET_2 / 60.0)
 RUN_SPEED_PPS_ENEMY_JET_2 = (RUN_SPEED_MPS_ENEMY_JET_2 * PIXEL_PER_METER)
-
 
 # 적 전투기2(뚱뚱이)
 class ENEMY_JET_2:
@@ -461,7 +460,66 @@ class ENEMY_JET_2:
         pass
 
 
+# 적 전투기 2 (뚱뚱이) 총알
+class ENEMY_BULLET_2:
+    image = None
+    image_R = None
+    image_L = None
+    def __init__(self):
+        if ENEMY_BULLET_2.image is None:
+            ENEMY_BULLET_2.image = load_image('resource/Aft_resource/Fire_Enemy_1.png')
+        if ENEMY_BULLET_2.image_R is None:
+            ENEMY_BULLET_2.image_R = load_image('resource/Aft_resource/Fire_Enemy_1_R.png')
+        if ENEMY_BULLET_2.image_L is None:
+            ENEMY_BULLET_2.image_L = load_image('resource/Aft_resource/Fire_Enemy_1_L.png')
 
+        self.dir = 0
+
+        self.x = 0
+        self.y = 0
+        self.R_x = 0
+        self.R_y = 0
+        self.L_x = 0
+        self.L_y = 0
+        pass
+
+    def update(self):
+        if self.dir == 0:
+            self.y -= RUN_SPEED_PPS_ENEMY_BULLET * Game_Framework.frame_time
+        if self.dir == 1:
+            self.R_y -= RUN_SPEED_PPS_ENEMY_BULLET * Game_Framework.frame_time
+            self.R_x += RUN_SPEED_PPS_ENEMY_BULLET * Game_Framework.frame_time
+        if self.dir == 2:
+            self.L_y -= RUN_SPEED_PPS_ENEMY_BULLET * Game_Framework.frame_time
+            self.L_x -= RUN_SPEED_PPS_ENEMY_BULLET * Game_Framework.frame_time
+        pass
+
+    def get_bb(self):
+        if self.dir == 0:
+            return self.x - 5, self.y - 6, self.x + 5, self.y + 6
+        elif self.dir == 1:
+            return self.R_x -6, self.R_y - 6, self.R_x + 6, self.R_y + 6
+        elif self.dir == 2:
+            return self.L_x -6, self.L_y - 6, self.L_x + 6, self.L_y + 6
+
+    def draw(self):
+        if self.dir == 0:
+            self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
+            draw_rectangle(*self.get_bb())
+        if self.dir == 1:
+            self.image_R.clip_draw(0, 0, 12, 12, self.R_x, self.R_y)
+            draw_rectangle(*self.get_bb())
+        if self.dir == 2:
+            self.image_L.clip_draw(0, 0, 12, 12, self.L_x, self.L_y)
+            draw_rectangle(*self.get_bb())
+        pass
+
+    pass
+
+RUN_SPEED_KMPH_ENEMY_JET_2 = 3  # km/hour
+RUN_SPEED_MPM_ENEMY_JET_2 = (RUN_SPEED_KMPH_ENEMY_JET_2 * 1000.0 / 60.0)
+RUN_SPEED_MPS_ENEMY_JET_2 = (RUN_SPEED_MPM_ENEMY_JET_2 / 60.0)
+RUN_SPEED_PPS_ENEMY_JET_2 = (RUN_SPEED_MPS_ENEMY_JET_2 * PIXEL_PER_METER)
 
 
 # 충돌처리
@@ -478,7 +536,7 @@ def collide(a, b):
 
 
 def enter():
-    global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2, First_Time, Timer
+    global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2, enemy_jets_3, First_Time, Timer
     background = BACKGROUND()
 
     my_jet = MY_JET()
@@ -487,8 +545,9 @@ def enter():
     my_friend = MY_FRIEND()
     my_friend_bullets = []
 
-    enemy_jets = [ENEMY_JET() for i in range(10)]
-    enemy_jets_2 = [ENEMY_JET_2() for i in range(10)]
+    enemy_jets = [ENEMY_JET() for i in range(1)]
+    enemy_jets_2 = [ENEMY_JET_2() for i in range(1)]
+    enemy_jets_3 = [ENEMY_JET_3() for i in range(10)]
 
     enemy_bullets = []
 
@@ -496,13 +555,14 @@ def enter():
 
 
 def exit():
-    global my_jet, background, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_jets_2
+    global my_jet, background, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_jets_2, enemy_jets_3
     del my_jet
     del background
     del my_bullets
     del my_friend
     del enemy_jets
     del enemy_jets_2
+    del enemy_jets_3
     del my_friend_bullets
 
 
@@ -639,16 +699,29 @@ def update():
         enemy.update()
         if Timer % random.randint(100,200) == 0 and enemy.explode_check == 0:
             enemy_bullet = ENEMY_BULLET_2()
+            enemy_bullet.dir = random.randint(0,2)
+            enemy_bullet.x = enemy.x1
+            enemy_bullet.y = enemy.y1 - 25
+            enemy_bullet.R_x = enemy.x1
+            enemy_bullet.R_y = enemy.y1 - 25
+            enemy_bullet.L_x = enemy.x1
+            enemy_bullet.L_y = enemy.y1 - 25
+            enemy_bullets.append(enemy_bullet)
+    for enemy in enemy_jets_3:
+        enemy.update()
+        if Timer % random.randint(50, 100) == 0 and enemy.explode_check == 0:
+            enemy_bullet = ENEMY_BULLET()
             enemy_bullet.x = enemy.x1
             enemy_bullet.y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
 
+#적군 총알 충돌처리
     for enemy_bullet in enemy_bullets:
         enemy_bullet.update()
-        # if collide(my_jet, enemy_bullet) and my_jet.explode_check == 0:
-        #     my_jet.explode_check = 1
-        #     if enemy_bullet in enemy_bullets:
-        #         enemy_bullets.remove(enemy_bullet)
+        if collide(my_jet, enemy_bullet) and my_jet.explode_check == 0:
+            my_jet.explode_check = 1
+            if enemy_bullet in enemy_bullets:
+                enemy_bullets.remove(enemy_bullet)
         if enemy_bullet.y < 100:
             if enemy_bullet in enemy_bullets:
                 enemy_bullets.remove(enemy_bullet)
@@ -678,5 +751,8 @@ def draw():
         enemy_bullet.draw()
 
     for enemy in enemy_jets_2:
+        enemy.draw()
+
+    for enemy in enemy_jets_3:
         enemy.draw()
     update_canvas()
