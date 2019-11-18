@@ -542,7 +542,7 @@ class ENEMY_JET_3:
             if int(self.explode_frame) == 4:
                 self.explode_check = 0
                 self.explode_frame = 0
-                self.x1, self.y1 = random.randintrandom.randint(-100, 0), random.randint(300, 550)
+                self.x1, self.y1 = random.randint(-100, 0), random.randint(300, 550)
         # 살아 있는 경우 계속 앞으로 전진
         else:
             self.x1 += RUN_SPEED_PPS_ENEMY_JET * Game_Framework.frame_time
@@ -587,9 +587,9 @@ def enter():
     my_friend = MY_FRIEND()
     my_friend_bullets = []
 
-    enemy_jets = [ENEMY_JET() for i in range(1)]
-    enemy_jets_2 = [ENEMY_JET_2() for i in range(1)]
-    enemy_jets_3 = [ENEMY_JET_3() for i in range(10)]
+    enemy_jets = [ENEMY_JET() for i in range(8)]
+    enemy_jets_2 = [ENEMY_JET_2() for i in range(8)]
+    enemy_jets_3 = [ENEMY_JET_3() for i in range(2)]
 
     enemy_bullets = []
 
@@ -690,6 +690,11 @@ def update():
                 if bullet in my_bullets:
                     my_bullets.remove(bullet)
         for enemy in enemy_jets_2:
+            if collide(enemy, bullet) and enemy.explode_check == 0:
+                enemy.explode_check = 1
+                if bullet in my_bullets:
+                    my_bullets.remove(bullet)
+        for enemy in enemy_jets_3:
             if collide(enemy, bullet) and enemy.explode_check == 0:
                 enemy.explode_check = 1
                 if bullet in my_bullets:
