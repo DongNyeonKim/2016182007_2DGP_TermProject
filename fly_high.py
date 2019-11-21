@@ -107,7 +107,7 @@ class MY_JET:
         pass
 
     def get_bb(self):
-        return self.x - 20, self.y, self.x + 20, self.y + 40
+        return self.x - 17, self.y, self.x + 17, self.y + 40
 
     def draw(self):
         self.NowTime = time.time() - First_Time
@@ -364,7 +364,7 @@ class ENEMY_JET:
         pass
 
     def get_bb(self):
-        return self.x1 - 20, self.y1 - 40, self.x1 + 20, self.y1 + 40
+        return self.x1 - 15, self.y1 - 35, self.x1 + 15, self.y1 + 35
 
     def draw(self):
         if self.explode_check == 1:
@@ -589,7 +589,7 @@ def enter():
 
     enemy_jets = [ENEMY_JET() for i in range(8)]
     enemy_jets_2 = [ENEMY_JET_2() for i in range(8)]
-    enemy_jets_3 = [ENEMY_JET_3() for i in range(2)]
+    enemy_jets_3 = [ENEMY_JET_3() for i in range(4)]
 
     enemy_bullets = []
 
