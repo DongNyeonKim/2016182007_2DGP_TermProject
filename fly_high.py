@@ -8,14 +8,6 @@ import time
 
 name = "Main_state"
 
-# 없어도 되나? ㅅㅂ
-# background = None
-# my_jet = None
-# my_bullets = None
-# my_friend = None
-# my_friend_bullets = None
-# enemy_jet = None
-# enemy_jets = None
 Timer = 0
 
 PIXEL_PER_METER = (10.0 / 0.1)  # 10pixel 10cm
@@ -348,7 +340,7 @@ class ENEMY_JET:
         # 적이 죽으면 explode_check=1 이 되고 폭발 애니메이션 실행 후 초기화 한 뒤 다시 생성
         if self.explode_check == 1:
             self.explode_frame = (
-                                             self.explode_frame + FRAMES_PER_ACTION_ENEMY_JET * ACTION_PER_TIME_ENEMY_JET_EXPLODE * Game_Framework.frame_time) % 5
+                                         self.explode_frame + FRAMES_PER_ACTION_ENEMY_JET * ACTION_PER_TIME_ENEMY_JET_EXPLODE * Game_Framework.frame_time) % 5
             if int(self.explode_frame) == 4:
                 self.explode_check = 0
                 self.explode_frame = 0
@@ -414,6 +406,7 @@ RUN_SPEED_MPM_ENEMY_JET_2 = (RUN_SPEED_KMPH_ENEMY_JET_2 * 1000.0 / 60.0)
 RUN_SPEED_MPS_ENEMY_JET_2 = (RUN_SPEED_MPM_ENEMY_JET_2 / 60.0)
 RUN_SPEED_PPS_ENEMY_JET_2 = (RUN_SPEED_MPS_ENEMY_JET_2 * PIXEL_PER_METER)
 
+
 # 적 전투기2(뚱뚱이)
 class ENEMY_JET_2:
 
@@ -432,7 +425,7 @@ class ENEMY_JET_2:
         # 적이 죽으면 explode_check=1 이 되고 폭발 애니메이션 실행 후 초기화 한 뒤 다시 생성
         if self.explode_check == 1:
             self.explode_frame = (
-                                             self.explode_frame + FRAMES_PER_ACTION_ENEMY_JET * ACTION_PER_TIME_ENEMY_JET_EXPLODE * Game_Framework.frame_time) % 5
+                                         self.explode_frame + FRAMES_PER_ACTION_ENEMY_JET * ACTION_PER_TIME_ENEMY_JET_EXPLODE * Game_Framework.frame_time) % 5
             if int(self.explode_frame) == 4:
                 self.explode_check = 0
                 self.explode_frame = 0
@@ -465,6 +458,7 @@ class ENEMY_BULLET_2:
     image = None
     image_R = None
     image_L = None
+
     def __init__(self):
         if ENEMY_BULLET_2.image is None:
             ENEMY_BULLET_2.image = load_image('resource/Aft_resource/Fire_Enemy_1.png')
@@ -498,9 +492,9 @@ class ENEMY_BULLET_2:
         if self.dir == 0:
             return self.x - 5, self.y - 6, self.x + 5, self.y + 6
         elif self.dir == 1:
-            return self.R_x -6, self.R_y - 6, self.R_x + 6, self.R_y + 6
+            return self.R_x - 6, self.R_y - 6, self.R_x + 6, self.R_y + 6
         elif self.dir == 2:
-            return self.L_x -6, self.L_y - 6, self.L_x + 6, self.L_y + 6
+            return self.L_x - 6, self.L_y - 6, self.L_x + 6, self.L_y + 6
 
     def draw(self):
         if self.dir == 0:
@@ -516,10 +510,12 @@ class ENEMY_BULLET_2:
 
     pass
 
+
 RUN_SPEED_KMPH_ENEMY_JET_2 = 3  # km/hour
 RUN_SPEED_MPM_ENEMY_JET_2 = (RUN_SPEED_KMPH_ENEMY_JET_2 * 1000.0 / 60.0)
 RUN_SPEED_MPS_ENEMY_JET_2 = (RUN_SPEED_MPM_ENEMY_JET_2 / 60.0)
 RUN_SPEED_PPS_ENEMY_JET_2 = (RUN_SPEED_MPS_ENEMY_JET_2 * PIXEL_PER_METER)
+
 
 # 적 전투기3(라이트형제)
 class ENEMY_JET_3:
@@ -538,7 +534,8 @@ class ENEMY_JET_3:
     def update(self):
         # 적이 죽으면 explode_check=1 이 되고 폭발 애니메이션 실행 후 초기화 한 뒤 다시 생성
         if self.explode_check == 1:
-            self.explode_frame = (self.explode_frame + FRAMES_PER_ACTION_ENEMY_JET * ACTION_PER_TIME_ENEMY_JET_EXPLODE * Game_Framework.frame_time) % 5
+            self.explode_frame = (
+                                             self.explode_frame + FRAMES_PER_ACTION_ENEMY_JET * ACTION_PER_TIME_ENEMY_JET_EXPLODE * Game_Framework.frame_time) % 5
             if int(self.explode_frame) == 4:
                 self.explode_check = 0
                 self.explode_frame = 0
@@ -564,6 +561,8 @@ class ENEMY_JET_3:
             draw_rectangle(*self.get_bb())
 
         pass
+
+
 # 충돌처리
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
@@ -617,7 +616,6 @@ def resume():
 
 
 def handle_events():
-    # global my_jet, my_bullets, my_friend
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -646,7 +644,6 @@ def handle_events():
                 my_bullets.append(bullet)
                 pass
 
-                # mixer.music.play()
             elif event.key == SDLK_a:
                 my_friend.sign += 1
             elif event.key == SDLK_s:
@@ -685,7 +682,6 @@ def update():
         # 적군과 충돌처리
         for enemy in enemy_jets:
             if collide(enemy, bullet) and enemy.explode_check == 0:
-                # if enemy.y1 + 10 >= bullet.y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.x >= enemy.x1 - 10 or enemy.y1 + 10 >= bullet.L_y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.L_x >= enemy.x1 - 10 or enemy.y1 + 10 >= bullet.R_y >= enemy.y1 - 10 and enemy.x1 + 10 >= bullet.R_x >= enemy.x1 - 10:
                 enemy.explode_check = 1
                 if bullet in my_bullets:
                     my_bullets.remove(bullet)
@@ -724,7 +720,6 @@ def update():
                 my_friend_bullets.remove(sbullet)
         for enemy in enemy_jets:
             if collide(enemy, sbullet) and enemy.explode_check == 0:
-                # if enemy.y1 + 10 >= sbullet.a_y >= enemy.y1 - 10 and enemy.x1 + 10 >= sbullet.a_x >= enemy.x1 - 10 or enemy.y1 + 10 >= sbullet.b_y >= enemy.y1 - 10 and enemy.x1 + 10 >= sbullet.b_x >= enemy.x1 - 10:
                 enemy.explode_check = 1
                 if sbullet in my_friend_bullets:
                     my_friend_bullets.remove(sbullet)
@@ -744,9 +739,9 @@ def update():
             enemy_bullets.append(enemy_bullet)
     for enemy in enemy_jets_2:
         enemy.update()
-        if Timer % random.randint(100,200) == 0 and enemy.explode_check == 0:
+        if Timer % random.randint(100, 200) == 0 and enemy.explode_check == 0:
             enemy_bullet = ENEMY_BULLET_2()
-            enemy_bullet.dir = random.randint(0,2)
+            enemy_bullet.dir = random.randint(0, 2)
             enemy_bullet.x = enemy.x1
             enemy_bullet.y = enemy.y1 - 25
             enemy_bullet.R_x = enemy.x1
@@ -762,7 +757,7 @@ def update():
             enemy_bullet.y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
 
-#적군 총알 충돌처리
+    # 적군 총알 충돌처리
     for enemy_bullet in enemy_bullets:
         enemy_bullet.update()
         if collide(my_jet, enemy_bullet) and my_jet.explode_check == 0:
@@ -788,8 +783,8 @@ def draw():
         bullet.draw()
     my_friend.draw()
 
-    for sbullet in my_friend_bullets:
-        sbullet.draw()
+    for bullet in my_friend_bullets:
+        bullet.draw()
 
     for enemy in enemy_jets:
         enemy.draw()
