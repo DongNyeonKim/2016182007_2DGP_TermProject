@@ -727,6 +727,8 @@ def update():
                 enemy.explode_check = 1
                 if sbullet in my_friend_bullets:
                     my_friend_bullets.remove(sbullet)
+            if collide(my_jet, enemy) and my_jet.explode_check == 0:
+                my_jet.explode_check = 1
         for enemy in enemy_jets_2:
             if collide(enemy, sbullet) and enemy.explode_check == 0:
                 enemy.explode_check = 1
