@@ -9,6 +9,7 @@ import time
 name = "Main_state"
 
 Timer = 0
+#적들 숫자 설정(난이도 설정)
 Enemy1_quantity = 0
 Enemy2_quantity = 0
 Enemy3_quantity = 0

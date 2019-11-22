@@ -13,15 +13,16 @@ mixer.init()
 mixer.music.load('resource/Sound/TitleSound.mp3')
 
 def enter():
-    global image, Frame
+    global image, Frame, font
     Frame =4
 
     image = load_image('resource/Aft_resource/Titlestate_ani.png')
+    font = load_font('resource/ENCR10B.TTF', 20)
     mixer.music.play()
 
 def exit():
     global image
-    del(image)
+    del image
 
 
 def handle_events():
@@ -33,19 +34,19 @@ def handle_events():
             if(event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
                 mixer.music.stop()
                 Game_Framework.change_state(Start_state)
-            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_a):
+            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_1):
                 mixer.music.stop()
                 fly_high.Enemy1_quantity = 5
                 fly_high.Enemy2_quantity = 5
                 fly_high.Enemy3_quantity = 3
                 Game_Framework.change_state(fly_high)
-            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_s):
+            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_2):
                 mixer.music.stop()
                 fly_high.Enemy1_quantity = 7
                 fly_high.Enemy2_quantity = 7
                 fly_high.Enemy3_quantity = 5
                 Game_Framework.change_state(fly_high)
-            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_d):
+            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_3):
                 mixer.music.stop()
                 fly_high.Enemy1_quantity = 12
                 fly_high.Enemy2_quantity = 12
@@ -57,10 +58,10 @@ def handle_events():
 def draw():
     clear_canvas()
     image.clip_draw(0,600*Frame,800,600,400,300)
+    font.draw(50, 500, '(Press 1: EASY MODE)', (255, 255, 0))
+    font.draw(50, 450, '(Press 2: NORMAL MODE)', (255, 255, 0))
+    font.draw(50, 400, '(Press 3: HARD MODE)', (255, 255, 0))
     update_canvas()
-
-
-
 
 
 
