@@ -727,8 +727,6 @@ def update():
                 enemy.explode_check = 1
                 if sbullet in my_friend_bullets:
                     my_friend_bullets.remove(sbullet)
-            if collide(my_jet, enemy) and my_jet.explode_check == 0:
-                my_jet.explode_check = 1
         for enemy in enemy_jets_2:
             if collide(enemy, sbullet) and enemy.explode_check == 0:
                 enemy.explode_check = 1
@@ -743,6 +741,9 @@ def update():
             enemy_bullet.x = enemy.x1
             enemy_bullet.y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
+        if collide(my_jet, enemy) and my_jet.explode_check == 0:
+            my_jet.explode_check = 1
+            enemy.explode_check = 1
     for enemy in enemy_jets_2:
         enemy.update()
         if Timer % random.randint(100, 200) == 0 and enemy.explode_check == 0:
@@ -755,6 +756,9 @@ def update():
             enemy_bullet.L_x = enemy.x1
             enemy_bullet.L_y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
+        if collide(my_jet, enemy) and my_jet.explode_check == 0:
+            my_jet.explode_check = 1
+            enemy.explode_check = 1
     for enemy in enemy_jets_3:
         enemy.update()
         if Timer % random.randint(50, 100) == 0 and enemy.explode_check == 0:
@@ -762,7 +766,9 @@ def update():
             enemy_bullet.x = enemy.x1
             enemy_bullet.y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
-
+        if collide(my_jet, enemy) and my_jet.explode_check == 0:
+            my_jet.explode_check = 1
+            enemy.explode_check = 1
     # 적군 총알 충돌처리
     for enemy_bullet in enemy_bullets:
         enemy_bullet.update()
