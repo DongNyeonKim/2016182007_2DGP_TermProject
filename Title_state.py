@@ -41,9 +41,9 @@ def handle_events():
                 Game_Framework.change_state(fly_high)
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_s):
                 mixer.music.stop()
-                fly_high.Enemy1_quantity = 8
-                fly_high.Enemy2_quantity = 8
-                fly_high.Enemy3_quantity = 6
+                fly_high.Enemy1_quantity = 7
+                fly_high.Enemy2_quantity = 7
+                fly_high.Enemy3_quantity = 5
                 Game_Framework.change_state(fly_high)
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_d):
                 mixer.music.stop()
