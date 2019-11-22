@@ -9,6 +9,9 @@ import time
 name = "Main_state"
 
 Timer = 0
+Enemy1_quantity = 0
+Enemy2_quantity = 0
+Enemy3_quantity = 0
 
 PIXEL_PER_METER = (10.0 / 0.1)  # 10pixel 10cm
 RUN_SPEED_KMPH_BACKGROUND = 30  # km/hour
@@ -586,9 +589,9 @@ def enter():
     my_friend = MY_FRIEND()
     my_friend_bullets = []
 
-    enemy_jets = [ENEMY_JET() for i in range(8)]
-    enemy_jets_2 = [ENEMY_JET_2() for i in range(8)]
-    enemy_jets_3 = [ENEMY_JET_3() for i in range(4)]
+    enemy_jets = [ENEMY_JET() for i in range(Enemy1_quantity)]
+    enemy_jets_2 = [ENEMY_JET_2() for i in range(Enemy2_quantity)]
+    enemy_jets_3 = [ENEMY_JET_3() for i in range(Enemy3_quantity)]
 
     enemy_bullets = []
 

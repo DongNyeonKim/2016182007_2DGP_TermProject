@@ -33,8 +33,23 @@ def handle_events():
             if(event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
                 mixer.music.stop()
                 Game_Framework.change_state(Start_state)
-            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
+            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_a):
                 mixer.music.stop()
+                fly_high.Enemy1_quantity = 5
+                fly_high.Enemy2_quantity = 5
+                fly_high.Enemy3_quantity = 3
+                Game_Framework.change_state(fly_high)
+            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_s):
+                mixer.music.stop()
+                fly_high.Enemy1_quantity = 8
+                fly_high.Enemy2_quantity = 8
+                fly_high.Enemy3_quantity = 6
+                Game_Framework.change_state(fly_high)
+            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_d):
+                mixer.music.stop()
+                fly_high.Enemy1_quantity = 12
+                fly_high.Enemy2_quantity = 12
+                fly_high.Enemy3_quantity = 9
                 Game_Framework.change_state(fly_high)
 
 
