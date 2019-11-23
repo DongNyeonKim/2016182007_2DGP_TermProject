@@ -75,7 +75,8 @@ class Timer:
     def update(self):
         pass
     def draw(self):
-        self.NowTime = 
+        self.NowTime = time.time() - First_Time
+        self.font.draw(500,  600, '(Time: %3.2f)' % self.NowTime, (255, 255, 0))
         pass
 # JET Speed
 RUN_SPEED_KMPH_JET = 10  # km/hour
@@ -606,7 +607,7 @@ def collide(a, b):
 
 
 def enter():
-    global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2, enemy_jets_3, First_Time, Timer, cloud
+    global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2, enemy_jets_3, First_Time, Timer, cloud,time
     background = BACKGROUND()
 
     my_jet = MY_JET()
@@ -623,7 +624,7 @@ def enter():
 
     First_Time = 0.0
     cloud = Cloud()
-
+    time =Timer()
 def exit():
     global my_jet, background, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_jets_2, enemy_jets_3
     del my_jet
@@ -837,4 +838,5 @@ def draw():
     for enemy in enemy_jets_3:
         enemy.draw()
     cloud.draw()
+    time.draw()
     update_canvas()
