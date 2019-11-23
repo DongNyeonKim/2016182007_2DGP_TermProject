@@ -67,6 +67,16 @@ class Cloud:
         self.cloud.clip_draw(0,0,400,250, self.x,self.y)
         pass
 
+class Timer:
+    def __init__(self):
+        self.font = load_font('resource/ENCR10B.TTF', 16)
+        self.NowTime = 0
+        pass
+    def update(self):
+        pass
+    def draw(self):
+        self.NowTime = 
+        pass
 # JET Speed
 RUN_SPEED_KMPH_JET = 10  # km/hour
 RUN_SPEED_MPM_JET = (RUN_SPEED_KMPH_JET * 1000.0 / 60.0)
