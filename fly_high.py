@@ -4,8 +4,8 @@ import Title_state
 import Gameover_state
 from pygame import mixer
 import random
-
 import time
+import cloud
 
 name = "Main_state"
 
@@ -53,31 +53,13 @@ class BACKGROUND:
         pass
 
 
-class Cloud:
-    def __init__(self):
-        self.cloud = load_image('resource/Aft_resource/cloud.png')
-        self.x1, self.y1 = -300, 400
-        self.x2, self.y2 = -700, 200
-        pass
-
-    def update(self):
-        self.x1 += 0.3
-        self.x2 += 0.3
-        if self.x1 > 1500:
-            self.x1 = random.randint(-400, -200)
-            self.y1 = random.randint(400, 700)
-        if self.x2 > 1500:
-            self.x2 = random.randint(-600, -400)
-            self.y2 = random.randint(100, 400)
-        pass
-
-    def draw(self):
-        self.cloud.clip_draw(0, 0, 400, 250, self.x1, self.y1)
-        self.cloud.clip_draw(0, 0, 400, 250, self.x2,self.y2)
-        pass
 
 
-class PlayTime:
+
+
+
+
+class PLAYTIME:
     def __init__(self):
         self.font = load_font('resource/ENCR10B.TTF', 20)
         self.NowTime = 0
@@ -125,7 +107,7 @@ class MY_JET:
         if self.explode_check == 1:
             # if Timer % 100 == 0:
             self.explode_frame = (
-                                             self.explode_frame + FRAMES_PER_ACTION_JET * ACTION_PER_TIME_JET_EXPLODE * Game_Framework.frame_time) % 6
+                                         self.explode_frame + FRAMES_PER_ACTION_JET * ACTION_PER_TIME_JET_EXPLODE * Game_Framework.frame_time) % 6
             if int(self.explode_frame) == 5:
                 # 폭발 프레임이 끝나면 게임 오버스테이트로 이동
                 self.game_over_sign = 1
@@ -414,13 +396,12 @@ RUN_SPEED_PPS_ENEMY_BULLET = (RUN_SPEED_MPS_ENEMY_BULLET * PIXEL_PER_METER)
 
 
 # 적 전투기 1 (레드) 총알
-class ENEMY_BULLET():
+class ENEMY_BULLET:
     image = None
 
     def __init__(self):
         if ENEMY_BULLET.image is None:
             ENEMY_BULLET.image = load_image('resource/Aft_resource/Fire_Enemy.png')
-
         self.x = 0
         self.y = 0
         pass
@@ -444,7 +425,6 @@ RUN_SPEED_KMPH_ENEMY_JET_2 = 3  # km/hour
 RUN_SPEED_MPM_ENEMY_JET_2 = (RUN_SPEED_KMPH_ENEMY_JET_2 * 1000.0 / 60.0)
 RUN_SPEED_MPS_ENEMY_JET_2 = (RUN_SPEED_MPM_ENEMY_JET_2 / 60.0)
 RUN_SPEED_PPS_ENEMY_JET_2 = (RUN_SPEED_MPS_ENEMY_JET_2 * PIXEL_PER_METER)
-
 
 # 적 전투기2(뚱뚱이)
 class ENEMY_JET_2:
@@ -550,11 +530,11 @@ class ENEMY_BULLET_2:
     pass
 
 
-RUN_SPEED_KMPH_ENEMY_JET_2 = 3  # km/hour
-RUN_SPEED_MPM_ENEMY_JET_2 = (RUN_SPEED_KMPH_ENEMY_JET_2 * 1000.0 / 60.0)
-RUN_SPEED_MPS_ENEMY_JET_2 = (RUN_SPEED_MPM_ENEMY_JET_2 / 60.0)
-RUN_SPEED_PPS_ENEMY_JET_2 = (RUN_SPEED_MPS_ENEMY_JET_2 * PIXEL_PER_METER)
 
+RUN_SPEED_KMPH_ENEMY_JET_3 = 3  # km/hour
+RUN_SPEED_MPM_ENEMY_JET_3 = (RUN_SPEED_KMPH_ENEMY_JET_3 * 1000.0 / 60.0)
+RUN_SPEED_MPS_ENEMY_JET_3 = (RUN_SPEED_MPM_ENEMY_JET_3 / 60.0)
+RUN_SPEED_PPS_ENEMY_JET_3 = (RUN_SPEED_MPS_ENEMY_JET_3 * PIXEL_PER_METER)
 
 # 적 전투기3(라이트형제)
 class ENEMY_JET_3:
@@ -581,7 +561,7 @@ class ENEMY_JET_3:
                 self.x1, self.y1 = random.randint(-100, 0), random.randint(300, 550)
         # 살아 있는 경우 계속 앞으로 전진
         else:
-            self.x1 += RUN_SPEED_PPS_ENEMY_JET * Game_Framework.frame_time
+            self.x1 += RUN_SPEED_PPS_ENEMY_JET_3 * Game_Framework.frame_time
 
         # 맵 끝까지 오면 다시 위로 초기화
         if self.x1 >= 900:
@@ -598,7 +578,6 @@ class ENEMY_JET_3:
         else:
             self.image1.clip_draw(0, 0, 40, 30, self.x1, self.y1)
             draw_rectangle(*self.get_bb())
-
         pass
 
 
@@ -618,10 +597,10 @@ def collide(a, b):
 def enter():
     global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2, enemy_jets_3, First_Time, Timer, cloud, playtime
     background = BACKGROUND()
-    cloud = Cloud()
+    cloud = cloud.CLOUD()
 
     First_Time = 0.0
-    playtime = PlayTime()
+    playtime = PLAYTIME()
 
     my_jet = MY_JET()
     my_bullets = []
@@ -688,7 +667,7 @@ def handle_events():
             elif event.key == SDLK_a:
                 my_friend.sign += 1
             elif event.key == SDLK_s:
-                Gameover_state.Time = my_jet.NowTime
+                Gameover_state.Time = playtime.NowTime
                 Game_Framework.change_state(Gameover_state)
 
         elif event.type == SDL_KEYUP:
@@ -720,7 +699,6 @@ def update():
     # 내 총알의 충돌처리
     for bullet in my_bullets:
         bullet.update()
-        # print(bullet.x, bullet.y)
         # 적군과 충돌처리
         for enemy in enemy_jets:
             if collide(enemy, bullet) and enemy.explode_check == 0:
