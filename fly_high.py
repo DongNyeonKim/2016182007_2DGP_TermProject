@@ -58,9 +58,13 @@ class Cloud:
 
         pass
     def update(self):
+        self.x += 0.3
+        if self.x > 700:
+            self.x =0
+            self.y=300
         pass
     def draw(self):
-        self.cloud.clip_draw(0,0,200,200, 400,300)
+        self.cloud.clip_draw(0,0,400,250, self.x,self.y)
         pass
 
 # JET Speed
@@ -687,6 +691,7 @@ def handle_events():
 def update():
     global Timer, enemy_bullet, First_Time
     background.update()
+    cloud.update()
     my_jet.update()
     if First_Time == 0:
         First_Time = time.time()
