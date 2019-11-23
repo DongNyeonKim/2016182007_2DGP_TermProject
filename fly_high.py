@@ -4,12 +4,13 @@ import Title_state
 import Gameover_state
 from pygame import mixer
 import random
+
 import time
 
 name = "Main_state"
 
 Timer = 0
-#적들 숫자 설정(난이도 설정)
+# 적들 숫자 설정(난이도 설정)
 Enemy1_quantity = 0
 Enemy2_quantity = 0
 Enemy3_quantity = 0
@@ -19,7 +20,6 @@ RUN_SPEED_KMPH_BACKGROUND = 30  # km/hour
 RUN_SPEED_MPM_BACKGROUND = (RUN_SPEED_KMPH_BACKGROUND * 1000.0 / 60.0)
 RUN_SPEED_MPS_BACKGROUND = (RUN_SPEED_MPM_BACKGROUND / 60.0)
 RUN_SPEED_PPS_BACKGROUND = (RUN_SPEED_MPS_BACKGROUND * PIXEL_PER_METER)
-
 
 # 배경화면
 # background1, background2 가 y축으로 움직이면서 배경을 이어 보이게 만듦
@@ -51,33 +51,41 @@ class BACKGROUND:
         self.background2.clip_draw(0, 0, 800, 600, 800 // 2, self.b + self.background2_move_y)
         pass
 
+
 class Cloud:
     def __init__(self):
         self.cloud = load_image('resource/Aft_resource/cloud.png')
-        self.x, self.y = 200,200
+        self.x, self.y = 200, 200
 
         pass
+
     def update(self):
         self.x += 0.3
         if self.x > 700:
-            self.x =0
-            self.y=300
-        pass
-    def draw(self):
-        self.cloud.clip_draw(0,0,400,250, self.x,self.y)
+            self.x = 0
+            self.y = 300
         pass
 
-class Timer:
+    def draw(self):
+        self.cloud.clip_draw(0, 0, 400, 250, self.x, self.y)
+        pass
+
+
+class PlayTime:
     def __init__(self):
-        self.font = load_font('resource/ENCR10B.TTF', 16)
+        self.font = load_font('resource/ENCR10B.TTF', 20)
         self.NowTime = 0
         pass
+
     def update(self):
         pass
+
     def draw(self):
         self.NowTime = time.time() - First_Time
-        self.font.draw(500,  600, '(Time: %3.2f)' % self.NowTime, (255, 255, 0))
+        self.font.draw(650, 580, '(Time: %3.2f)' % self.NowTime, (255, 0, 128))
         pass
+
+
 # JET Speed
 RUN_SPEED_KMPH_JET = 10  # km/hour
 RUN_SPEED_MPM_JET = (RUN_SPEED_KMPH_JET * 1000.0 / 60.0)
@@ -101,7 +109,6 @@ class MY_JET:
         self.frame = 0
         self.x, self.y = 400, 300
         self.move_x, self.move_y = 0, 0
-        self.NowTime = 0
 
         self.explode_frame = 0
         self.explode_check = 0
@@ -111,8 +118,7 @@ class MY_JET:
     def update(self):
         if self.explode_check == 1:
             # if Timer % 100 == 0:
-            self.explode_frame = (
-                                         self.explode_frame + FRAMES_PER_ACTION_JET * ACTION_PER_TIME_JET_EXPLODE * Game_Framework.frame_time) % 6
+            self.explode_frame = (self.explode_frame + FRAMES_PER_ACTION_JET * ACTION_PER_TIME_JET_EXPLODE * Game_Framework.frame_time) % 6
             if int(self.explode_frame) == 5:
                 # 폭발 프레임이 끝나면 게임 오버스테이트로 이동
                 self.game_over_sign = 1
@@ -132,10 +138,6 @@ class MY_JET:
         return self.x - 17, self.y, self.x + 17, self.y + 40
 
     def draw(self):
-        self.NowTime = time.time() - First_Time
-        # print(self.NowTime)
-        self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % self.NowTime, (255, 255, 0))
-
         if self.explode_check == 1:
             self.explode_ani.clip_draw(int(self.explode_frame) * 40, 0, 40, 80, self.x, self.y)
         else:
@@ -565,7 +567,7 @@ class ENEMY_JET_3:
         # 적이 죽으면 explode_check=1 이 되고 폭발 애니메이션 실행 후 초기화 한 뒤 다시 생성
         if self.explode_check == 1:
             self.explode_frame = (
-                                             self.explode_frame + FRAMES_PER_ACTION_ENEMY_JET * ACTION_PER_TIME_ENEMY_JET_EXPLODE * Game_Framework.frame_time) % 5
+                                         self.explode_frame + FRAMES_PER_ACTION_ENEMY_JET * ACTION_PER_TIME_ENEMY_JET_EXPLODE * Game_Framework.frame_time) % 5
             if int(self.explode_frame) == 4:
                 self.explode_check = 0
                 self.explode_frame = 0
@@ -607,8 +609,12 @@ def collide(a, b):
 
 
 def enter():
-    global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2, enemy_jets_3, First_Time, Timer, cloud,time
+    global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2, enemy_jets_3, First_Time, Timer, cloud, playtime
     background = BACKGROUND()
+    cloud = Cloud()
+
+    First_Time = 0.0
+    playtime = PlayTime()
 
     my_jet = MY_JET()
     my_bullets = []
@@ -622,9 +628,7 @@ def enter():
 
     enemy_bullets = []
 
-    First_Time = 0.0
-    cloud = Cloud()
-    time =Timer()
+
 def exit():
     global my_jet, background, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_jets_2, enemy_jets_3
     del my_jet
@@ -809,7 +813,7 @@ def update():
 
     # 내 전투기기가 폭발하면 게임 종료
     if my_jet.game_over_sign == 1:
-        Gameover_state.Time = my_jet.NowTime
+        Gameover_state.Time = playtime.NowTime
         Game_Framework.change_state(Gameover_state)
     pass
 
@@ -838,5 +842,5 @@ def draw():
     for enemy in enemy_jets_3:
         enemy.draw()
     cloud.draw()
-    time.draw()
+    playtime.draw()
     update_canvas()

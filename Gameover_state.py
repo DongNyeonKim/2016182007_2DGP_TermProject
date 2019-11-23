@@ -49,7 +49,7 @@ def draw():
     if Frame != 5:
         ani.clip_draw(0, 600 * Frame, 800, 600, 400, 300)
     if Frame == 5:
-        font.draw(300, 300, '(Time: %3.2f)' % Time, (255, 255, 0))
+        font.draw(300, 300, '(Time: %3.2f)' % Time, (255, 0, 128))
     update_canvas()
 
 
