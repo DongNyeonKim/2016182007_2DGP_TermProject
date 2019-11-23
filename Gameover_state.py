@@ -1,6 +1,6 @@
 import Game_Framework
 import Start_state
-import fly_high
+import Title_state
 import fly_high
 from pico2d import *
 from pygame import mixer
@@ -20,9 +20,9 @@ def enter():
     image = load_image('resource/Aft_resource/GameoverState.png')
     text = load_image('resource/Aft_resource/gameover.png')
     ani = load_image('resource/Aft_resource/Gameout_ani.png')
-    font = load_font('resource/ENCR10B.TTF', 30)
+    font = load_font('resource/ENCR10B.TTF', 50)
     Frame = 0
-    mixer.music.play()
+    # mixer.music.play()
 
 
 def exit():
@@ -39,7 +39,7 @@ def handle_events():
             Game_Framework.quit()
         else:
             if (event.type, event.key) == (SDL_KEYDOWN, SDLK_r):
-                Game_Framework.change_state(Start_state)
+                Game_Framework.change_state(Title_state)
 
 
 def draw():

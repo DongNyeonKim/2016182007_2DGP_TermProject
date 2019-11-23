@@ -15,7 +15,7 @@ def enter():
     global image, Name
     image = load_image('resource/Aft_resource/Title_state.png')
     Name = load_image('resource/Aft_resource/TitleName1.png')
-    mixer.music.play()
+    # mixer.music.play()
 
 def exit():
     global image
@@ -30,7 +30,7 @@ def update():
         logo_time = 0
         #game_framework.quit()
         Game_Framework.change_state(Title_state)
-    delay(0.01)
+    delay(0.03)
     logo_time += 0.01
 
 

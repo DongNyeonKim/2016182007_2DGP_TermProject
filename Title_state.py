@@ -18,7 +18,7 @@ def enter():
 
     image = load_image('resource/Aft_resource/Titlestate_ani.png')
     font = load_font('resource/ENCR10B.TTF', 20)
-    mixer.music.play()
+    # mixer.music.play()
 
 def exit():
     global image

@@ -95,6 +95,7 @@ class MY_JET:
         self.explode_frame = 0
         self.explode_check = 0
         self.game_over_sign = 0
+        self.no_die = 1
         pass
 
     def update(self):
@@ -129,7 +130,7 @@ class MY_JET:
         pass
 
 
-RUN_SPEED_KMPH_MY_BULLET = 100  # km/hour
+RUN_SPEED_KMPH_MY_BULLET = 40  # km/hour
 RUN_SPEED_MPM_MY_BULLET = (RUN_SPEED_KMPH_MY_BULLET * 1000.0 / 60.0)
 RUN_SPEED_MPS_MY_BULLET = (RUN_SPEED_MPM_MY_BULLET / 60.0)
 RUN_SPEED_PPS_MY_BULLET = (RUN_SPEED_MPS_MY_BULLET * PIXEL_PER_METER)
@@ -634,9 +635,9 @@ def collide(a, b):
 
 def enter():
     global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2
-    global enemy_jets_3_L,enemy_jets_3_R, First_Time, Timer, cloud, playtime
+    global enemy_jets_3_L,enemy_jets_3_R, First_Time, Timer, clouds, playtime
     background = BACKGROUND()
-    cloud = cloud.CLOUD()
+    clouds = cloud.CLOUD()
 
     First_Time = 0.0
     playtime = PLAYTIME()
@@ -655,7 +656,7 @@ def enter():
 
 
 def exit():
-    global my_jet, background, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_jets_2, enemy_jets_3_L, enemy_jets_3_R
+    global my_jet, background, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_jets_2, enemy_jets_3_L, enemy_jets_3_R, clouds
     del my_jet
     del background
     del my_bullets
@@ -665,7 +666,7 @@ def exit():
     del enemy_jets_3_L
     del enemy_jets_3_R
     del my_friend_bullets
-
+    del clouds
 
 def pause():
     pass
@@ -709,7 +710,11 @@ def handle_events():
             elif event.key == SDLK_s:
                 Gameover_state.Time = playtime.NowTime
                 Game_Framework.change_state(Gameover_state)
-
+            elif event.key == SDLK_d:
+                if my_jet.no_die == 0:
+                    my_jet.no_die = 1
+                else:
+                    my_jet.no_die = 0
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_UP:
                 my_jet.move_y -= RUN_SPEED_PPS_JET
@@ -732,7 +737,7 @@ def handle_events():
 def update():
     global Timer, enemy_bullet, First_Time
     background.update()
-    cloud.update()
+    clouds.update()
     my_jet.update()
     if First_Time == 0:
         First_Time = time.time()
@@ -806,7 +811,7 @@ def update():
             enemy_bullet.x = enemy.x1
             enemy_bullet.y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
-        if collide(my_jet, enemy) and my_jet.explode_check == 0:
+        if collide(my_jet, enemy) and my_jet.explode_check == 0 and my_jet.no_die == 0:
             my_jet.explode_check = 1
             enemy.explode_check = 1
     for enemy in enemy_jets_2:
@@ -821,7 +826,7 @@ def update():
             enemy_bullet.L_x = enemy.x1
             enemy_bullet.L_y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
-        if collide(my_jet, enemy) and my_jet.explode_check == 0:
+        if collide(my_jet, enemy) and my_jet.explode_check == 0 and my_jet.no_die == 0:
             my_jet.explode_check = 1
             enemy.explode_check = 1
     for enemy in enemy_jets_3_L:
@@ -831,7 +836,7 @@ def update():
             enemy_bullet.x = enemy.x1
             enemy_bullet.y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
-        if collide(my_jet, enemy) and my_jet.explode_check == 0:
+        if collide(my_jet, enemy) and my_jet.explode_check == 0 and my_jet.no_die == 0:
             my_jet.explode_check = 1
             enemy.explode_check = 1
     for enemy in enemy_jets_3_R:
@@ -841,16 +846,16 @@ def update():
             enemy_bullet.x = enemy.x1
             enemy_bullet.y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
-        if collide(my_jet, enemy) and my_jet.explode_check == 0:
+        if collide(my_jet, enemy) and my_jet.explode_check == 0 and my_jet.no_die == 0:
             my_jet.explode_check = 1
             enemy.explode_check = 1
     # 적군 총알 충돌처리
     for enemy_bullet in enemy_bullets:
         enemy_bullet.update()
-        # if collide(my_jet, enemy_bullet) and my_jet.explode_check == 0:
-        #     my_jet.explode_check = 1
-        #     if enemy_bullet in enemy_bullets:
-        #         enemy_bullets.remove(enemy_bullet)
+        if collide(my_jet, enemy_bullet) and my_jet.explode_check == 0 and my_jet.no_die == 0:
+            my_jet.explode_check = 1
+            if enemy_bullet in enemy_bullets:
+                enemy_bullets.remove(enemy_bullet)
         if enemy_bullet.y < -100:
             if enemy_bullet in enemy_bullets:
                 enemy_bullets.remove(enemy_bullet)
@@ -888,6 +893,6 @@ def draw():
 
     for enemy in enemy_jets_3_R:
         enemy.draw()
-    cloud.draw()
+    clouds.draw()
     playtime.draw()
     update_canvas()
