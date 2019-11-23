@@ -53,12 +53,6 @@ class BACKGROUND:
         pass
 
 
-
-
-
-
-
-
 class PLAYTIME:
     def __init__(self):
         self.font = load_font('resource/ENCR10B.TTF', 20)
@@ -426,6 +420,7 @@ RUN_SPEED_MPM_ENEMY_JET_2 = (RUN_SPEED_KMPH_ENEMY_JET_2 * 1000.0 / 60.0)
 RUN_SPEED_MPS_ENEMY_JET_2 = (RUN_SPEED_MPM_ENEMY_JET_2 / 60.0)
 RUN_SPEED_PPS_ENEMY_JET_2 = (RUN_SPEED_MPS_ENEMY_JET_2 * PIXEL_PER_METER)
 
+
 # 적 전투기2(뚱뚱이)
 class ENEMY_JET_2:
 
@@ -530,14 +525,14 @@ class ENEMY_BULLET_2:
     pass
 
 
-
 RUN_SPEED_KMPH_ENEMY_JET_3 = 3  # km/hour
 RUN_SPEED_MPM_ENEMY_JET_3 = (RUN_SPEED_KMPH_ENEMY_JET_3 * 1000.0 / 60.0)
 RUN_SPEED_MPS_ENEMY_JET_3 = (RUN_SPEED_MPM_ENEMY_JET_3 / 60.0)
 RUN_SPEED_PPS_ENEMY_JET_3 = (RUN_SPEED_MPS_ENEMY_JET_3 * PIXEL_PER_METER)
 
-# 적 전투기3(라이트형제)
-class ENEMY_JET_3:
+
+# 적 전투기3(라이트형제, 왼쪽 출)
+class ENEMY_JET_3_L:
 
     def __init__(self):
         self.image1 = load_image('resource/Aft_resource/EnemyJet4.png')
@@ -580,6 +575,49 @@ class ENEMY_JET_3:
             draw_rectangle(*self.get_bb())
         pass
 
+# 적 전투기3(라이트형제, 오른쪽 출)
+class ENEMY_JET_3_R:
+
+    def __init__(self):
+        self.image1 = load_image('resource/Aft_resource/EnemyJet4.png')
+
+        self.explode_ani1 = load_image('resource/Aft_resource/Explode-enemy.png')
+
+        self.explode_frame = 0
+        self.explode_check = 0
+
+        self.x1, self.y1 = random.randint(800, 900), random.randint(300, 550)
+        pass
+
+    def update(self):
+        # 적이 죽으면 explode_check=1 이 되고 폭발 애니메이션 실행 후 초기화 한 뒤 다시 생성
+        if self.explode_check == 1:
+            self.explode_frame = (
+                                         self.explode_frame + FRAMES_PER_ACTION_ENEMY_JET * ACTION_PER_TIME_ENEMY_JET_EXPLODE * Game_Framework.frame_time) % 5
+            if int(self.explode_frame) == 4:
+                self.explode_check = 0
+                self.explode_frame = 0
+                self.x1, self.y1 = random.randint(800, 900), random.randint(300, 550)
+        # 살아 있는 경우 계속 앞으로 전진
+        else:
+            self.x1 -= RUN_SPEED_PPS_ENEMY_JET_3 * Game_Framework.frame_time
+
+        # 맵 끝까지 오면 다시 위로 초기화
+        if self.x1 <= -200:
+            self.x1, self.y1 = random.randint(800, 900), random.randint(300, 550)
+
+        pass
+
+    def get_bb(self):
+        return self.x1 - 20, self.y1 - 15, self.x1 + 20, self.y1 + 15
+
+    def draw(self):
+        if self.explode_check == 1:
+            self.explode_ani1.clip_draw(int(self.explode_frame) * 40, 0, 40, 80, self.x1, self.y1)
+        else:
+            self.image1.clip_draw(0, 0, 40, 30, self.x1, self.y1)
+            draw_rectangle(*self.get_bb())
+        pass
 
 # 충돌처리
 def collide(a, b):
@@ -595,7 +633,8 @@ def collide(a, b):
 
 
 def enter():
-    global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2, enemy_jets_3, First_Time, Timer, cloud, playtime
+    global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2
+    global enemy_jets_3_L,enemy_jets_3_R, First_Time, Timer, cloud, playtime
     background = BACKGROUND()
     cloud = cloud.CLOUD()
 
@@ -610,20 +649,21 @@ def enter():
 
     enemy_jets = [ENEMY_JET() for i in range(Enemy1_quantity)]
     enemy_jets_2 = [ENEMY_JET_2() for i in range(Enemy2_quantity)]
-    enemy_jets_3 = [ENEMY_JET_3() for i in range(Enemy3_quantity)]
-
+    enemy_jets_3_L = [ENEMY_JET_3_L() for i in range(Enemy3_quantity)]
+    enemy_jets_3_R = [ENEMY_JET_3_R() for i in range(Enemy3_quantity)]
     enemy_bullets = []
 
 
 def exit():
-    global my_jet, background, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_jets_2, enemy_jets_3
+    global my_jet, background, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_jets_2, enemy_jets_3_L, enemy_jets_3_R
     del my_jet
     del background
     del my_bullets
     del my_friend
     del enemy_jets
     del enemy_jets_2
-    del enemy_jets_3
+    del enemy_jets_3_L
+    del enemy_jets_3_R
     del my_friend_bullets
 
 
@@ -710,7 +750,7 @@ def update():
                 enemy.explode_check = 1
                 if bullet in my_bullets:
                     my_bullets.remove(bullet)
-        for enemy in enemy_jets_3:
+        for enemy in enemy_jets_3_L:
             if collide(enemy, bullet) and enemy.explode_check == 0:
                 enemy.explode_check = 1
                 if bullet in my_bullets:
@@ -748,7 +788,16 @@ def update():
                 enemy.explode_check = 1
                 if sbullet in my_friend_bullets:
                     my_friend_bullets.remove(sbullet)
-
+        for enemy in enemy_jets_3_L:
+            if collide(enemy, sbullet) and enemy.explode_check == 0:
+                enemy.explode_check = 1
+                if sbullet in my_friend_bullets:
+                    my_friend_bullets.remove(sbullet)
+        for enemy in enemy_jets_3_R:
+            if collide(enemy, sbullet) and enemy.explode_check == 0:
+                enemy.explode_check = 1
+                if sbullet in my_friend_bullets:
+                    my_friend_bullets.remove(sbullet)
     # 적군 업데이트
     for enemy in enemy_jets:
         enemy.update()
@@ -775,7 +824,17 @@ def update():
         if collide(my_jet, enemy) and my_jet.explode_check == 0:
             my_jet.explode_check = 1
             enemy.explode_check = 1
-    for enemy in enemy_jets_3:
+    for enemy in enemy_jets_3_L:
+        enemy.update()
+        if Timer % random.randint(50, 100) == 0 and enemy.explode_check == 0:
+            enemy_bullet = ENEMY_BULLET()
+            enemy_bullet.x = enemy.x1
+            enemy_bullet.y = enemy.y1 - 25
+            enemy_bullets.append(enemy_bullet)
+        if collide(my_jet, enemy) and my_jet.explode_check == 0:
+            my_jet.explode_check = 1
+            enemy.explode_check = 1
+    for enemy in enemy_jets_3_R:
         enemy.update()
         if Timer % random.randint(50, 100) == 0 and enemy.explode_check == 0:
             enemy_bullet = ENEMY_BULLET()
@@ -824,7 +883,10 @@ def draw():
     for enemy in enemy_jets_2:
         enemy.draw()
 
-    for enemy in enemy_jets_3:
+    for enemy in enemy_jets_3_L:
+        enemy.draw()
+
+    for enemy in enemy_jets_3_R:
         enemy.draw()
     cloud.draw()
     playtime.draw()
