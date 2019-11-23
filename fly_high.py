@@ -261,7 +261,7 @@ class MY_FRIEND:
         pass
 
 
-RUN_SPEED_KMPH_MY_FRIEND_BULLET = 100  # km/hour
+RUN_SPEED_KMPH_MY_FRIEND_BULLET = 30  # km/hour
 RUN_SPEED_MPM_MY_FRIEND_BULLET = (RUN_SPEED_KMPH_MY_FRIEND_BULLET * 1000.0 / 60.0)
 RUN_SPEED_MPS_MY_FRIEND_BULLET = (RUN_SPEED_MPM_MY_FRIEND_BULLET / 60.0)
 RUN_SPEED_PPS_MY_FRIEND_BULLET = (RUN_SPEED_MPS_MY_FRIEND_BULLET * PIXEL_PER_METER)
@@ -700,7 +700,7 @@ def update():
                 if bullet in my_bullets:
                     my_bullets.remove(bullet)
         # 화면을 넘어갈 경우 삭제
-        if bullet.y > 500 or bullet.L_y > 500 or bullet.R_y > 500:
+        if bullet.y > 700 or bullet.L_y > 700 or bullet.R_y > 700:
             if bullet in my_bullets:
                 my_bullets.remove(bullet)
 
@@ -719,7 +719,7 @@ def update():
     # 아군 총알의 충돌처리
     for sbullet in my_friend_bullets:
         sbullet.update()
-        if sbullet.a_y > 500 or sbullet.b_y > 500:
+        if sbullet.a_y > 700 or sbullet.b_y > 700:
             if sbullet in my_friend_bullets:
                 my_friend_bullets.remove(sbullet)
         for enemy in enemy_jets:
@@ -776,7 +776,7 @@ def update():
             my_jet.explode_check = 1
             if enemy_bullet in enemy_bullets:
                 enemy_bullets.remove(enemy_bullet)
-        if enemy_bullet.y < 100:
+        if enemy_bullet.y < -100:
             if enemy_bullet in enemy_bullets:
                 enemy_bullets.remove(enemy_bullet)
 
