@@ -21,6 +21,7 @@ RUN_SPEED_MPM_BACKGROUND = (RUN_SPEED_KMPH_BACKGROUND * 1000.0 / 60.0)
 RUN_SPEED_MPS_BACKGROUND = (RUN_SPEED_MPM_BACKGROUND / 60.0)
 RUN_SPEED_PPS_BACKGROUND = (RUN_SPEED_MPS_BACKGROUND * PIXEL_PER_METER)
 
+
 # 배경화면
 # background1, background2 가 y축으로 움직이면서 배경을 이어 보이게 만듦
 class BACKGROUND:
@@ -55,19 +56,24 @@ class BACKGROUND:
 class Cloud:
     def __init__(self):
         self.cloud = load_image('resource/Aft_resource/cloud.png')
-        self.x, self.y = 200, 200
-
+        self.x1, self.y1 = -300, 400
+        self.x2, self.y2 = -700, 200
         pass
 
     def update(self):
-        self.x += 0.3
-        if self.x > 700:
-            self.x = 0
-            self.y = 300
+        self.x1 += 0.3
+        self.x2 += 0.3
+        if self.x1 > 1500:
+            self.x1 = random.randint(-400, -200)
+            self.y1 = random.randint(400, 700)
+        if self.x2 > 1500:
+            self.x2 = random.randint(-600, -400)
+            self.y2 = random.randint(100, 400)
         pass
 
     def draw(self):
-        self.cloud.clip_draw(0, 0, 400, 250, self.x, self.y)
+        self.cloud.clip_draw(0, 0, 400, 250, self.x1, self.y1)
+        self.cloud.clip_draw(0, 0, 400, 250, self.x2,self.y2)
         pass
 
 
@@ -118,7 +124,8 @@ class MY_JET:
     def update(self):
         if self.explode_check == 1:
             # if Timer % 100 == 0:
-            self.explode_frame = (self.explode_frame + FRAMES_PER_ACTION_JET * ACTION_PER_TIME_JET_EXPLODE * Game_Framework.frame_time) % 6
+            self.explode_frame = (
+                                             self.explode_frame + FRAMES_PER_ACTION_JET * ACTION_PER_TIME_JET_EXPLODE * Game_Framework.frame_time) % 6
             if int(self.explode_frame) == 5:
                 # 폭발 프레임이 끝나면 게임 오버스테이트로 이동
                 self.game_over_sign = 1
@@ -803,10 +810,10 @@ def update():
     # 적군 총알 충돌처리
     for enemy_bullet in enemy_bullets:
         enemy_bullet.update()
-        if collide(my_jet, enemy_bullet) and my_jet.explode_check == 0:
-            my_jet.explode_check = 1
-            if enemy_bullet in enemy_bullets:
-                enemy_bullets.remove(enemy_bullet)
+        # if collide(my_jet, enemy_bullet) and my_jet.explode_check == 0:
+        #     my_jet.explode_check = 1
+        #     if enemy_bullet in enemy_bullets:
+        #         enemy_bullets.remove(enemy_bullet)
         if enemy_bullet.y < -100:
             if enemy_bullet in enemy_bullets:
                 enemy_bullets.remove(enemy_bullet)
