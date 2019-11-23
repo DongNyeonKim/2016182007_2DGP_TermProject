@@ -51,6 +51,17 @@ class BACKGROUND:
         self.background2.clip_draw(0, 0, 800, 600, 800 // 2, self.b + self.background2_move_y)
         pass
 
+class Cloud:
+    def __init__(self):
+        self.cloud = load_image('resource/Aft_resource/cloud.png')
+        self.x, self.y = 200,200
+
+        pass
+    def update(self):
+        pass
+    def draw(self):
+        self.cloud.clip_draw(0,0,200,200, 400,300)
+        pass
 
 # JET Speed
 RUN_SPEED_KMPH_JET = 10  # km/hour
@@ -581,7 +592,7 @@ def collide(a, b):
 
 
 def enter():
-    global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2, enemy_jets_3, First_Time, Timer
+    global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2, enemy_jets_3, First_Time, Timer, cloud
     background = BACKGROUND()
 
     my_jet = MY_JET()
@@ -597,7 +608,7 @@ def enter():
     enemy_bullets = []
 
     First_Time = 0.0
-
+    cloud = Cloud()
 
 def exit():
     global my_jet, background, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_jets_2, enemy_jets_3
@@ -790,6 +801,7 @@ def update():
 def draw():
     clear_canvas()
     background.draw()
+
     my_jet.draw()
     for bullet in my_bullets:
         bullet.draw()
@@ -801,12 +813,13 @@ def draw():
     for enemy in enemy_jets:
         enemy.draw()
 
-    for enemy_bullet in enemy_bullets:
-        enemy_bullet.draw()
+    for bullet in enemy_bullets:
+        bullet.draw()
 
     for enemy in enemy_jets_2:
         enemy.draw()
 
     for enemy in enemy_jets_3:
         enemy.draw()
+    cloud.draw()
     update_canvas()
