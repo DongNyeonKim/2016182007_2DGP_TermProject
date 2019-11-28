@@ -7,17 +7,17 @@ from pygame import mixer
 
 name = "TitleState"
 image = None
-Frame = 4
+frame = 4
 
 mixer.init()
 mixer.music.load('resource/Sound/TitleSound.mp3')
 
 def enter():
-    global image, Frame, font
-    Frame =4
+    global image, frame, font
+    frame =4
 
     image = load_image('resource/Aft_resource/Titlestate_ani.png')
-    font = load_font('resource/ENCR10B.TTF', 20)
+    font = load_font('resource/ENCR10B.TTF', 23)
     # mixer.music.play()
 
 def exit():
@@ -57,19 +57,20 @@ def handle_events():
 
 def draw():
     clear_canvas()
-    image.clip_draw(0,600*Frame,800,600,400,300)
-    font.draw(50, 500, '(Press 1: EASY MODE)', (255, 255, 0))
-    font.draw(50, 450, '(Press 2: NORMAL MODE)', (255, 255, 0))
-    font.draw(50, 400, '(Press 3: HARD MODE)', (255, 255, 0))
+    image.clip_draw(0, 600 * frame, 800, 600, 400, 300)
+    if frame ==0:
+        font.draw(500, 500, '(Press 1: EASY MODE)', (255, 255, 0))
+        font.draw(500, 450, '(Press 2: NORMAL MODE)', (255, 255, 0))
+        font.draw(500, 400, '(Press 3: HARD MODE)', (255, 255, 0))
     update_canvas()
 
 
 
 
 def update():
-    global Frame
-    if Frame != 0:
-        Frame = Frame-1
+    global frame
+    if frame != 0:
+        frame = frame - 1
         delay(0.5)
     pass
 
