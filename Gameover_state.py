@@ -16,12 +16,13 @@ mixer.music.load('resource/Sound/TitleSound.mp3')
 
 
 def enter():
-    global image, text, ani, Frame, font
+    global image, text, ani, Frame, font, blinkering
     image = load_image('resource/Aft_resource/GameoverState.png')
     text = load_image('resource/Aft_resource/gameover.png')
     ani = load_image('resource/Aft_resource/Gameout_ani.png')
-    font = load_font('resource/ENCR10B.TTF', 50)
+    font = load_font('resource/ENCR10B.TTF', 45)
     Frame = 0
+    blinkering = 0
     # mixer.music.play()
 
 
@@ -48,17 +49,17 @@ def draw():
     text.draw(400, 500)
     if Frame != 5:
         ani.clip_draw(0, 600 * Frame, 800, 600, 400, 300)
-    if Frame == 5:
-        font.draw(300, 300, '(Time: %3.2f)' % Time, (255, 0, 128))
+    if Frame == 5 and 10>= blinkering % 20 >= 1:
+        font.draw(235, 400, 'LapTime:%3.2fsec' % Time, (255, 0, 128))
     update_canvas()
 
 
 def update():
-    global Frame
+    global Frame, blinkering
     if Frame != 5:
         Frame = Frame + 1
         delay(0.5)
-
+    blinkering += 1
     pass
 
 
