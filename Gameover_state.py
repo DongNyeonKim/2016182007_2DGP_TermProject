@@ -49,8 +49,8 @@ def draw():
     text.draw(400, 500)
     if Frame != 5:
         ani.clip_draw(0, 600 * Frame, 800, 600, 400, 300)
-    if Frame == 5 and 10>= blinkering % 20 >= 1:
-        font.draw(235, 400, 'LapTime:%3.2fsec' % Time, (255, 0, 128))
+    if Frame == 5 and 30>= blinkering % 60 >= 1:
+        font.draw(225, 400, 'LapTime:%3.2fsec' % Time, (255, 0, 128))
     update_canvas()
 
 
