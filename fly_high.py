@@ -31,33 +31,6 @@ RUN_SPEED_KMPH_ENEMY_BULLET = 5  # km/hour
 RUN_SPEED_MPM_ENEMY_BULLET = (RUN_SPEED_KMPH_ENEMY_BULLET * 1000.0 / 60.0)
 RUN_SPEED_MPS_ENEMY_BULLET = (RUN_SPEED_MPM_ENEMY_BULLET / 60.0)
 RUN_SPEED_PPS_ENEMY_BULLET = (RUN_SPEED_MPS_ENEMY_BULLET * PIXEL_PER_METER)
-#
-#
-#
-# # 적 전투기 1 (레드) 총알
-# class ENEMY_BULLET:
-#     image = None
-#
-#     def __init__(self):
-#         if ENEMY_BULLET.image is None:
-#             ENEMY_BULLET.image = load_image('resource/Aft_resource/Fire_Enemy.png')
-#         self.x = 0
-#         self.y = 0
-#         pass
-#
-#     def update(self):
-#         self.y -= RUN_SPEED_PPS_ENEMY_BULLET * Game_Framework.frame_time
-#         pass
-#
-#     def get_bb(self):
-#         return self.x - 5, self.y - 6, self.x + 5, self.y + 6
-#
-#     def draw(self):
-#         self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
-#         draw_rectangle(*self.get_bb())
-#         pass
-#
-#     pass
 
 
 RUN_SPEED_KMPH_ENEMY_JET_2 = 3  # km/hour
@@ -459,7 +432,7 @@ def update():
     for enemy in enemy_jets:
         enemy.update()
         if Timer % random.randint(50, 100) == 0 and enemy.explode_check == 0:
-            enemy_bullet = ENEMY_BULLET()
+            enemy_bullet = Enemy_jet_1.ENEMY_BULLET()
             enemy_bullet.x = enemy.x1
             enemy_bullet.y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
@@ -484,7 +457,7 @@ def update():
     for enemy in enemy_jets_3_L:
         enemy.update()
         if Timer % random.randint(50, 100) == 0 and enemy.explode_check == 0:
-            enemy_bullet = ENEMY_BULLET()
+            enemy_bullet = Enemy_jet_1.ENEMY_BULLET()
             enemy_bullet.x = enemy.x1
             enemy_bullet.y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
@@ -494,7 +467,7 @@ def update():
     for enemy in enemy_jets_3_R:
         enemy.update()
         if Timer % random.randint(50, 100) == 0 and enemy.explode_check == 0:
-            enemy_bullet = ENEMY_BULLET()
+            enemy_bullet = Enemy_jet_1.ENEMY_BULLET()
             enemy_bullet.x = enemy.x1
             enemy_bullet.y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
