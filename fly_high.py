@@ -638,7 +638,7 @@ def collide(a, b):
 def enter():
     global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2
     global enemy_jets_3_L,enemy_jets_3_R, First_Time, Timer, clouds, playtime
-    
+
     background = Background.BACKGROUND()
     clouds = Cloud.CLOUD()
 
@@ -759,6 +759,11 @@ def update():
                 if bullet in my_bullets:
                     my_bullets.remove(bullet)
         for enemy in enemy_jets_3_L:
+            if collide(enemy, bullet) and enemy.explode_check == 0:
+                enemy.explode_check = 1
+                if bullet in my_bullets:
+                    my_bullets.remove(bullet)
+        for enemy in enemy_jets_3_R:
             if collide(enemy, bullet) and enemy.explode_check == 0:
                 enemy.explode_check = 1
                 if bullet in my_bullets:
