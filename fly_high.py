@@ -11,6 +11,8 @@ import Background
 import Playtime
 import My_jet
 import My_bullet
+import My_friend
+import Enemy_jet_1
 
 name = "Main_state"
 
@@ -23,208 +25,39 @@ Enemy3_quantity = 0
 PIXEL_PER_METER = (10.0 / 0.1)  # 10pixel 10cm
 
 
-RUN_SPEED_KMPH_MY_FRIEND = 6  # km/hour
-RUN_SPEED_MPM_MY_FRIEND = (RUN_SPEED_KMPH_MY_FRIEND * 1000.0 / 60.0)
-RUN_SPEED_MPS_MY_FRIEND = (RUN_SPEED_MPM_MY_FRIEND / 60.0)
-RUN_SPEED_PPS_MY_FRIEND = (RUN_SPEED_MPS_MY_FRIEND * PIXEL_PER_METER)
-
-
-# 내 아군 전투기 A(왼쪽) B(오른쪽)
-class MY_FRIEND:
-    def __init__(self):
-        self.image = load_image('resource/Aft_resource/My_Friend.png')
-        self.image1 = load_image('resource/Aft_resource/My_Friend.png')
-        self.A_x = -100
-        self.A_y = -100
-        self.B_x = 900
-        self.B_y = -100
-        self.ax = 0
-        self.ay = 0
-        self.bx = 0
-        self.by = 0
-
-        self.sign = 0
-        pass
-
-    def update(self):
-        # sign은 아군 호출 여부
-        if self.sign % 2 == 1:
-            if self.A_x >= my_jet.x - 80:
-                self.A_x -= RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
-            elif self.A_x < my_jet.x - 80:
-                self.A_x += RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
-            if self.A_y >= my_jet.y + 70:
-                self.A_y -= RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
-            elif self.A_y < my_jet.y + 70:
-                self.A_y += RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
-            if self.B_x >= my_jet.x + 80:
-                self.B_x -= RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
-            elif self.B_x < my_jet.x + 80:
-                self.B_x += RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
-            if self.B_y >= my_jet.y + 70:
-                self.B_y -= RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
-            elif self.B_y < my_jet.y + 70:
-                self.B_y += RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
-            pass
-
-        elif self.sign % 2 == 0:
-            if self.A_x != -100:
-                self.A_x -= RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
-            if self.A_y != -100:
-                self.A_y -= RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
-            if self.B_x != +900:
-                self.B_x += RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
-            if self.B_y != -100:
-                self.B_y -= RUN_SPEED_PPS_MY_FRIEND * Game_Framework.frame_time
-            pass
-
-    def draw(self):
-        self.image.clip_draw(0, 0, 140, 120, self.A_x, self.A_y)
-        self.image1.clip_draw(0, 0, 140, 120, self.B_x, self.B_y)
-        pass
-
-
-RUN_SPEED_KMPH_MY_FRIEND_BULLET = 30  # km/hour
-RUN_SPEED_MPM_MY_FRIEND_BULLET = (RUN_SPEED_KMPH_MY_FRIEND_BULLET * 1000.0 / 60.0)
-RUN_SPEED_MPS_MY_FRIEND_BULLET = (RUN_SPEED_MPM_MY_FRIEND_BULLET / 60.0)
-RUN_SPEED_PPS_MY_FRIEND_BULLET = (RUN_SPEED_MPS_MY_FRIEND_BULLET * PIXEL_PER_METER)
-
-
-# 아군 전투기 총알
-class MY_FRIEND_BULLET:
-    image = None
-
-    def __init__(self):
-        if MY_FRIEND_BULLET.image is None:
-            MY_FRIEND_BULLET.image = load_image('resource/Aft_resource/Fire_MyFriend.png')
-        self.a_x = my_friend.A_x
-        self.a_y = my_friend.A_y
-        self.b_x = my_friend.B_x
-        self.b_y = my_friend.B_y
-        self.bullet_dir = 0
-        self.sign = 0
-        pass
-
-    def update(self):
-        if self.sign == 0:
-            if self.bullet_dir == 1:
-                self.a_x = my_friend.A_x
-                self.a_y = my_friend.A_y + 60
-            if self.bullet_dir == 2:
-                self.b_x = my_friend.B_x
-                self.b_y = my_friend.B_y + 60
-            self.sign = 1
-
-        if self.bullet_dir == 1 and self.a_y != 650:
-            self.a_y += RUN_SPEED_PPS_MY_FRIEND_BULLET * Game_Framework.frame_time
-
-        if self.bullet_dir == 2 and self.b_y != 650:
-            self.b_y += RUN_SPEED_PPS_MY_FRIEND_BULLET * Game_Framework.frame_time
-
-        pass
-
-    def get_bb(self):
-        if self.bullet_dir == 1:
-            return self.a_x - 10, self.a_y - 15, self.a_x + 10, self.a_y + 15
-        elif self.bullet_dir == 2:
-            return self.b_x - 10, self.b_y - 15, self.b_x + 10, self.b_y + 15
-
-    def draw(self):
-        if self.bullet_dir == 1:
-            self.image.clip_draw(0, 0, 20, 30, self.a_x, self.a_y)
-            draw_rectangle(*self.get_bb())
-        if self.bullet_dir == 2:
-            self.image.clip_draw(0, 0, 20, 30, self.b_x, self.b_y)
-            draw_rectangle(*self.get_bb())
-        pass
-
-
-RUN_SPEED_KMPH_ENEMY_JET = 3  # km/hour
-RUN_SPEED_MPM_ENEMY_JET = (RUN_SPEED_KMPH_ENEMY_JET * 1000.0 / 60.0)
-RUN_SPEED_MPS_ENEMY_JET = (RUN_SPEED_MPM_ENEMY_JET / 60.0)
-RUN_SPEED_PPS_ENEMY_JET = (RUN_SPEED_MPS_ENEMY_JET * PIXEL_PER_METER)
-
-TIME_PER_ACTION_ENEMY_JET = 0.1
-ACTION_PER_TIME_ENEMY_JET_EXPLODE = 0.1 / TIME_PER_ACTION_ENEMY_JET
-FRAMES_PER_ACTION_ENEMY_JET = 5
-
-
-# 적 전투기 1 (레드)
-class ENEMY_JET:
-
-    def __init__(self):
-        self.image1 = load_image('resource/Aft_resource/EnemyJet1.png')
-
-        self.explode_ani1 = load_image('resource/Aft_resource/Explode-enemy.png')
-
-        self.explode_frame = 0
-        self.explode_check = 0
-
-        self.x1, self.y1 = random.randint(100, 700), random.randint(600, 800)
-        pass
-
-    def update(self):
-        # 적이 죽으면 explode_check=1 이 되고 폭발 애니메이션 실행 후 초기화 한 뒤 다시 생성
-        if self.explode_check == 1:
-            self.explode_frame = (
-                                         self.explode_frame + FRAMES_PER_ACTION_ENEMY_JET * ACTION_PER_TIME_ENEMY_JET_EXPLODE * Game_Framework.frame_time) % 5
-            if int(self.explode_frame) == 4:
-                self.explode_check = 0
-                self.explode_frame = 0
-                self.x1, self.y1 = random.randint(100, 700), random.randint(600, 800)
-        # 살아 있는 경우 계속 앞으로 전진
-        else:
-            self.y1 -= RUN_SPEED_PPS_ENEMY_JET * Game_Framework.frame_time
-
-        # 맵 끝까지 오면 다시 위로 초기화
-        if self.y1 <= -100:
-            self.x1, self.y1 = random.randint(100, 700), random.randint(600, 700)
-
-        pass
-
-    def get_bb(self):
-        return self.x1 - 15, self.y1 - 35, self.x1 + 15, self.y1 + 35
-
-    def draw(self):
-        if self.explode_check == 1:
-            self.explode_ani1.clip_draw(int(self.explode_frame) * 40, 0, 40, 80, self.x1, self.y1)
-        else:
-            self.image1.clip_draw(0, 0, 40, 80, self.x1, self.y1)
-            draw_rectangle(*self.get_bb())
-
-        pass
 
 
 RUN_SPEED_KMPH_ENEMY_BULLET = 5  # km/hour
 RUN_SPEED_MPM_ENEMY_BULLET = (RUN_SPEED_KMPH_ENEMY_BULLET * 1000.0 / 60.0)
 RUN_SPEED_MPS_ENEMY_BULLET = (RUN_SPEED_MPM_ENEMY_BULLET / 60.0)
 RUN_SPEED_PPS_ENEMY_BULLET = (RUN_SPEED_MPS_ENEMY_BULLET * PIXEL_PER_METER)
-
-
-# 적 전투기 1 (레드) 총알
-class ENEMY_BULLET:
-    image = None
-
-    def __init__(self):
-        if ENEMY_BULLET.image is None:
-            ENEMY_BULLET.image = load_image('resource/Aft_resource/Fire_Enemy.png')
-        self.x = 0
-        self.y = 0
-        pass
-
-    def update(self):
-        self.y -= RUN_SPEED_PPS_ENEMY_BULLET * Game_Framework.frame_time
-        pass
-
-    def get_bb(self):
-        return self.x - 5, self.y - 6, self.x + 5, self.y + 6
-
-    def draw(self):
-        self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
-        draw_rectangle(*self.get_bb())
-        pass
-
-    pass
+#
+#
+#
+# # 적 전투기 1 (레드) 총알
+# class ENEMY_BULLET:
+#     image = None
+#
+#     def __init__(self):
+#         if ENEMY_BULLET.image is None:
+#             ENEMY_BULLET.image = load_image('resource/Aft_resource/Fire_Enemy.png')
+#         self.x = 0
+#         self.y = 0
+#         pass
+#
+#     def update(self):
+#         self.y -= RUN_SPEED_PPS_ENEMY_BULLET * Game_Framework.frame_time
+#         pass
+#
+#     def get_bb(self):
+#         return self.x - 5, self.y - 6, self.x + 5, self.y + 6
+#
+#     def draw(self):
+#         self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
+#         draw_rectangle(*self.get_bb())
+#         pass
+#
+#     pass
 
 
 RUN_SPEED_KMPH_ENEMY_JET_2 = 3  # km/hour
@@ -232,7 +65,9 @@ RUN_SPEED_MPM_ENEMY_JET_2 = (RUN_SPEED_KMPH_ENEMY_JET_2 * 1000.0 / 60.0)
 RUN_SPEED_MPS_ENEMY_JET_2 = (RUN_SPEED_MPM_ENEMY_JET_2 / 60.0)
 RUN_SPEED_PPS_ENEMY_JET_2 = (RUN_SPEED_MPS_ENEMY_JET_2 * PIXEL_PER_METER)
 
-
+TIME_PER_ACTION_ENEMY_JET = 0.1
+ACTION_PER_TIME_ENEMY_JET_EXPLODE = 0.1 / TIME_PER_ACTION_ENEMY_JET
+FRAMES_PER_ACTION_ENEMY_JET = 5
 # 적 전투기2(뚱뚱이)
 class ENEMY_JET_2:
 
@@ -258,7 +93,7 @@ class ENEMY_JET_2:
                 self.x1, self.y1 = random.randint(50, 750), random.randint(600, 900)
         # 살아 있는 경우 계속 앞으로 전진
         else:
-            self.y1 -= RUN_SPEED_PPS_ENEMY_JET * Game_Framework.frame_time
+            self.y1 -= RUN_SPEED_PPS_ENEMY_JET_2 * Game_Framework.frame_time
 
         # 맵 끝까지 오면 다시 위로 초기화
         if self.y1 <= -100:
@@ -457,10 +292,10 @@ def enter():
     my_jet = My_jet.MY_JET()
     my_bullets = []
 
-    my_friend = MY_FRIEND()
+    my_friend = My_friend.MY_FRIEND()
     my_friend_bullets = []
 
-    enemy_jets = [ENEMY_JET() for i in range(Enemy1_quantity)]
+    enemy_jets = [Enemy_jet_1.ENEMY_JET() for i in range(Enemy1_quantity)]
     enemy_jets_2 = [ENEMY_JET_2() for i in range(Enemy2_quantity)]
     enemy_jets_3_L = [ENEMY_JET_3_L() for i in range(Enemy3_quantity)]
     enemy_jets_3_R = [ENEMY_JET_3_R() for i in range(Enemy3_quantity)]
@@ -587,10 +422,10 @@ def update():
     # 일정 시간마다 아군 총알 발사
     Timer += 1
     if Timer % 50 == 0:
-        sbullet = MY_FRIEND_BULLET()
+        sbullet = My_friend.MY_FRIEND_BULLET()
         sbullet.bullet_dir = 1
         my_friend_bullets.append(sbullet)
-        sbullet = MY_FRIEND_BULLET()
+        sbullet = My_friend.MY_FRIEND_BULLET()
         sbullet.bullet_dir = 2
         my_friend_bullets.append(sbullet)
 
