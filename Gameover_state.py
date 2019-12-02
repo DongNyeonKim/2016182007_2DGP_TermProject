@@ -11,6 +11,7 @@ image = None
 text = None
 ani = None
 font = None
+rank_font = None
 Time = None
 rank = []
 mixer.init()
@@ -18,17 +19,19 @@ mixer.music.load('resource/Sound/TitleSound.mp3')
 
 
 def enter():
-    global image, text, ani, Frame, font, blinkering
+    global image, text, ani, Frame, font, rank_font, blinkering
     image = load_image('resource/Aft_resource/GameoverState.png')
     text = load_image('resource/Aft_resource/gameover.png')
     ani = load_image('resource/Aft_resource/Gameout_ani.png')
     font = load_font('resource/ENCR10B.TTF', 45)
+    rank_font = load_font('resource/ENCR10B.TTF', 20)
     Frame = 0
     blinkering = 0
     # mixer.music.play()
     save_data()
     load_rank()
-    
+
+
 def exit():
     global image, text, ani
     del image
@@ -52,8 +55,19 @@ def draw():
     text.draw(400, 500)
     if Frame != 5:
         ani.clip_draw(0, 600 * Frame, 800, 600, 400, 300)
-    if Frame == 5 and 30>= blinkering % 60 >= 1:
+    if Frame == 5 and 30 >= blinkering % 60 >= 1:
         font.draw(225, 400, 'LapTime:%3.2fsec' % Time, (255, 0, 128))
+
+    count = 0
+    ranking = 0
+
+    for data in rank:
+        count += 20
+        ranking +=1
+        if ranking <=10:
+            rank_font.draw(150, 500 - count, '#%d. %3.2f' % (ranking, data[0]), (0, 0, 0))
+        pass
+
     update_canvas()
 
 
@@ -66,13 +80,13 @@ def update():
 
     pass
 
+
 def save_data():
     file = []
     with open('Laptime_data.json', 'r') as f:
         files = json.load(f)
 
     for z in files:
-        #count += 1
         file.append(z)
 
     Laptime_data = [float(Time)]
@@ -81,13 +95,15 @@ def save_data():
     with open('Laptime_data.json', 'w') as f:
         json.dump(file, f)
 
+
 def load_rank():
     global rank
 
     with open('Laptime_data.json', 'r') as f:
         rank = json.load(f)
 
-    rank.sort(reverse = True)
+    rank.sort(reverse=True)
+
 
 def pause():
     pass
