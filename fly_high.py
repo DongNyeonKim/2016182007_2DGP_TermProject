@@ -6,8 +6,9 @@ from pygame import mixer
 import random
 import time
 
-import Cloud
+
 import Background
+import Cloud
 import Playtime
 import My_jet
 import My_bullet

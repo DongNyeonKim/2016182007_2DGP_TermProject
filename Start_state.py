@@ -8,8 +8,6 @@ image = None
 Name = None
 logo_time = 0.0
 
-mixer.init()
-mixer.music.load('resource/Sound/TitleSound.mp3')
 
 def enter():
     global image, Name
@@ -19,7 +17,6 @@ def enter():
 
 def exit():
     global image
-    mixer.music.stop()
     del(image)
 
 
@@ -28,7 +25,6 @@ def update():
 
     if(logo_time>1.0):
         logo_time = 0
-        #game_framework.quit()
         Game_Framework.change_state(Title_state)
     delay(0.03)
     logo_time += 0.01
@@ -46,7 +42,7 @@ def draw():
 
 def handle_events():
     pass
-    #events = get_events()
+
 
 
 

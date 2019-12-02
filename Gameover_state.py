@@ -4,6 +4,7 @@ import Title_state
 import fly_high
 from pico2d import *
 from pygame import mixer
+import json
 
 name = "GameOverState"
 image = None
@@ -11,6 +12,7 @@ text = None
 ani = None
 font = None
 Time = None
+rank = []
 mixer.init()
 mixer.music.load('resource/Sound/TitleSound.mp3')
 
@@ -24,8 +26,9 @@ def enter():
     Frame = 0
     blinkering = 0
     # mixer.music.play()
-
-
+    save_data()
+    load_rank()
+    
 def exit():
     global image, text, ani
     del image
@@ -60,8 +63,31 @@ def update():
         Frame = Frame + 1
         delay(0.5)
     blinkering += 1
+
     pass
 
+def save_data():
+    file = []
+    with open('Laptime_data.json', 'r') as f:
+        files = json.load(f)
+
+    for z in files:
+        #count += 1
+        file.append(z)
+
+    Laptime_data = [float(Time)]
+    file.append(Laptime_data)
+
+    with open('Laptime_data.json', 'w') as f:
+        json.dump(file, f)
+
+def load_rank():
+    global rank
+
+    with open('Laptime_data.json', 'r') as f:
+        rank = json.load(f)
+
+    rank.sort(reverse = True)
 
 def pause():
     pass

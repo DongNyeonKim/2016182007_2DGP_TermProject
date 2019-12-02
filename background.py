@@ -5,13 +5,14 @@ from pygame import mixer
 import random
 import time
 
+
 PIXEL_PER_METER = (10.0 / 0.1)  # 10pixel 10cm
 RUN_SPEED_KMPH_BACKGROUND = 30  # km/hour
 RUN_SPEED_MPM_BACKGROUND = (RUN_SPEED_KMPH_BACKGROUND * 1000.0 / 60.0)
 RUN_SPEED_MPS_BACKGROUND = (RUN_SPEED_MPM_BACKGROUND / 60.0)
 RUN_SPEED_PPS_BACKGROUND = (RUN_SPEED_MPS_BACKGROUND * PIXEL_PER_METER)
 
-# 배경화면
+# 배경화면 8m x 6m
 # background1, background2 가 y축으로 움직이면서 배경을 이어 보이게 만듦
 class BACKGROUND:
     def __init__(self):
