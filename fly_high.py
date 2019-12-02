@@ -24,6 +24,7 @@ Enemy1_quantity = 0
 Enemy2_quantity = 0
 Enemy3_quantity = 0
 
+
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
@@ -38,7 +39,7 @@ def collide(a, b):
 
 def enter():
     global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2
-    global enemy_jets_3_L,enemy_jets_3_R, First_Time, Timer, clouds, playtime
+    global enemy_jets_3_L, enemy_jets_3_R, First_Time, Timer, clouds, playtime
 
     background = Background.BACKGROUND()
     clouds = Cloud.CLOUD()
@@ -71,6 +72,7 @@ def exit():
     del enemy_jets_3_R
     del my_friend_bullets
     del clouds
+
 
 def pause():
     pass
