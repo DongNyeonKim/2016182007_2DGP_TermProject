@@ -12,6 +12,7 @@ text = None
 ani = None
 font = None
 rank_font = None
+Total_font = None
 Time = None
 rank = []
 mixer.init()
@@ -19,12 +20,13 @@ mixer.music.load('resource/Sound/TitleSound.mp3')
 
 
 def enter():
-    global image, text, ani, Frame, font, rank_font, blinkering
+    global image, text, ani, Frame, font, rank_font, Total_font, blinkering
     image = load_image('resource/Aft_resource/GameoverState.png')
     text = load_image('resource/Aft_resource/gameover.png')
     ani = load_image('resource/Aft_resource/Gameout_ani.png')
     font = load_font('resource/ENCR10B.TTF', 45)
-    rank_font = load_font('resource/ENCR10B.TTF', 20)
+    rank_font = load_font('resource/ENCR10B.TTF', 25)
+    Total_font = load_font('resource/ENCR10B.TTF', 30)
     Frame = 0
     blinkering = 0
     # mixer.music.play()
@@ -60,13 +62,14 @@ def draw():
 
     count = 0
     ranking = 0
-
-    for data in rank:
-        count += 20
-        ranking +=1
-        if ranking <=10:
-            rank_font.draw(150, 500 - count, '#%d. %3.2f' % (ranking, data[0]), (0, 0, 0))
-        pass
+    if Frame ==5:
+        Total_font.draw(250, 300, '[Total Ranking]', (123, 123, 0))
+        for data in rank:
+            count += 25
+            ranking +=1
+            if ranking <= 10:
+                rank_font.draw(320, 260 - count, '#%d. %3.2f' % (ranking, data[0]), (43, 2, 52))
+            pass
 
     update_canvas()
 
