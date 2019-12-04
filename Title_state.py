@@ -8,9 +8,7 @@ from pygame import mixer
 name = "TitleState"
 image = None
 frame = 4
-
-mixer.init()
-mixer.music.load('resource/Sound/TitleSound.mp3')
+#Start_state에서 시작한 bgm이 Title_state 까지 이어짐
 
 def enter():
     global image, frame, font
@@ -18,12 +16,12 @@ def enter():
 
     image = load_image('resource/Aft_resource/Titlestate_ani.png')
     font = load_font('resource/ENCR10B.TTF', 23)
-    # mixer.music.play()
+
 
 def exit():
     global image
     del image
-
+    del Start_state.bgm
 
 def handle_events():
     events = get_events()
@@ -32,22 +30,21 @@ def handle_events():
             Game_Framework.quit()
         else:
             if(event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
-                mixer.music.stop()
                 Game_Framework.change_state(Start_state)
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_1):
-                mixer.music.stop()
+                Start_state.bgm.stop()
                 fly_high.Enemy1_quantity = 5
                 fly_high.Enemy2_quantity = 5
                 fly_high.Enemy3_quantity = 3
                 Game_Framework.change_state(fly_high)
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_2):
-                mixer.music.stop()
+                Start_state.bgm.stop()
                 fly_high.Enemy1_quantity = 7
                 fly_high.Enemy2_quantity = 7
                 fly_high.Enemy3_quantity = 5
                 Game_Framework.change_state(fly_high)
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_3):
-                mixer.music.stop()
+                Start_state.bgm.stop()
                 fly_high.Enemy1_quantity = 12
                 fly_high.Enemy2_quantity = 12
                 fly_high.Enemy3_quantity = 9

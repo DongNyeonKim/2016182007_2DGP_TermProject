@@ -2,7 +2,6 @@ from pico2d import *
 import Game_Framework
 import Title_state
 import Gameover_state
-from pygame import mixer
 import random
 import time
 
@@ -40,8 +39,11 @@ def collide(a, b):
 
 def enter():
     global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2
-    global enemy_jets_3_L, enemy_jets_3_R, First_Time, Timer, clouds, playtime
+    global enemy_jets_3_L, enemy_jets_3_R, First_Time, Timer, clouds, playtime, bgm
 
+    bgm = load_music('resource/Sound/StartSound.mp3')
+    bgm.set_volume(60)
+    bgm.repeat_play()
     background = Background.BACKGROUND()
     clouds = Cloud.CLOUD()
 

@@ -1,23 +1,25 @@
 import Game_Framework
 import Title_state
 from pico2d import *
-from pygame import mixer
 
 name = "StartState"
 image = None
 Name = None
 logo_time = 0.0
-
+bgm = None
 
 def enter():
-    global image, Name
+    global image, Name, bgm
     image = load_image('resource/Aft_resource/Title_state.png')
     Name = load_image('resource/Aft_resource/TitleName1.png')
-    # mixer.music.play()
+    bgm = load_music('resource/Sound/StartSound.mp3')
+    bgm.set_volume(60)
+    bgm.play(1)
 
 def exit():
     global image
     del(image)
+
 
 
 def update():
@@ -25,6 +27,7 @@ def update():
 
     if(logo_time>1.0):
         logo_time = 0
+        #bgm.stop()
         Game_Framework.change_state(Title_state)
     delay(0.03)
     logo_time += 0.01
