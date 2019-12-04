@@ -32,7 +32,7 @@ class MY_BULLET:
             MY_BULLET.image_right = load_image('resource/Aft_resource/my_bullet_right.png')
         self.bullet_dir = 0
 
-        self.fire_sound = load_wav('resource/Sound/Shot.wav')
+        self.fire_sound = load_wav('resource/Sound/gg.wav')
         self.fire_sound.set_volume(40)
         self.x = fly_high.my_jet.x
         self.y = fly_high.my_jet.y
@@ -44,6 +44,8 @@ class MY_BULLET:
         self.sign = 0
 
         pass
+    def shoot(self):
+        self.fire_sound.play()
 
     def update(self):
         if self.sign == 0:

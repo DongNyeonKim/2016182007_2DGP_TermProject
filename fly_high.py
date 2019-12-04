@@ -101,7 +101,7 @@ def handle_events():
             elif event.key == SDLK_z:
                 bullet = My_bullet.MY_BULLET()
                 my_bullets.append(bullet)
-                My_bullet.fire_sound.play()
+                bullet.shoot()
             elif event.key == SDLK_x:
                 bullet = My_bullet.MY_BULLET()
                 bullet.bullet_dir = 1
@@ -109,7 +109,7 @@ def handle_events():
                 bullet = My_bullet.MY_BULLET()
                 bullet.bullet_dir = 2
                 my_bullets.append(bullet)
-                My_bullet.fire_sound.play()
+                bullet.shoot()
                 pass
 
             elif event.key == SDLK_a:
