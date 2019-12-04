@@ -160,16 +160,19 @@ def update():
                     my_bullets.remove(bullet)
         for enemy in enemy_jets_2:
             if collide(enemy, bullet) and enemy.explode_check == 0:
+                enemy.explode()
                 enemy.explode_check = 1
                 if bullet in my_bullets:
                     my_bullets.remove(bullet)
         for enemy in enemy_jets_3_L:
             if collide(enemy, bullet) and enemy.explode_check == 0:
+                enemy.explode()
                 enemy.explode_check = 1
                 if bullet in my_bullets:
                     my_bullets.remove(bullet)
         for enemy in enemy_jets_3_R:
             if collide(enemy, bullet) and enemy.explode_check == 0:
+                enemy.explode()
                 enemy.explode_check = 1
                 if bullet in my_bullets:
                     my_bullets.remove(bullet)
@@ -189,7 +192,8 @@ def update():
         sbullet = My_friend.MY_FRIEND_BULLET()
         sbullet.bullet_dir = 2
         my_friend_bullets.append(sbullet)
-        sbullet.shoot()
+        if my_friend.sign % 2 ==1:
+            sbullet.shoot()
     # 아군 총알의 충돌처리
     for sbullet in my_friend_bullets:
         sbullet.update()
@@ -198,21 +202,25 @@ def update():
                 my_friend_bullets.remove(sbullet)
         for enemy in enemy_jets:
             if collide(enemy, sbullet) and enemy.explode_check == 0:
+                enemy.explode()
                 enemy.explode_check = 1
                 if sbullet in my_friend_bullets:
                     my_friend_bullets.remove(sbullet)
         for enemy in enemy_jets_2:
             if collide(enemy, sbullet) and enemy.explode_check == 0:
+                enemy.explode()
                 enemy.explode_check = 1
                 if sbullet in my_friend_bullets:
                     my_friend_bullets.remove(sbullet)
         for enemy in enemy_jets_3_L:
             if collide(enemy, sbullet) and enemy.explode_check == 0:
+                enemy.explode()
                 enemy.explode_check = 1
                 if sbullet in my_friend_bullets:
                     my_friend_bullets.remove(sbullet)
         for enemy in enemy_jets_3_R:
             if collide(enemy, sbullet) and enemy.explode_check == 0:
+                enemy.explode()
                 enemy.explode_check = 1
                 if sbullet in my_friend_bullets:
                     my_friend_bullets.remove(sbullet)
@@ -266,6 +274,7 @@ def update():
     for enemy_bullet in enemy_bullets:
         enemy_bullet.update()
         if collide(my_jet, enemy_bullet) and my_jet.explode_check == 0 and my_jet.no_die == 0:
+            my_jet.explode()
             my_jet.explode_check = 1
             if enemy_bullet in enemy_bullets:
                 enemy_bullets.remove(enemy_bullet)

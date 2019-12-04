@@ -24,12 +24,17 @@ class ENEMY_JET_2:
         self.image1 = load_image('resource/Aft_resource/EnemyJet3.png')
 
         self.explode_ani1 = load_image('resource/Aft_resource/Explode-enemy.png')
-
+        self.explode_sound = load_wav('resource/Sound/123.wav')
+        self.explode_sound.set_volume(70)
         self.explode_frame = 0
         self.explode_check = 0
 
         self.x1, self.y1 = random.randint(50, 750), random.randint(600, 900)
         pass
+
+
+    def explode(self):
+        self.explode_sound.play()
 
     def update(self):
         # 적이 죽으면 explode_check=1 이 되고 폭발 애니메이션 실행 후 초기화 한 뒤 다시 생성

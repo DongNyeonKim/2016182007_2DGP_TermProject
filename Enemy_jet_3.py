@@ -21,7 +21,8 @@ class ENEMY_JET_3_L:
 
     def __init__(self):
         self.image1 = load_image('resource/Aft_resource/EnemyJet4.png')
-
+        self.explode_sound = load_wav('resource/Sound/123.wav')
+        self.explode_sound.set_volume(70)
         self.explode_ani1 = load_image('resource/Aft_resource/Explode-enemy.png')
 
         self.explode_frame = 0
@@ -29,6 +30,9 @@ class ENEMY_JET_3_L:
 
         self.x1, self.y1 = random.randint(-100, 0), random.randint(50, 550)
         pass
+
+    def explode(self):
+        self.explode_sound.play()
 
     def update(self):
         # 적이 죽으면 explode_check=1 이 되고 폭발 애니메이션 실행 후 초기화 한 뒤 다시 생성
@@ -65,7 +69,8 @@ class ENEMY_JET_3_R:
 
     def __init__(self):
         self.image1 = load_image('resource/Aft_resource/EnemyJet4.png')
-
+        self.explode_sound = load_wav('resource/Sound/123.wav')
+        self.explode_sound.set_volume(70)
         self.explode_ani1 = load_image('resource/Aft_resource/Explode-enemy.png')
 
         self.explode_frame = 0
@@ -73,6 +78,11 @@ class ENEMY_JET_3_R:
 
         self.x1, self.y1 = random.randint(800, 900), random.randint(300, 550)
         pass
+
+
+    def explode(self):
+        self.explode_sound.play()
+
 
     def update(self):
         # 적이 죽으면 explode_check=1 이 되고 폭발 애니메이션 실행 후 초기화 한 뒤 다시 생성
