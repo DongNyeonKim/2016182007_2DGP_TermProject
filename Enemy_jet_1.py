@@ -26,7 +26,8 @@ class ENEMY_JET:
         self.image1 = load_image('resource/Aft_resource/EnemyJet1.png')
 
         self.explode_ani1 = load_image('resource/Aft_resource/Explode-enemy.png')
-
+        self.explode_sound = load_wav('resource/Sound/123.wav')
+        self.explode_sound.set_volume(70)
         self.explode_frame = 0
         self.explode_check = 0
 
@@ -51,6 +52,8 @@ class ENEMY_JET:
             self.x1, self.y1 = random.randint(100, 700), random.randint(600, 700)
 
         pass
+    def explode(self):
+        self.explode_sound.play()
 
     def get_bb(self):
         return self.x1 - 15, self.y1 - 35, self.x1 + 15, self.y1 + 35

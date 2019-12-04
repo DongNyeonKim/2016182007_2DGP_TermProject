@@ -154,6 +154,7 @@ def update():
         # 적군과 충돌처리
         for enemy in enemy_jets:
             if collide(enemy, bullet) and enemy.explode_check == 0:
+                enemy.explode()
                 enemy.explode_check = 1
                 if bullet in my_bullets:
                     my_bullets.remove(bullet)
