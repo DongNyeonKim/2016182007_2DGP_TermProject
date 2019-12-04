@@ -32,8 +32,8 @@ class MY_BULLET:
             MY_BULLET.image_right = load_image('resource/Aft_resource/my_bullet_right.png')
         self.bullet_dir = 0
 
-        self.fire_sound = load_wav('resource/Sound/gg.wav')
-        self.fire_sound.set_volume(40)
+        self.fire_sound = load_wav('resource/Sound/188.WAV')
+        self.fire_sound.set_volume(70)
         self.x = fly_high.my_jet.x
         self.y = fly_high.my_jet.y
 
