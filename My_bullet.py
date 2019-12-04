@@ -44,6 +44,7 @@ class MY_BULLET:
         self.sign = 0
 
         pass
+
     def shoot(self):
         self.fire_sound.play()
 

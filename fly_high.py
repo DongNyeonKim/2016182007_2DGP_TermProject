@@ -188,7 +188,7 @@ def update():
         sbullet = My_friend.MY_FRIEND_BULLET()
         sbullet.bullet_dir = 2
         my_friend_bullets.append(sbullet)
-
+        sbullet.shoot()
     # 아군 총알의 충돌처리
     for sbullet in my_friend_bullets:
         sbullet.update()
