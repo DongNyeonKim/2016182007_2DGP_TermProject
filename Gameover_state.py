@@ -22,6 +22,7 @@ def enter():
     ending_bgm = load_music('resource/Sound/111.mp3')
     ending_bgm.set_volume(100)
     ending_bgm.repeat_play()
+
     image = load_image('resource/Aft_resource/GameoverState.png')
     text = load_image('resource/Aft_resource/gameover.png')
     ani = load_image('resource/Aft_resource/Gameout_ani.png')
@@ -80,6 +81,8 @@ def update():
         Frame = Frame + 1
         delay(0.5)
     blinkering += 1
+    if Frame ==5:
+
 
     pass
 

@@ -37,7 +37,7 @@ class MY_JET:
         self.explode_frame = 0
         self.explode_check = 0
         self.game_over_sign = 0
-        self.no_die = 1
+        self.no_die = 0
         pass
 
     def explode(self):
