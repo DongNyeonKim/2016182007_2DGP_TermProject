@@ -24,7 +24,6 @@ Enemy1_quantity = 0
 Enemy2_quantity = 0
 Enemy3_quantity = 0
 
-
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
@@ -39,11 +38,8 @@ def collide(a, b):
 
 def enter():
     global background, my_jet, my_bullets, my_friend, my_friend_bullets, enemy_jets, enemy_bullets, enemy_jets_2
-    global enemy_jets_3_L, enemy_jets_3_R, First_Time, Timer, clouds, playtime, bgm
+    global enemy_jets_3_L, enemy_jets_3_R, First_Time, Timer, clouds, playtime
 
-    bgm = load_music('resource/Sound/StartSound.mp3')
-    bgm.set_volume(60)
-    bgm.repeat_play()
     background = Background.BACKGROUND()
     clouds = Cloud.CLOUD()
 
@@ -105,6 +101,7 @@ def handle_events():
             elif event.key == SDLK_z:
                 bullet = My_bullet.MY_BULLET()
                 my_bullets.append(bullet)
+                My_bullet.fire_sound.play()
             elif event.key == SDLK_x:
                 bullet = My_bullet.MY_BULLET()
                 bullet.bullet_dir = 1
@@ -112,6 +109,7 @@ def handle_events():
                 bullet = My_bullet.MY_BULLET()
                 bullet.bullet_dir = 2
                 my_bullets.append(bullet)
+                My_bullet.fire_sound.play()
                 pass
 
             elif event.key == SDLK_a:

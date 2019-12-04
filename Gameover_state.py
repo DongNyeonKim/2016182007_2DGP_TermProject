@@ -3,7 +3,6 @@ import Start_state
 import Title_state
 import fly_high
 from pico2d import *
-from pygame import mixer
 import json
 
 name = "GameOverState"
@@ -15,12 +14,14 @@ rank_font = None
 Total_font = None
 Time = None
 rank = []
-mixer.init()
-mixer.music.load('resource/Sound/TitleSound.mp3')
+
 
 
 def enter():
-    global image, text, ani, Frame, font, rank_font, Total_font, blinkering
+    global image, text, ani, Frame, font, rank_font, Total_font, blinkering, ending_bgm
+    ending_bgm = load_music('resource/Sound/111.mp3')
+    ending_bgm.set_volume(100)
+    ending_bgm.repeat_play()
     image = load_image('resource/Aft_resource/GameoverState.png')
     text = load_image('resource/Aft_resource/gameover.png')
     ani = load_image('resource/Aft_resource/Gameout_ani.png')
@@ -29,17 +30,16 @@ def enter():
     Total_font = load_font('resource/ENCR10B.TTF', 30)
     Frame = 0
     blinkering = 0
-    # mixer.music.play()
     save_data()
     load_rank()
 
 
 def exit():
-    global image, text, ani
+    global image, text, ani, ending_bgm
     del image
     del text
     del ani
-
+    del ending_bgm
 
 def handle_events():
     events = get_events()
@@ -48,7 +48,7 @@ def handle_events():
             Game_Framework.quit()
         else:
             if (event.type, event.key) == (SDL_KEYDOWN, SDLK_r):
-                Game_Framework.change_state(Title_state)
+                Game_Framework.change_state(Start_state)
 
 
 def draw():

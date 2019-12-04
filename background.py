@@ -16,6 +16,9 @@ RUN_SPEED_PPS_BACKGROUND = (RUN_SPEED_MPS_BACKGROUND * PIXEL_PER_METER)
 # background1, background2 가 y축으로 움직이면서 배경을 이어 보이게 만듦
 class BACKGROUND:
     def __init__(self):
+        self.bgm = load_music('resource/Sound/aaa.mp3')
+        self.bgm.set_volume(100)
+        self.bgm.repeat_play()
         self.background1 = load_image('resource/Aft_resource/background.png')
         self.background2 = load_image('resource/Aft_resource/background.png')
         self.background_x, self.background_y = 0, 0
