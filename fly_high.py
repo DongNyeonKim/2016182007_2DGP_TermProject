@@ -1,6 +1,6 @@
 from pico2d import *
 import Game_Framework
-import Title_state
+import Start_state
 import Gameover_state
 import random
 import time
@@ -89,7 +89,7 @@ def handle_events():
 
         if event.type == SDL_KEYDOWN:
             if event.key == SDLK_ESCAPE:
-                Game_Framework.change_state(Title_state)
+                Game_Framework.change_state(Start_state)
             elif event.key == SDLK_UP:
                 my_jet.move_y += My_jet.RUN_SPEED_PPS_JET
             elif event.key == SDLK_DOWN:

@@ -81,10 +81,8 @@ def update():
         Frame = Frame + 1
         delay(0.5)
     blinkering += 1
-    if Frame ==5:
 
 
-    pass
 
 
 def save_data():
