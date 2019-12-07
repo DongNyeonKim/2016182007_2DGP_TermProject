@@ -33,7 +33,7 @@ class MY_BULLET:
         self.bullet_dir = 0
 
         self.fire_sound = load_wav('resource/Sound/188.WAV')
-        self.fire_sound.set_volume(70)
+        self.fire_sound.set_volume(30)
         self.x = fly_high.my_jet.x
         self.y = fly_high.my_jet.y
 

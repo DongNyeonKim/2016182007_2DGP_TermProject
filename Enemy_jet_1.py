@@ -27,7 +27,7 @@ class ENEMY_JET:
 
         self.explode_ani1 = load_image('resource/Aft_resource/Explode-enemy.png')
         self.explode_sound = load_wav('resource/Sound/123.wav')
-        self.explode_sound.set_volume(70)
+        self.explode_sound.set_volume(30)
         self.explode_frame = 0
         self.explode_check = 0
 

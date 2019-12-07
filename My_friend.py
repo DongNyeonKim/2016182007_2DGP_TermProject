@@ -85,7 +85,7 @@ class MY_FRIEND_BULLET:
         if MY_FRIEND_BULLET.image is None:
             MY_FRIEND_BULLET.image = load_image('resource/Aft_resource/Fire_MyFriend.png')
         self.fire_sound = load_wav('resource/Sound/192.WAV')
-        self.fire_sound.set_volume(30)
+        self.fire_sound.set_volume(25)
         self.a_x = fly_high.my_friend.A_x
         self.a_y = fly_high.my_friend.A_y
         self.b_x = fly_high.my_friend.B_x
