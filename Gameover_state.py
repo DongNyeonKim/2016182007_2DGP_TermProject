@@ -86,7 +86,7 @@ def update():
 
 def save_data():
     file = []
-    with open('Laptime_data.json', 'r') as f:
+    with open('resource/Laptime_data.json', 'r') as f:
         files = json.load(f)
 
     for z in files:
@@ -95,14 +95,14 @@ def save_data():
     Laptime_data = [float(Time)]
     file.append(Laptime_data)
 
-    with open('Laptime_data.json', 'w') as f:
+    with open('resource/Laptime_data.json', 'w') as f:
         json.dump(file, f)
 
 
 def load_rank():
     global rank
 
-    with open('Laptime_data.json', 'r') as f:
+    with open('resource/Laptime_data.json', 'r') as f:
         rank = json.load(f)
 
     rank.sort(reverse=True)
