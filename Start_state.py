@@ -8,6 +8,7 @@ Name = None
 logo_time = 0.0
 bgm = None
 
+
 def enter():
     global image, Name, bgm
     image = load_image('resource/Aft_resource/Title_state.png')
@@ -19,13 +20,12 @@ def enter():
 
 def exit():
     global image
-    del(image)
-
+    del (image)
 
 
 def update():
     global logo_time
-    if(logo_time>1.0):
+    if (logo_time > 1.0):
         logo_time = 0
         Game_Framework.change_state(Title_state)
     delay(0.03)
@@ -35,24 +35,16 @@ def update():
 def draw():
     global image
     clear_canvas()
-    image.draw(400,300)
-    Name.draw(660,100)
+    image.draw(400, 300)
+    Name.draw(660, 100)
     update_canvas()
-
-
 
 
 def handle_events():
     pass
 
 
-
-
 def pause(): pass
 
 
 def resume(): pass
-
-
-
-

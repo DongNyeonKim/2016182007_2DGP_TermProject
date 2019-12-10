@@ -4,7 +4,6 @@ import Game_Framework
 import random
 import time
 
-
 PIXEL_PER_METER = (10.0 / 0.1)  # 10pixel 10cm
 
 RUN_SPEED_KMPH_ENEMY_JET_2 = 3  # km/hour
@@ -16,6 +15,7 @@ TIME_PER_ACTION_ENEMY_JET = 0.1
 ACTION_PER_TIME_ENEMY_JET_EXPLODE = 0.1 / TIME_PER_ACTION_ENEMY_JET
 FRAMES_PER_ACTION_ENEMY_JET = 5
 
+
 # 적 전투기2(뚱뚱이)
 class ENEMY_JET_2:
 
@@ -24,13 +24,12 @@ class ENEMY_JET_2:
 
         self.explode_ani1 = load_image('resource/Aft_resource/Explode-enemy.png')
         self.explode_sound = load_wav('resource/Sound/123.wav')
-        self.explode_sound.set_volume(30)
+        self.explode_sound.set_volume(40)
         self.explode_frame = 0
         self.explode_check = 0
 
         self.x1, self.y1 = random.randint(50, 750), random.randint(600, 900)
         pass
-
 
     def explode(self):
         self.explode_sound.play()
@@ -62,7 +61,7 @@ class ENEMY_JET_2:
             self.explode_ani1.clip_draw(int(self.explode_frame) * 40, 0, 40, 80, self.x1, self.y1)
         else:
             self.image1.clip_draw(0, 0, 50, 50, self.x1, self.y1)
-            #draw_rectangle(*self.get_bb())
+            # draw_rectangle(*self.get_bb())
 
         pass
 
@@ -71,6 +70,7 @@ RUN_SPEED_KMPH_ENEMY_BULLET = 5  # km/hour
 RUN_SPEED_MPM_ENEMY_BULLET = (RUN_SPEED_KMPH_ENEMY_BULLET * 1000.0 / 60.0)
 RUN_SPEED_MPS_ENEMY_BULLET = (RUN_SPEED_MPM_ENEMY_BULLET / 60.0)
 RUN_SPEED_PPS_ENEMY_BULLET = (RUN_SPEED_MPS_ENEMY_BULLET * PIXEL_PER_METER)
+
 
 # 적 전투기 2 (뚱뚱이) 총알
 class ENEMY_BULLET_2:
@@ -118,13 +118,13 @@ class ENEMY_BULLET_2:
     def draw(self):
         if self.dir == 0:
             self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
-            #draw_rectangle(*self.get_bb())
+            # draw_rectangle(*self.get_bb())
         if self.dir == 1:
             self.image_R.clip_draw(0, 0, 12, 12, self.R_x, self.R_y)
-            #draw_rectangle(*self.get_bb())
+            # draw_rectangle(*self.get_bb())
         if self.dir == 2:
             self.image_L.clip_draw(0, 0, 12, 12, self.L_x, self.L_y)
-            #draw_rectangle(*self.get_bb())
+            # draw_rectangle(*self.get_bb())
         pass
 
     pass

@@ -5,10 +5,7 @@ import random
 import time
 import fly_high
 
-
-
 PIXEL_PER_METER = (10.0 / 0.1)  # 10pixel 10cm
-
 
 RUN_SPEED_KMPH_MY_BULLET = 40  # km/hour
 RUN_SPEED_MPM_MY_BULLET = (RUN_SPEED_KMPH_MY_BULLET * 1000.0 / 60.0)
@@ -32,7 +29,7 @@ class MY_BULLET:
         self.bullet_dir = 0
 
         self.fire_sound = load_wav('resource/Sound/188.WAV')
-        self.fire_sound.set_volume(30)
+        self.fire_sound.set_volume(80)
         self.x = fly_high.my_jet.x
         self.y = fly_high.my_jet.y
 
@@ -87,11 +84,11 @@ class MY_BULLET:
     def draw(self):
         if self.bullet_dir == 1:
             self.image_left.clip_draw(0, 0, 14, 12, self.L_x, self.L_y)
-            #draw_rectangle(*self.get_bb())
+            # draw_rectangle(*self.get_bb())
         elif self.bullet_dir == 2:
             self.image_right.clip_draw(0, 0, 14, 12, self.R_x, self.R_y)
-            #draw_rectangle(*self.get_bb())
+            # draw_rectangle(*self.get_bb())
         else:
             self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
-            #draw_rectangle(*self.get_bb())
+            # draw_rectangle(*self.get_bb())
         pass

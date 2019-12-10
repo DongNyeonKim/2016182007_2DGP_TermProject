@@ -16,7 +16,6 @@ Time = None
 rank = []
 
 
-
 def enter():
     global image, text, ani, Frame, font, rank_font, Total_font, blinkering, ending_bgm
     ending_bgm = load_music('resource/Sound/111.mp3')
@@ -42,6 +41,7 @@ def exit():
     del ani
     del ending_bgm
 
+
 def handle_events():
     events = get_events()
     for event in events:
@@ -50,6 +50,7 @@ def handle_events():
         else:
             if (event.type, event.key) == (SDL_KEYDOWN, SDLK_r):
                 Game_Framework.change_state(Start_state)
+    pass
 
 
 def draw():
@@ -63,11 +64,11 @@ def draw():
 
     count = 0
     ranking = 0
-    if Frame ==5:
+    if Frame == 5:
         Total_font.draw(250, 300, '[Total Ranking]', (123, 123, 0))
         for data in rank:
             count += 25
-            ranking +=1
+            ranking += 1
             if ranking <= 10:
                 rank_font.draw(320, 260 - count, '#%d. %3.2f' % (ranking, data[0]), (43, 2, 52))
             pass
@@ -81,8 +82,6 @@ def update():
         Frame = Frame + 1
         delay(0.5)
     blinkering += 1
-
-
 
 
 def save_data():

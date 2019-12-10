@@ -24,7 +24,7 @@ class ENEMY_JET:
 
         self.explode_ani1 = load_image('resource/Aft_resource/Explode-enemy.png')
         self.explode_sound = load_wav('resource/Sound/123.wav')
-        self.explode_sound.set_volume(30)
+        self.explode_sound.set_volume(40)
         self.explode_frame = 0
         self.explode_check = 0
 
@@ -49,6 +49,7 @@ class ENEMY_JET:
             self.x1, self.y1 = random.randint(100, 700), random.randint(600, 700)
 
         pass
+
     def explode(self):
         self.explode_sound.play()
 
@@ -60,7 +61,7 @@ class ENEMY_JET:
             self.explode_ani1.clip_draw(int(self.explode_frame) * 40, 0, 40, 80, self.x1, self.y1)
         else:
             self.image1.clip_draw(0, 0, 40, 80, self.x1, self.y1)
-            #draw_rectangle(*self.get_bb())
+            # draw_rectangle(*self.get_bb())
 
         pass
 
@@ -69,7 +70,6 @@ RUN_SPEED_KMPH_ENEMY_BULLET = 5  # km/hour
 RUN_SPEED_MPM_ENEMY_BULLET = (RUN_SPEED_KMPH_ENEMY_BULLET * 1000.0 / 60.0)
 RUN_SPEED_MPS_ENEMY_BULLET = (RUN_SPEED_MPM_ENEMY_BULLET / 60.0)
 RUN_SPEED_PPS_ENEMY_BULLET = (RUN_SPEED_MPS_ENEMY_BULLET * PIXEL_PER_METER)
-
 
 
 # 적 전투기 1 (레드) 총알
@@ -92,7 +92,7 @@ class ENEMY_BULLET:
 
     def draw(self):
         self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
-        #draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
         pass
 
     pass

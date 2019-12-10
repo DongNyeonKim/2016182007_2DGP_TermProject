@@ -27,7 +27,7 @@ class MY_JET:
         self.image = load_image('resource/Aft_resource/jet21.png')
         self.explode_ani = load_image('resource/Aft_resource/MyJet_Explode.png')
         self.explode_sound = load_wav('resource/Sound/Self.wav')
-        self.explode_sound.set_volume(90)
+        self.explode_sound.set_volume(110)
         self.font = load_font('resource/ENCR10B.TTF', 16)
         self.frame = 0
         self.x, self.y = 400, 300
