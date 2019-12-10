@@ -1,7 +1,6 @@
 from pico2d import *
 import Game_Framework
 
-from pygame import mixer
 import random
 import time
 import fly_high
@@ -88,11 +87,11 @@ class MY_BULLET:
     def draw(self):
         if self.bullet_dir == 1:
             self.image_left.clip_draw(0, 0, 14, 12, self.L_x, self.L_y)
-            draw_rectangle(*self.get_bb())
+            #draw_rectangle(*self.get_bb())
         elif self.bullet_dir == 2:
             self.image_right.clip_draw(0, 0, 14, 12, self.R_x, self.R_y)
-            draw_rectangle(*self.get_bb())
+            #draw_rectangle(*self.get_bb())
         else:
             self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
-            draw_rectangle(*self.get_bb())
+            #draw_rectangle(*self.get_bb())
         pass

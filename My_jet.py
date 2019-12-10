@@ -1,7 +1,6 @@
 from pico2d import *
 import Game_Framework
 
-from pygame import mixer
 import random
 import time
 
@@ -28,7 +27,7 @@ class MY_JET:
         self.image = load_image('resource/Aft_resource/jet21.png')
         self.explode_ani = load_image('resource/Aft_resource/MyJet_Explode.png')
         self.explode_sound = load_wav('resource/Sound/Self.wav')
-        self.explode_sound.set_volume(80)
+        self.explode_sound.set_volume(90)
         self.font = load_font('resource/ENCR10B.TTF', 16)
         self.frame = 0
         self.x, self.y = 400, 300
@@ -71,7 +70,7 @@ class MY_JET:
             self.explode_ani.clip_draw(int(self.explode_frame) * 40, 0, 40, 80, self.x, self.y)
         else:
             self.image.clip_draw(int(self.frame) * 40, 0, 40, 80, self.x, self.y)
-            draw_rectangle(*self.get_bb())
+            #draw_rectangle(*self.get_bb())
         pass
 
 

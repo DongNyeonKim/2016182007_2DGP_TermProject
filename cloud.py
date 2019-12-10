@@ -1,7 +1,6 @@
 from pico2d import *
 import Game_Framework
 
-from pygame import mixer
 import random
 import time
 

@@ -1,7 +1,6 @@
 from pico2d import *
 import Game_Framework
 
-from pygame import mixer
 import random
 import time
 
@@ -61,7 +60,7 @@ class ENEMY_JET_3_L:
             self.explode_ani1.clip_draw(int(self.explode_frame) * 40, 0, 40, 80, self.x1, self.y1)
         else:
             self.image1.clip_draw(0, 0, 40, 30, self.x1, self.y1)
-            draw_rectangle(*self.get_bb())
+            #draw_rectangle(*self.get_bb())
         pass
 
 # 적 전투기3(라이트형제, 오른쪽 출)
@@ -111,7 +110,7 @@ class ENEMY_JET_3_R:
             self.explode_ani1.clip_draw(int(self.explode_frame) * 40, 0, 40, 80, self.x1, self.y1)
         else:
             self.image1.clip_draw(0, 0, 40, 30, self.x1, self.y1)
-            draw_rectangle(*self.get_bb())
+            #draw_rectangle(*self.get_bb())
         pass
 
 
@@ -141,7 +140,7 @@ class ENEMY_BULLET:
 
     def draw(self):
         self.image.clip_draw(0, 0, 10, 12, self.x, self.y)
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
         pass
 
     pass

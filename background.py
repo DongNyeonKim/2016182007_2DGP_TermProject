@@ -1,7 +1,6 @@
 from pico2d import *
 import Game_Framework
 
-from pygame import mixer
 import random
 import time
 
@@ -17,7 +16,7 @@ RUN_SPEED_PPS_BACKGROUND = (RUN_SPEED_MPS_BACKGROUND * PIXEL_PER_METER)
 class BACKGROUND:
     def __init__(self):
         self.bgm = load_music('resource/Sound/aaa.mp3')
-        self.bgm.set_volume(50)
+        self.bgm.set_volume(55)
         self.bgm.repeat_play()
         self.background1 = load_image('resource/Aft_resource/background.png')
         self.background2 = load_image('resource/Aft_resource/background.png')

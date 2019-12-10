@@ -2,7 +2,6 @@ import Game_Framework
 import Start_state
 import fly_high
 from pico2d import *
-from pygame import mixer
 
 
 name = "TitleState"
@@ -33,21 +32,21 @@ def handle_events():
                 Game_Framework.change_state(Start_state)
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_1):
                 Start_state.bgm.stop()
-                fly_high.Enemy1_quantity = 6
-                fly_high.Enemy2_quantity = 6
-                fly_high.Enemy3_quantity = 4
+                fly_high.Enemy1_quantity = 7
+                fly_high.Enemy2_quantity = 7
+                fly_high.Enemy3_quantity = 5
                 Game_Framework.change_state(fly_high)
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_2):
                 Start_state.bgm.stop()
-                fly_high.Enemy1_quantity = 7
-                fly_high.Enemy2_quantity = 7
-                fly_high.Enemy3_quantity = 6
+                fly_high.Enemy1_quantity = 8
+                fly_high.Enemy2_quantity = 8
+                fly_high.Enemy3_quantity = 7
                 Game_Framework.change_state(fly_high)
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_3):
                 Start_state.bgm.stop()
-                fly_high.Enemy1_quantity = 11
-                fly_high.Enemy2_quantity = 11
-                fly_high.Enemy3_quantity = 8
+                fly_high.Enemy1_quantity = 12
+                fly_high.Enemy2_quantity = 12
+                fly_high.Enemy3_quantity = 10
                 Game_Framework.change_state(fly_high)
 
 

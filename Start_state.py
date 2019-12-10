@@ -16,6 +16,7 @@ def enter():
     bgm.set_volume(60)
     bgm.play(1)
 
+
 def exit():
     global image
     del(image)
@@ -24,7 +25,6 @@ def exit():
 
 def update():
     global logo_time
-
     if(logo_time>1.0):
         logo_time = 0
         Game_Framework.change_state(Title_state)

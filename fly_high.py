@@ -115,9 +115,10 @@ def handle_events():
             elif event.key == SDLK_a:
                 my_friend.sign += 1
             elif event.key == SDLK_s:
-                Gameover_state.Time = playtime.NowTime
-                Game_Framework.change_state(Gameover_state)
-            elif event.key == SDLK_d:
+                # Gameover_state.Time = playtime.NowTime
+                # Game_Framework.change_state(Gameover_state)
+                pass
+            elif event.key == SDLK_o:
                 if my_jet.no_die == 0:
                     my_jet.no_die = 1
                 else:
@@ -139,7 +140,8 @@ def handle_events():
                 pass
             elif event.key == SDLK_s:
                 pass
-
+            elif event.key == SDLK_o:
+                pass
 
 def update():
     global Timer, enemy_bullet, First_Time
@@ -233,6 +235,7 @@ def update():
             enemy_bullet.y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
         if collide(my_jet, enemy) and my_jet.explode_check == 0 and my_jet.no_die == 0:
+            my_jet.explode()
             my_jet.explode_check = 1
             enemy.explode_check = 1
     for enemy in enemy_jets_2:
@@ -248,6 +251,7 @@ def update():
             enemy_bullet.L_y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
         if collide(my_jet, enemy) and my_jet.explode_check == 0 and my_jet.no_die == 0:
+            my_jet.explode()
             my_jet.explode_check = 1
             enemy.explode_check = 1
     for enemy in enemy_jets_3_L:
@@ -258,6 +262,7 @@ def update():
             enemy_bullet.y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
         if collide(my_jet, enemy) and my_jet.explode_check == 0 and my_jet.no_die == 0:
+            my_jet.explode()
             my_jet.explode_check = 1
             enemy.explode_check = 1
     for enemy in enemy_jets_3_R:
@@ -268,6 +273,7 @@ def update():
             enemy_bullet.y = enemy.y1 - 25
             enemy_bullets.append(enemy_bullet)
         if collide(my_jet, enemy) and my_jet.explode_check == 0 and my_jet.no_die == 0:
+            my_jet.explode()
             my_jet.explode_check = 1
             enemy.explode_check = 1
     # 적군 총알 충돌처리
